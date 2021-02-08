@@ -12,17 +12,3 @@ class Constraint:
     
     def get_exec_count(self):
         return self.exec_count
-
-
-class Model:
-    def __init__(self, constraints):
-        self.constraints = constraints
-        
-    def execute(self, X, indicies):
-        for c in self.constraints:
-            if not c.execute(X, indicies):
-                return False
-        return True
-    
-    def stats(self):
-        return [(c.name, c.get_exec_count()) for c in self.constraints]
