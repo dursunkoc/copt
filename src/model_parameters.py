@@ -4,7 +4,7 @@ import numpy as np
 np.random.seed(13)
 
 C = 10 # number of campaigns
-U = 2000 # number of customers.
+U = 10000 # number of customers.
 H = 3 # number of channels.
 D = 7 # number of planning days.
 I = 3 # number of quota categories.
