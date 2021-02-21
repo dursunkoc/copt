@@ -1,10 +1,10 @@
 import numpy as np
 
 #seed randomization
-np.random.seed(13)
+np.random.seed(23)
 
-C = 2 # number of campaigns
-U = 10 # number of customers.
+C = 10 # number of campaigns
+U = 1000 # number of customers.
 H = 3 # number of channels.
 D = 7 # number of planning days.
 I = 3 # number of quota categories.
@@ -50,3 +50,17 @@ channel_capacity = lambda X, h, d: X[:,:,h,d].sum() <= t_hd[h,d]
 
 #objective function
 objective_fn = lambda X: np.matmul(rp_c, X.sum(axis=(1,2,3)))
+
+
+e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
+m_i_X = np.stack([m_i for _ in range(U)], axis=1)
+
+
+X_eligibility = lambda X: np.all(X <= e_cu_X)
+X_one_channel = lambda X: np.all(X.sum(axis=2)<=1)
+X_weekly_limitation = lambda X: np.all(X.sum(axis=(0,2,3))<=b)
+X_daily_limitation = lambda X: np.all(X.sum(axis=(0,2))<=k)
+X_campaign_limitation = lambda X: np.all(X.sum(axis=(2,3)).T<=l_c)
+X_weekly_quota = lambda X: np.all(q_ic@X.sum(axis=(2,3)) <= m_i_X)
+X_daily_quota = lambda X: all([np.all((q_ic[i,].T * X.sum(axis=2).T).sum(2) <= n_i[i]) for i in range(I)])
+X_channel_capacity = lambda X: np.all(X.sum(axis=(0,1))<=t_hd)
