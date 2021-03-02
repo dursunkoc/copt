@@ -54,13 +54,51 @@ objective_fn = lambda X: np.matmul(rp_c, X.sum(axis=(1,2,3)))
 
 e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
 m_i_X = np.stack([m_i for _ in range(U)], axis=1)
+n_i_X = np.stack([n_i for _ in range(U)], axis=1)
 
 
-X_eligibility = lambda X: np.all(X <= e_cu_X)
-X_one_channel = lambda X: np.all(X.sum(axis=2)<=1)
-X_weekly_limitation = lambda X: np.all(X.sum(axis=(0,2,3))<=b)
-X_daily_limitation = lambda X: np.all(X.sum(axis=(0,2))<=k)
-X_campaign_limitation = lambda X: np.all(X.sum(axis=(2,3)).T<=l_c)
-X_weekly_quota = lambda X: np.all(q_ic@X.sum(axis=(2,3)) <= m_i_X)
-X_daily_quota = lambda X: all([np.all((q_ic[i,].T * X.sum(axis=2).T).sum(2) <= n_i[i]) for i in range(I)])
-X_channel_capacity = lambda X: np.all(X.sum(axis=(0,1))<=t_hd)
+def X_eligibility (X):
+    return (X <= e_cu_X).all()
+
+def X_weekly_limitation (X):
+    return (X.sum(axis=(0,2,3))<=b).all()
+
+def X_daily_limitation (X):
+    return (X.sum(axis=(0)).sum(axis=(1))<=k).all()
+
+def X_campaign_limitation (X):
+    return np.all(X.sum(axis=(2,3)).T<=l_c)
+
+def X_weekly_quota (X):
+    for i in range(I):
+        quota_i = np.all(X.sum(axis=(2,3)).T * q_ic[i, ].T  <= m_i[i])
+        if not quota_i:
+            return False
+    return True
+
+def X_channel_capacity (X):
+    return np.all(X.sum(axis=(0,1))<=t_hd)
+
+def X_daily_quota (X):
+    for i in range(I):
+        quota_i = np.all((q_ic[i,].T * X.sum(axis=2).T).sum(2) <= n_i[i])
+        if not quota_i:
+            return False
+    return True
+
+def check(X):   
+    if not X_eligibility(X):
+        return False
+    if not X_weekly_limitation(X):
+        return False
+    if not X_daily_limitation(X):
+        return False
+    if not X_campaign_limitation(X):
+        return False
+    if not X_weekly_quota(X):
+        return False
+    if not X_daily_quota(X):
+        return False
+    if not X_channel_capacity(X):
+        return False
+    return True
