@@ -3,12 +3,12 @@ import numpy as np
 #seed randomization
 np.random.seed(23)
 
-C = 10 # number of campaigns
-U = 1000 # number of customers.
+C = 2 # number of campaigns
+U = 10 # number of customers.
 H = 3 # number of channels.
 D = 7 # number of planning days.
 I = 3 # number of quota categories.
-P = 10 # number of priority categories.
+P = 3 # number of priority categories.
 
 #Parameters
 
