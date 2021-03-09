@@ -1,4 +1,5 @@
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
+import numpy as np
 
 class LpRelSolution(Solution):
     def __init__(self):
@@ -7,8 +8,8 @@ class LpRelSolution(Solution):
     def round_with_greedy(self, X_non_integral, X, PMS, D, H, U):
         from tqdm import tqdm
         from tqdm import trange
-        for c in tqdm(np.argsort(PMS.rp_c), desc="Campaigns Loop"):
-            for d in trange(D, desc=f"Days Loop for campaign-{c}"):
+        for c in np.argsort(PMS.rp_c):#tqdm(np.argsort(PMS.rp_c), desc="Campaigns Loop"):
+            for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
                 for h in range(H):
                     for u in range(U):
                         if (c,u,h,d) in X_non_integral and X[c,u,h,d]==1 and not self.check(X, PMS, (c, u, h, d)):
@@ -16,7 +17,6 @@ class LpRelSolution(Solution):
 
     def run(self, case:Case)->SolutionResult:
         from time import time
-        import numpy as np
         from docplex.mp.model import Model
         start_time = time()
         #seed randomization
@@ -78,24 +78,27 @@ class LpRelSolution(Solution):
             for i in range(0,I)))
         
         result = mdl.solve(log_output=False)
-        print(f"Non integral solution: {result.objective_value}")
+        v_non_integral = result.objective_value
         X_non_integral = [tuple(int(i.split(":")[1]) for i in ky.split("_")[1:]) for ky,val in result.as_name_dict().items() if val!=1]
-        X_cuhd2 = np.zeros((MP.C,MP.U,MP.H,MP.D), dtype='int')
-        for ky,_ in solution.as_name_dict().items():
+        X_cuhd2 = np.zeros((C,U,H,D), dtype='int')
+        for ky,_ in result.as_name_dict().items():
             exec(f'X_cuhd2{[int(i.split(":")[1]) for i in ky.split("_")[1:]]} = 1', {}, {'X_cuhd2':X_cuhd2})
-
-        
-
-
+        v_non_opt = self.objective_fn(PMS.rp_c, X_cuhd2)
+        self.round_with_greedy(X_non_integral, X_cuhd2, PMS, D, H, U)
+        if(v_non_opt!=v_non_integral):
+            print(f"Non-optimistic & integral solution: {v_non_opt}")
+            print(f"Non-integral solution: {v_non_integral}")
+            print(f"Optimistic solution: {self.objective_fn(PMS.rp_c, X_cuhd2)}")
+        value = self.objective_fn(PMS.rp_c, X_cuhd2)
         end_time = time()
         duration = end_time - start_time
         return SolutionResult(case, value, round(duration,4))
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":10,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":2,"U":11,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":2,"U":12,"H":3, "D":7, "I":3, "P":3})
+            Case({"C":4,"U":17,"H":2, "D":2, "I":3, "P":3}),
+            Case({"C":3,"U":20,"H":2, "D":2, "I":3, "P":3}),
+            Case({"C":2,"U":20,"H":2, "D":2, "I":3, "P":3})
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(LpRelSolution())
