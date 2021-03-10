@@ -154,6 +154,23 @@ class Solution:
                 return False
         return True
 
+    def X_check(self, PMS, X):
+        if not self.X_eligibility(PMS.e_cu_X, X):
+            return False
+        if not self.X_weekly_limitation(PMS.b, X):
+            return False
+        if not self.X_daily_limitation(PMS.k, X):
+            return False
+        if not self.X_campaign_limitation(PMS.l_c, X):
+            return False
+        if not self.X_weekly_quota(PMS.m_i, PMS.q_ic, X):
+            return False
+        if not self.X_daily_quota(PMS.n_i, PMS.q_ic, X):
+            return False
+        if not self.X_channel_capacity(PMS.t_hd, X):
+            return False
+        return True
+
 
 
 
