@@ -2,6 +2,8 @@ from typing import List, Dict, Tuple
 import numpy as np
 from tqdm import trange
 from tqdm import tqdm
+from functools import reduce
+from operator import mul
 
 class Case:
     def __init__(self, arguments:Dict[str, int]):
@@ -9,6 +11,9 @@ class Case:
     
     def __str__(self):
         return str(self.arguments)
+    
+    def size(self):
+        return reduce(mul, self.arguments.values())
 
 class Parameters:
     def __init__(self, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd):
@@ -35,19 +40,17 @@ class SolutionResult:
 
 
 class Experiment:
-    import numpy as np
     def __init__(self, cases: List[Case]):
         self.cases = cases
     
     def run_cases_with(self, solution) -> List[Tuple[Case, SolutionResult]]:
-        return [solution.run(case) for case in tqdm(self.cases, "Cases")]
+        return [solution.run(case) for case in tqdm(self.cases, f"Case ->")]
 
 class Solution:
     c_i = 0
     u_i = 1
     h_i = 2
     d_i = 3
-    import numpy as np
     def __init__(self, name: str):
         self.name = name
 

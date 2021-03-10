@@ -35,8 +35,22 @@ if __name__ == '__main__':
     cases = [
             Case({"C":2,"U":10,"H":3, "D":7, "I":3, "P":3}),
             Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":1000,"H":3, "D":7, "I":3, "P":3})            ]
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":20,"U":1000,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":20,"U":2000,"H":3, "D":7, "I":3, "P":3})
+            ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution())
     for solution in solutions:
         print(solution)
+    values = [solution.value for solution in solutions]
+    durations = [solution.duration for solution in solutions]
+    sizes = [solution.case.size() for solution in solutions]
+    import matplotlib.pyplot as plt
+    plt.subplot(1,2,1)
+    plt.plot(durations, values)
+    plt.xlabel("Durations")
+    plt.ylabel("Values")
+    plt.subplot(1,2,2)
+    plt.bar(durations, sizes)
+    plt.show()
