@@ -14,6 +14,7 @@ P = 3 # number of priority categories.
 
 ##eligibility
 e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
+p_x_cud = np.random.choice(2,(C,U,D)) 
 
 ##quota categories
 q_ic = np.random.choice(2, (I,C)) #q_ic = np.zeros((I,C), dtype='int8')
