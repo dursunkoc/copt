@@ -172,11 +172,31 @@ class GASolution(Solution):
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":10,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":1000,"H":3, "D":7, "I":3, "P":3})
+            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":15,"U":10000,"H":3, "D":7, "I":3, "P":3})
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GASolution())
     for solution in solutions:
         print(solution)
+
+#<case: {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 8580, duration: 135.0099>
+#<case: {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 120160, duration: 1096.2517>
+#<case: {'C': 15, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 1800000, duration: 27886.2746>
+
+
+#<case: {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 13083.0, duration: 1.2028>
+#<case: {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 12180.0, duration: 1.5958>
+#<case: {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 63096.0, duration: 3.2227>
+#<case: {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 74664.0, duration: 15.1346>
+#<case: {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 341667.0, duration: 33.3833>
+#<case: {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 705516.0, duration: 78.8779>
+#<case: {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 1672838.0, duration: 147.7841>
+#<case: {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 1161046.0, duration: 177.4551>
+#<case: {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 1982340.0, duration: 367.6678>
+#<case: {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 5507447.0, duration: 1381.5458>
+#<case: {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 4945924.0, duration: 1676.1964>
+#<case: {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 12318459.0, duration: 8917.5635>
+#<case: {'C': 20, 'U': 40000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 26451198.0, duration: 8204.8334>
+#<case: {'C': 20, 'U': 50000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 22565321.0, duration: 43721.7264>
