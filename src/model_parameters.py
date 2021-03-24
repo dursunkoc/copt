@@ -16,6 +16,9 @@ P = 3 # number of priority categories.
 e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
 p_x_cud = np.random.choice(2,(C,U,D)) 
 
+##previous period planning
+s_cuhd = np.random.choice(2,(C,U,H,D))
+
 ##quota categories
 q_ic = np.random.choice(2, (I,C)) #q_ic = np.zeros((I,C), dtype='int8')
 
@@ -42,7 +45,7 @@ t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
 #Constraint Functions
 eligibility = lambda X, c, u, h, d: X[c,u,h,d]<=e_cu[c,u]
 one_channel = lambda X, c, u, d: X[c,u,:,d].sum() <= 1
-weekly_limitation = lambda X, u: X[:,u,:,:].sum() <= b
+weekly_limitation = lambda X, u: (X[:,u,:,:]).sum() <= b
 daily_limitation = lambda X, u, d: X[:,u,:,d].sum() <= k
 campaign_limitation = lambda X, c, u: X[c,u,:,:].sum() <= l_c[c]
 weekly_quota = lambda X, u: all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
@@ -87,7 +90,7 @@ def X_daily_quota (X):
             return False
     return True
 
-def check(X):   
+def check(X):
     if not X_eligibility(X):
         return False
     if not X_weekly_limitation(X):

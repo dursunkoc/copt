@@ -1,4 +1,8 @@
 {
-    "python.pythonPath": "/Users/dursunkoc/data/platform/python/copt/bin/python",
-    "jupyter.jupyterServerType": "local"
+    "jupyter.jupyterServerType": "local",
+    "python.autoComplete.extraPaths": [
+        ".",
+        "src"
+    ],
+    "python.pythonPath": "D:\\Dev\\platforms\\python\\envs\\copt\\Scripts\\python.exe",
 }

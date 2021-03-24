@@ -16,7 +16,8 @@ class Case:
         return reduce(mul, self.arguments.values())
 
 class Parameters:
-    def __init__(self, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd):
+    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd):
+        self.s_cuhd = s_cuhd
         self.e_cu = e_cu
         self.e_cu_X = e_cu_X
         self.q_ic = q_ic
@@ -71,6 +72,8 @@ class Solution:
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
+        ##previous weeks assignments
+        s_cuhd = np.random.choice(2, (C,U,H,D))
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories
@@ -92,13 +95,15 @@ class Solution:
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)
-        return Parameters(e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd)
+        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd)
 
 #Single Constraint Functions
     def eligibility(self, e_cu, X, c, u, h, d):
         return X[c,u,h,d]<=e_cu[c,u]
     def weekly_limitation(self, b, X, u):
         return X[:,u,:,:].sum() <= b
+    def weekly_limitation_rh(self, b, X, s, u, f_d):
+        return (X[:,u,:,:f_d]).sum() + (s[:,u,:,f_d:]).sum() <= b
     def daily_limitation (self, k, X, u, d):
         return X[:,u,:,d].sum() <= k
     def campaign_limitation(self, l_c, X, c, u):
@@ -114,6 +119,18 @@ class Solution:
         if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
             return False
         if not self.weekly_limitation(PMS.b, X, indicies[self.u_i]):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
             return False
         if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
             return False
