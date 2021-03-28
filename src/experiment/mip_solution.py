@@ -1,12 +1,37 @@
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
-
+import numpy as np
 class MipSolution(Solution):
     def __init__(self):
         super().__init__("MIP")
 
+    def mip_weekly_communication_rh(self, mdl, X_cuhd, PMS, C, U, H, D, f_d):
+        return mdl.add_constraints((
+            (mdl.sum(X_cuhd[(c,u,h,d)] if d<f_d else PMS.s_cuhd[(c,u,h,d)]
+                for d in range(0,D) 
+                for c in range(0,C) 
+                for h in range(0,H)) <= PMS.b)
+            for u in range(0,U)))
+
+    def mip_campaign_communication_rh(self, mdl, X_cuhd, PMS, C, U, H, D, f_d):
+        return mdl.add_constraints((
+            (mdl.sum(X_cuhd[(c,u,h,d)] if d< f_d else PMS.s_cuhd[(c,u,h,d)]  
+                for h in range(0,H) 
+                for d in range(0,D)) <= PMS.l_c[c] )
+            for c in range(0,C)
+            for u in range(0,U)))
+
+    def mip_weekly_quota_rh(self, mdl, X_cuhd, PMS, C, U, H, D, I, f_d):
+        return mdl.add_constraints((
+            (mdl.sum( (X_cuhd[(c,u,h,d)] if d < f_d else PMS.s_cuhd[(c,u,h,d)]) * PMS.q_ic[i,c]
+                for c in range(0,C)
+                for h in range(0,H) 
+                for d in range(0,D)) <= PMS.m_i[i])
+            for u in range(0,U)
+            for i in range(0,I)))
+
+
     def run(self, case:Case)->SolutionResult:
         from time import time
-        import numpy as np
         from docplex.mp.model import Model
         start_time = time()
         #seed randomization
@@ -20,6 +45,7 @@ class MipSolution(Solution):
         mdl = Model(name='Campaign Optimization')
         #variables
         X_cuhd = {(c,u,h,d): mdl.binary_var(f"X_c:{c}_u:{u}_h:{h}_d:{d}")
+#        X_cuhd = {(c,u,h,d): mdl.binary_var(f"X[{c},{u},{h},{d}]")
             for c in range(0,C)
             for u in range(0,U) 
             for h in range(0,H)
@@ -38,12 +64,7 @@ class MipSolution(Solution):
             for h in range(0,H) 
             for d in range(0,D)))
         
-        weekly_communication = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)] 
-               for d in range(0,D) 
-               for c in range(0,C) 
-               for h in range(0,H)) <= PMS.b)
-            for u in range(0,U)))
+        weekly_communication = [self.mip_weekly_communication_rh(mdl, X_cuhd, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
 
         daily_communication = mdl.add_constraints((
             (mdl.sum(X_cuhd[(c,u,h,d)]  
@@ -52,26 +73,78 @@ class MipSolution(Solution):
                 for d in range(0,D)
                 for u in range(0,U)))
         
-        campaign_communication = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]  
-                for h in range(0,H) 
-                for d in range(0,D)) <= PMS.l_c[c] )
-            for c in range(0,C)
-            for u in range(0,U)))
+        campaign_communication = [self.mip_campaign_communication_rh(mdl, X_cuhd, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
 
-        weekly_quota = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]*PMS.q_ic[i,c]
-                for c in range(0,C)
-                for h in range(0,H) 
-                for d in range(0,D)) <= PMS.m_i[i])
-            for u in range(0,U)
-            for i in range(0,I)))
+        weekly_quota0 = self.mip_weekly_quota_rh(mdl, X_cuhd, PMS, C, U, H, D, I, D)
+        weekly_quota1 = self.mip_weekly_quota_rh(mdl, X_cuhd, PMS, C, U, H, D, I, 1)
+        
+#        weekly_quota = [self.mip_weekly_quota_rh(mdl, X_cuhd, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
+#
+#        for wqs in weekly_quota:
+#            for wq in wqs:
+#                print(wq)
+
+        daily_quota = mdl.add_constraints((
+                (mdl.sum(X_cuhd[(c,u,h,d)]*PMS.q_ic[i,c]
+                    for c in range(0,C) 
+                    for h in range(0,H)) <= PMS.n_i[i])
+                for u in range(0,U)
+                for d in range(0,D)
+                for i in range(0,I)))
+
+        channel_capacity = mdl.add_constraints((
+            (mdl.sum(X_cuhd[(c,u,h,d)]
+                for u in range(0,U) 
+                for c in range(0,C)) <= PMS.t_hd[h,d])
+            for h in range(0,H)
+            for d in range(0,D)))
         
         result = mdl.solve(log_output=False)
-        value = result.objective_value
+
+        if result is not None:
+            value = result.objective_value
+        else:
+            value = 0
+
         end_time = time()
         duration = end_time - start_time
+
+        self.validate(result, PMS, C, D, H, U)
+        self.anti_validate(result, PMS,  C, D, H, U)
+
         return SolutionResult(case, value, round(duration,4))
+
+    def create_var_for_greedy(self, solution, C, D, H, U):
+        X_cuhd2 = np.zeros((C,U,H,D), dtype='int')
+        if solution is not None and solution.as_name_dict() is not None:
+            for ky,_ in solution.as_name_dict().items():
+                exec(f'X_cuhd2{[int(i.split(":")[1]) for i in ky.split("_")[1:]]} = 1', {}, {'X_cuhd2':X_cuhd2})
+        return X_cuhd2
+
+    def validate(self, solution, PMS, C, D, H, U):
+        X_cuhd2 = self.create_var_for_greedy(solution, C, D, H, U)
+        for c in range(C):
+            for d in range(D):
+                for h in range(H):
+                    for u in range(U):
+                        if X_cuhd2[c,u,h,d]==1 and not self.check(X_cuhd2, PMS, (c, u, h, d)):
+                            raise RuntimeError(f'{(c, u, h, d)} does not consistent with previous values!')
+        print("Solution is consistent with greedy from mip respect")
+
+    def anti_validate(self, solution, PMS, C, D, H, U):
+        X_cuhd2 = self.create_var_for_greedy(solution, C, D, H, U)
+        for c in range(C):
+            for d in range(D):
+                for h in range(H):
+                    for u in range(U):
+                        if X_cuhd2[c,u,h,d]==0:
+                            X_cuhd2[c,u,h,d]=1
+                            if self.check(X_cuhd2, PMS, (c, u, h, d)):
+                                raise RuntimeError(f'{(c, u, h, d)} should failed')
+                            else:
+                                X_cuhd2[c,u,h,d]=0
+        print("Solution is consistent with greedy from greedy respect")
+
 
 if __name__ == '__main__':
     cases = [

@@ -4,7 +4,7 @@ import numpy as np
 np.random.seed(23)
 
 C = 2 # number of campaigns
-U = 10 # number of customers.
+U = 1000 # number of customers.
 H = 3 # number of channels.
 D = 7 # number of planning days.
 I = 3 # number of quota categories.
@@ -63,7 +63,7 @@ campaign_limitation_rh4=campaign_limitation_rh(4)
 campaign_limitation_rh5=campaign_limitation_rh(5)
 campaign_limitation_rh6=campaign_limitation_rh(6)
 weekly_quota = lambda X, u: all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
-weekly_quota_rh = lambda f_d :lambda X, s, u: all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1)<=m_i) + all((q_ic * s[:,u,:,f_d:].sum(axis=(1,2))).sum(axis=1)<=m_i)
+weekly_quota_rh = lambda f_d :lambda X, s, u: all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1) + (q_ic * s[:,u,:,f_d:].sum(axis=(1,2))).sum(axis=1) <= m_i)
 weekly_quota_rh1 = weekly_quota_rh(1)
 weekly_quota_rh2 = weekly_quota_rh(2)
 weekly_quota_rh3 = weekly_quota_rh(3)

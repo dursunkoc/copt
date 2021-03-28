@@ -73,7 +73,9 @@ class Solution:
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
         ##previous weeks assignments
-        s_cuhd = np.random.choice(2, (C,U,H,D))
+        #s_cuhd = np.random.choice(2, (C,U,H,D))
+        s_cuhd = np.zeros((C,U,H,D))
+        s_cuhd[:,:U//5,:,D-1:D] = 1
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories
@@ -88,10 +90,10 @@ class Solution:
         ##campaign blockage
         l_c = np.random.choice([2,3,4],C)
         ##quota limitations daily/weekly
-        m_i = np.random.choice([4,3,5],I)#m_i = np.ones((I), dtype='int8')*10
-        n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
+        m_i = np.random.choice([4,5,6],I)#m_i = np.ones((I), dtype='int8')*10
+        n_i = np.random.choice([2,3,4],I)#n_i = np.ones((I), dtype='int8')*10
         ##capacity for channel
-        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
+        t_hd = np.random.choice([U*.4, U*.2, U*.3], (H, D))
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)
@@ -103,13 +105,17 @@ class Solution:
     def weekly_limitation(self, b, X, u):
         return X[:,u,:,:].sum() <= b
     def weekly_limitation_rh(self, b, X, s, u, f_d):
-        return (X[:,u,:,:f_d]).sum() + (s[:,u,:,f_d:]).sum() <= b
+        return X[:,u,:,:f_d].sum() + s[:,u,:,f_d:].sum() <= b
     def daily_limitation (self, k, X, u, d):
         return X[:,u,:,d].sum() <= k
     def campaign_limitation(self, l_c, X, c, u):
         return X[c,u,:,:].sum() <= l_c[c]
+    def campaign_limitation_rh(self, l_c, X, s, c, u, f_d):
+        return X[c,u,:,:f_d].sum() + s[c,u,:,f_d:].sum() <=l_c[c]
     def weekly_quota(self, m_i, q_ic, X, u):
         return all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
+    def weekly_quota_rh(self, m_i, q_ic, X, s, u, f_d):
+        return all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1) + (q_ic * s[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1)<=m_i)
     def daily_quota(self, n_i, q_ic, X, u, d):
         return all((q_ic * X[:,u,:,d].sum(axis=(1))).sum(axis=1)<=n_i)
     def channel_capacity(self, t_hd, X, h, d):
@@ -120,24 +126,48 @@ class Solution:
             return False
         if not self.weekly_limitation(PMS.b, X, indicies[self.u_i]):
             return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
-#            return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
-#            return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
-#            return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
-#            return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
-#            return False
-#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
-#            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
+            return False
+        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
+            return False
         if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
             return False
         if not self.campaign_limitation(PMS.l_c, X, indicies[self.c_i],indicies[self.u_i]):
             return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 1):
+            return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 2):
+            return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 3):
+            return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 4):
+            return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 5):
+            return False
+        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 6):
+            return False
         if not self.weekly_quota(PMS.m_i, PMS.q_ic, X, indicies[self.u_i]):
             return False
+        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 1):
+            return False
+#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 2):
+#            return False
+#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 3):
+#            return False
+#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 4):
+#            return False
+#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 5):
+#            return False
+#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 6):
+#            return False
         if not self.daily_quota(PMS.n_i, PMS.q_ic, X, indicies[self.u_i],indicies[self.d_i]):
             return False
         if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
@@ -151,6 +181,8 @@ class Solution:
     def X_eligibility (self, e_cu_X, X):
         return (X <= e_cu_X).all()
     def X_weekly_limitation (self, b, X):
+        return (X.sum(axis=(0,2,3))<=b).all()
+    def X_weekly_limitation_rh (self, b, X):
         return (X.sum(axis=(0,2,3))<=b).all()
     def X_daily_limitation (self, k, X):
         return (X.sum(axis=(0)).sum(axis=(1))<=k).all()
