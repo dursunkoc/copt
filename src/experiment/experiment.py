@@ -120,18 +120,18 @@ class Solution:
             return False
         if not self.weekly_limitation(PMS.b, X, indicies[self.u_i]):
             return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
-            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
+#            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
+#            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
+#            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
+#            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
+#            return False
+#        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
+#            return False
         if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
             return False
         if not self.campaign_limitation(PMS.l_c, X, indicies[self.c_i],indicies[self.u_i]):

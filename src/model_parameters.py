@@ -46,9 +46,30 @@ t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
 eligibility = lambda X, c, u, h, d: X[c,u,h,d]<=e_cu[c,u]
 one_channel = lambda X, c, u, d: X[c,u,:,d].sum() <= 1
 weekly_limitation = lambda X, u: (X[:,u,:,:]).sum() <= b
+weekly_limitation_rh = lambda f_d: lambda X, s, u : X[:,u,:,:f_d].sum() + s[:,u,:,f_d:].sum() <= b
+weekly_limitation_rh1 = weekly_limitation_rh(1)
+weekly_limitation_rh2 = weekly_limitation_rh(2)
+weekly_limitation_rh3 = weekly_limitation_rh(3)
+weekly_limitation_rh4 = weekly_limitation_rh(4)
+weekly_limitation_rh5 = weekly_limitation_rh(5)
+weekly_limitation_rh6 = weekly_limitation_rh(6)
 daily_limitation = lambda X, u, d: X[:,u,:,d].sum() <= k
 campaign_limitation = lambda X, c, u: X[c,u,:,:].sum() <= l_c[c]
+campaign_limitation_rh =  lambda f_d: lambda X, s, c, u: X[c,u,:,:f_d].sum() + s[c,u,:,f_d:].sum() <=l_c[c]
+campaign_limitation_rh1=campaign_limitation_rh(1)
+campaign_limitation_rh2=campaign_limitation_rh(2)
+campaign_limitation_rh3=campaign_limitation_rh(3)
+campaign_limitation_rh4=campaign_limitation_rh(4)
+campaign_limitation_rh5=campaign_limitation_rh(5)
+campaign_limitation_rh6=campaign_limitation_rh(6)
 weekly_quota = lambda X, u: all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
+weekly_quota_rh = lambda f_d :lambda X, s, u: all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1)<=m_i) + all((q_ic * s[:,u,:,f_d:].sum(axis=(1,2))).sum(axis=1)<=m_i)
+weekly_quota_rh1 = weekly_quota_rh(1)
+weekly_quota_rh2 = weekly_quota_rh(2)
+weekly_quota_rh3 = weekly_quota_rh(3)
+weekly_quota_rh4 = weekly_quota_rh(4)
+weekly_quota_rh5 = weekly_quota_rh(5)
+weekly_quota_rh6 = weekly_quota_rh(6)
 daily_quota = lambda X, u, d: all((q_ic * X[:,u,:,d].sum(axis=(1))).sum(axis=1)<=n_i)
 channel_capacity = lambda X, h, d: X[:,:,h,d].sum() <= t_hd[h,d]
 

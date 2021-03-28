@@ -23,13 +23,13 @@ class GASolution(Solution):
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         PMS:Parameters = super().generate_parameters(case)
-        
+
         #variables
         indiv_size = (C,U,H,D)
         indiv_flat_size = functools.reduce(operator.mul, indiv_size, 1)
-        pop_size = 16#functools.reduce(operator.mul, indiv_size, 1)*8
+        pop_size = 256#functools.reduce(operator.mul, indiv_size, 1)*8
         generation_size = 1000
-        mutation_prob = 0.5
+        mutation_prob = 0.05
         mutation_rate = 0.01
         mutation_amount = int(mutation_rate*indiv_flat_size)
         number_of_crossover_section = 10
@@ -52,8 +52,6 @@ class GASolution(Solution):
                 mutation_prob = mutation_prob / 2
             if generation_index%10 == 0 and mutation_amount > 20:
                 mutation_amount = mutation_amount - 10
-            if generation_index%100 == 0:
-                print((max(fitness_history), mutation_prob, mutation_amount))
 
         asyn_fitness_results=[POOL_.apply_async(self.fn_fitness, args=(PMS, popl)) for popl in np.split(next_generation, THREADS_)]
         fitness_results = sum([asyn_result.get() for asyn_result in asyn_fitness_results], [])
@@ -173,10 +171,10 @@ class GASolution(Solution):
 if __name__ == '__main__':
     cases = [
             Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),
+#            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
+#            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),
+#            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),
+#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GASolution())
