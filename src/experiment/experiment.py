@@ -16,7 +16,7 @@ class Case:
         return reduce(mul, self.arguments.values())
 
 class Parameters:
-    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd):
+    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd):
         self.s_cuhd = s_cuhd
         self.e_cu = e_cu
         self.e_cu_X = e_cu_X
@@ -30,6 +30,7 @@ class Parameters:
         self.m_i_X = m_i_X
         self.n_i_X = n_i_X
         self.t_hd = t_hd
+        self.cuhd = cuhd
 
 class SolutionResult:
     def __init__(self, case: Case, value: float, duration:int):
@@ -58,7 +59,7 @@ class Solution:
     def run(self, case:Case)->SolutionResult:
         #TODO solve with a solution algorith
         parameters = self.generate_parameters(case)
-        print(parameters)
+#        print(parameters)
         duration = 10
         value = 2.1
         return SolutionResult(case, value, duration)
@@ -73,9 +74,9 @@ class Solution:
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
         ##previous weeks assignments
-        #s_cuhd = np.random.choice(2, (C,U,H,D))
-        s_cuhd = np.zeros((C,U,H,D))
-        s_cuhd[:,:U//5,:,D-1:D] = 1
+        s_cuhd = np.random.choice(2, (C,U,H,D))
+#        s_cuhd = np.zeros((C,U,H,D))
+#        s_cuhd[:,:,:,D-1:D] = 1
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories
@@ -97,7 +98,7 @@ class Solution:
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)
-        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd)
+        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D))
 
 #Single Constraint Functions
     def eligibility(self, e_cu, X, c, u, h, d):
@@ -105,16 +106,17 @@ class Solution:
     def weekly_limitation(self, b, X, u):
         return X[:,u,:,:].sum() <= b
     def weekly_limitation_rh(self, b, X, s, u, f_d):
+#        print(f"X[:,{u},:,:{f_d}].sum() + s[:,{u},:,{f_d}:].sum() <={b}")
         return X[:,u,:,:f_d].sum() + s[:,u,:,f_d:].sum() <= b
     def daily_limitation (self, k, X, u, d):
         return X[:,u,:,d].sum() <= k
-    def campaign_limitation(self, l_c, X, c, u):
-        return X[c,u,:,:].sum() <= l_c[c]
     def campaign_limitation_rh(self, l_c, X, s, c, u, f_d):
+#        print(f"X[{c},{u},:,:{f_d}].sum() + s[{c},{u},:,{f_d}:].sum() <={l_c[c]}")
         return X[c,u,:,:f_d].sum() + s[c,u,:,f_d:].sum() <=l_c[c]
     def weekly_quota(self, m_i, q_ic, X, u):
         return all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
     def weekly_quota_rh(self, m_i, q_ic, X, s, u, f_d):
+        print(f"X[:,{u},:,:{f_d}].sum() + s[:,{u},:,{f_d}:].sum() <={m_i}")
         return all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1) + (q_ic * s[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1)<=m_i)
     def daily_quota(self, n_i, q_ic, X, u, d):
         return all((q_ic * X[:,u,:,d].sum(axis=(1))).sum(axis=1)<=n_i)
@@ -123,54 +125,28 @@ class Solution:
 
     def check(self, X, PMS, indicies):
         if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
+#            print(f"eligibility => {indicies}")
             return False
-        if not self.weekly_limitation(PMS.b, X, indicies[self.u_i]):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 1):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 2):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 3):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 4):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 5):
-            return False
-        if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], 6):
-            return False
+        for f_d in range(1, PMS.cuhd[self.d_i]+1):
+            if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], f_d):
+#                print(f"weekly_limitation_rh => {indicies}, {f_d}")
+                return False
         if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
+#            print(f"daily_limitation => {indicies}")
             return False
-        if not self.campaign_limitation(PMS.l_c, X, indicies[self.c_i],indicies[self.u_i]):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 1):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 2):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 3):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 4):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 5):
-            return False
-        if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], 6):
-            return False
-        if not self.weekly_quota(PMS.m_i, PMS.q_ic, X, indicies[self.u_i]):
-            return False
-        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 1):
-            return False
-#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 2):
-#            return False
-#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 3):
-#            return False
-#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 4):
-#            return False
-#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 5):
-#            return False
-#        if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], 6):
-#            return False
+        for f_d in range(1, PMS.cuhd[self.d_i]+1):
+            if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], f_d):
+#                print(f"campaign_limitation_rh => {indicies}, {f_d}")
+                return False
+        for f_d in range(1, PMS.cuhd[self.d_i]+1):
+            if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], f_d):
+#                print(f"weekly_quota_rh => {indicies}, {f_d}")
+                return False
         if not self.daily_quota(PMS.n_i, PMS.q_ic, X, indicies[self.u_i],indicies[self.d_i]):
+#            print(f"daily_quota => {indicies}")
             return False
         if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
+#            print(f"channel_capacity => {indicies}")
             return False
         return True
     
@@ -222,17 +198,3 @@ class Solution:
         if not self.X_channel_capacity(PMS.t_hd, X):
             return False
         return True
-
-
-
-
-if __name__ == '__main__':
-    cases = [
-            Case({"C":1,"U":10,"H":3, "D":7}),
-            Case({"C":1,"U":100,"H":3, "D":7}),
-            Case({"C":1,"U":1000,"H":3, "D":7})
-            ]
-    expr = Experiment(cases)
-    solutions = expr.run_cases_with(Solution("mip"))
-    for solution in solutions:
-        print(solution)
