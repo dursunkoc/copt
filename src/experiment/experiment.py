@@ -74,9 +74,9 @@ class Solution:
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
         ##previous weeks assignments
-        s_cuhd = np.random.choice(2, (C,U,H,D))
-#        s_cuhd = np.zeros((C,U,H,D))
-#        s_cuhd[:,:,:,D-1:D] = 1
+#        s_cuhd = np.random.choice(2, (C,U,H,D))
+        s_cuhd = np.zeros((C,U,H,D))
+        s_cuhd[0,0,0,0] = 1
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories
@@ -116,7 +116,7 @@ class Solution:
     def weekly_quota(self, m_i, q_ic, X, u):
         return all((q_ic * X[:,u,:,:].sum(axis=(1,2))).sum(axis=1)<=m_i)
     def weekly_quota_rh(self, m_i, q_ic, X, s, u, f_d):
-        print(f"X[:,{u},:,:{f_d}].sum() + s[:,{u},:,{f_d}:].sum() <={m_i}")
+#        print(f"X[:,{u},:,:{f_d}].sum() + s[:,{u},:,{f_d}:].sum() <={m_i}")
         return all((q_ic * X[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1) + (q_ic * s[:,u,:,:f_d].sum(axis=(1,2))).sum(axis=1)<=m_i)
     def daily_quota(self, n_i, q_ic, X, u, d):
         return all((q_ic * X[:,u,:,d].sum(axis=(1))).sum(axis=1)<=n_i)

@@ -1,109 +1,23 @@
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
+from mip_core import MipCore
 import numpy as np
-class MipSolution(Solution):
+from time import time
+
+class MipSolution(Solution, MipCore):
     def __init__(self):
         super().__init__("MIP")
 
-    def mip_eligibility(self, mdl, X_cuhd, PMS, C, U, H, D):
-        return mdl.add_constraints(
-            (X_cuhd[(c,u,h,d)] <= PMS.e_cu[c,u]
-            for c in range(0,C)
-            for u in range(0,U) 
-            for h in range(0,H) 
-            for d in range(0,D)))
-
-    def mip_daily_communication(self, mdl, X_cuhd, PMS, C, U, H, D):
-        return mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]  
-                    for c in range(0,C) 
-                    for h in range(0,H)) <= PMS.k)
-                for d in range(0,D)
-                for u in range(0,U)))
-
-    def mip_weekly_communication_rh(self, mdl, X_cuhd, PMS, C, U, H, D, f_d):
-        return mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)] if d<f_d else PMS.s_cuhd[(c,u,h,d)]
-                for d in range(0,D) 
-                for c in range(0,C) 
-                for h in range(0,H)) <= PMS.b)
-            for u in range(0,U)))
-
-    def mip_campaign_communication_rh(self, mdl, X_cuhd, PMS, C, U, H, D, f_d):
-        return mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)] if d< f_d else PMS.s_cuhd[(c,u,h,d)]
-                for d in range(0,D)
-                for h in range(0,H)) <= PMS.l_c[c] )
-            for c in range(0,C)
-            for u in range(0,U)))
-
-    def mip_weekly_quota_rh(self, mdl, X_cuhd, PMS, C, U, H, D, I, f_d):
-        return mdl.add_constraints((
-            (mdl.sum( (X_cuhd[(c,u,h,d)] if d < f_d else PMS.s_cuhd[(c,u,h,d)]) * PMS.q_ic[i,c]
-                for d in range(0,D)
-                for c in range(0,C)
-                for h in range(0,H)) <= PMS.m_i[i])
-            for u in range(0,U)
-            for i in range(0,I)))
-
-    def mip_daily_quota(self, mdl, X_cuhd, PMS, C, U, H, D, I):
-        return mdl.add_constraints((
-                (mdl.sum(X_cuhd[(c,u,h,d)]*PMS.q_ic[i,c]
-                    for c in range(0,C) 
-                    for h in range(0,H)) <= PMS.n_i[i])
-                for u in range(0,U)
-                for d in range(0,D)
-                for i in range(0,I)))
-
-    def mip_channel_capacity(self, mdl, X_cuhd, PMS, C, U, H, D):
-        return mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]
-                for u in range(0,U) 
-                for c in range(0,C)) <= PMS.t_hd[h,d])
-            for h in range(0,H)
-            for d in range(0,D)))
-
-
     def run(self, case:Case)->SolutionResult:
-        from time import time
-        from docplex.mp.model import Model
         start_time = time()
-        #seed randomization
         C = case.arguments["C"] # number of campaigns
         U = case.arguments["U"]  # number of customers.
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         PMS:Parameters = super().generate_parameters(case)
-        mdl = Model(name='Campaign Optimization')
-        #variables
-        X_cuhd = {(c,u,h,d): mdl.binary_var(f"X_c:{c}_u:{u}_h:{h}_d:{d}")
-#        X_cuhd = {(c,u,h,d): mdl.binary_var(f"X[{c},{u},{h},{d}]")
-            for c in range(0,C)
-            for u in range(0,U) 
-            for h in range(0,H)
-            for d in range(0,D)}
-        #objectivefunction
-        maximize = mdl.maximize(mdl.sum([X_cuhd[(c,u,h,d)] * PMS.rp_c[c]
-                  for c in range(0,C)
-                  for u in range(0,U) 
-                  for h in range(0,H) 
-                  for d in range(0,D)]))
-        #constraints
-        eligibilitiy = self.mip_eligibility(mdl, X_cuhd, PMS, C, U, H, D)
-        
-        weekly_communication = [self.mip_weekly_communication_rh(mdl, X_cuhd, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+        mdl, _ = super().start_model(PMS, C, U, H, D, I)
 
-        daily_communication = self.mip_daily_communication(mdl, X_cuhd, PMS, C, U, H, D)
-        
-        campaign_communication = [self.mip_campaign_communication_rh(mdl, X_cuhd, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-        
-        weekly_quota = [self.mip_weekly_quota_rh(mdl, X_cuhd, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
-
-        daily_quota = self.mip_daily_quota(mdl, X_cuhd, PMS, C, U, H, D, I)
-
-        channel_capacity = self.mip_channel_capacity(mdl, X_cuhd, PMS, C, U, H, D)
-        
-        result = mdl.solve(log_output=False)
+        result = mdl.solve(log_output=True)
 
         if result is not None:
             value = result.objective_value
@@ -112,9 +26,8 @@ class MipSolution(Solution):
 
         end_time = time()
         duration = end_time - start_time
-#        self.print_solution(result, PMS, C, D, H, U)
-        self.validate(result, PMS, C, D, H, U)
-        self.anti_validate(result, PMS,  C, D, H, U)
+#        self.validate(result, PMS, C, D, H, U)
+#        self.anti_validate(result, PMS,  C, D, H, U)
 
         return SolutionResult(case, value, round(duration,4))
 

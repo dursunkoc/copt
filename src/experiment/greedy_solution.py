@@ -1,15 +1,14 @@
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from tqdm import trange
 from tqdm import tqdm
-
+from time import time
+import numpy as np
 
 class GreedySolution(Solution):
     def __init__(self):
         super().__init__("Greedy")
 
     def run(self, case:Case)->SolutionResult:
-        from time import time
-        import numpy as np
         start_time = time()
         #seed randomization
         C = case.arguments["C"] # number of campaigns
@@ -33,7 +32,7 @@ class GreedySolution(Solution):
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":10,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
 #            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
 #            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),
 #            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),
