@@ -7,14 +7,14 @@ class MipSolution(Solution, MipCore):
     def __init__(self):
         super().__init__("MIP")
 
-    def run(self, case:Case)->SolutionResult:
+    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
         start_time = time()
         C = case.arguments["C"] # number of campaigns
         U = case.arguments["U"]  # number of customers.
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
-        PMS:Parameters = super().generate_parameters(case)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         mdl, _ = super().start_model(PMS, C, U, H, D, I)
 
         result = mdl.solve(log_output=False)

@@ -15,7 +15,7 @@ class LpRelSolution(Solution):
                         if (c,u,h,d) in X_non_integral and X[c,u,h,d]==1 and not self.check(X, PMS, (c, u, h, d)):
                             X[c,u,h,d]=0
 
-    def run(self, case:Case)->SolutionResult:
+    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
         from time import time
         from docplex.mp.model import Model
         start_time = time()
@@ -26,7 +26,7 @@ class LpRelSolution(Solution):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
-        PMS:Parameters = super().generate_parameters(case)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         mdl = Model(name='Campaign Optimization')
         #variables
         X_cuhd = {(c,u,h,d): mdl.continuous_var(lb=0, ub=1, name=f"X_c:{c}_u:{u}_h:{h}_d:{d}")

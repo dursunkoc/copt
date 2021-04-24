@@ -37,14 +37,19 @@ class SolutionResult:
         self.case = case
         self.value = value
         self.duration = duration
+    def set_phase(self, phase):
+        self.phase = phase
     def __str__(self):
-        return f"<case: {self.case}, value: {self.value}, duration: {self.duration}>"
+        return self.__repr__()
+
+    def __repr__(self):
+        return f"{{'case': {self.case}, 'phase': {self.phase},'value': {self.value}, 'duration': {self.duration}}}\n"
 
 
 class Experiment:
     def __init__(self, cases: List[Case]):
         self.cases = cases
-    
+
     def run_cases_with(self, solution) -> List[Tuple[Case, SolutionResult]]:
         return [solution.run(case) for case in tqdm(self.cases, f"Case ->")]
 
@@ -56,15 +61,24 @@ class Solution:
     def __init__(self, name: str):
         self.name = name
 
-    def run(self, case:Case)->SolutionResult:
+    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
         #TODO solve with a solution algorith
-        parameters = self.generate_parameters(case)
+        parameters = self.generate_parameters(case, Xp_cuhd)
 #        print(parameters)
         duration = 10
         value = 2.1
         return SolutionResult(case, value, duration)
 
-    def generate_parameters(self, case: Case) -> Parameters:
+    def run(self, case:Case)->SolutionResult:
+        (Xp_cuhd1, sr1)=self.runPh(case,None)
+        (Xp_cuhd2, sr2)=self.runPh(case, Xp_cuhd1)
+        del Xp_cuhd1
+        del Xp_cuhd2
+        sr1.set_phase(1)
+        sr2.set_phase(2)
+        return (sr1, sr2)
+
+    def generate_parameters(self, case: Case, Xp_cuhd) -> Parameters:
         import numpy as np
         np.random.seed(23)
         C = case.arguments["C"] # number of campaigns
@@ -75,8 +89,10 @@ class Solution:
         P = case.arguments["P"]  # number of priority categories.
         ##previous weeks assignments
 #        s_cuhd = np.random.choice(2, (C,U,H,D))
-        s_cuhd = np.zeros((C,U,H,D))
-        s_cuhd[0,0,0,0] = 1
+        if Xp_cuhd is not None:
+            s_cuhd = Xp_cuhd
+        else:
+            s_cuhd = np.zeros((C,U,H,D))
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories

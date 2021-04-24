@@ -3,19 +3,19 @@ from tqdm import trange
 from tqdm import tqdm
 from time import time
 import numpy as np
-
+""
 class GreedySolution(Solution):
     def __init__(self):
         super().__init__("Greedy")
 
-    def run(self, case:Case)->SolutionResult:
+    def runPh(self, case:Case, Xp_cuhd):
         start_time = time()
         #seed randomization
         C = case.arguments["C"] # number of campaigns
         U = case.arguments["U"]  # number of customers.
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
-        PMS:Parameters = super().generate_parameters(case)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         for c in tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
@@ -28,7 +28,7 @@ class GreedySolution(Solution):
         end_time = time()
         value=self.objective_fn(PMS.rp_c, X_cuhd)
         duration = end_time - start_time
-        return SolutionResult(case, value, round(duration,4))
+        return (X_cuhd, SolutionResult(case, value, round(duration,4)))
 
 if __name__ == '__main__':
     cases = [
