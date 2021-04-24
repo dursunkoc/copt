@@ -1,7 +1,8 @@
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
+from mip_core import MipCore
 import numpy as np
 
-class LpRelSolution(Solution):
+class LpRelSolution(Solution, MipCore):
     def __init__(self):
         super().__init__("LP-Relaxation")
 
@@ -25,58 +26,9 @@ class LpRelSolution(Solution):
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
-        P = case.arguments["P"]  # number of priority categories.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
-        mdl = Model(name='Campaign Optimization')
-        #variables
-        X_cuhd = {(c,u,h,d): mdl.continuous_var(lb=0, ub=1, name=f"X_c:{c}_u:{u}_h:{h}_d:{d}")
-            for c in range(0,C)
-            for u in range(0,U) 
-            for h in range(0,H)
-            for d in range(0,D)}
-        #objectivefunction
-        maximize = mdl.maximize(mdl.sum([X_cuhd[(c,u,h,d)] * PMS.rp_c[c]
-                  for c in range(0,C)
-                  for u in range(0,U) 
-                  for h in range(0,H) 
-                  for d in range(0,D)]))
-        #constraints
-        eligibilitiy = mdl.add_constraints(
-            (X_cuhd[(c,u,h,d)] <= PMS.e_cu[c,u]
-            for c in range(0,C)
-            for u in range(0,U) 
-            for h in range(0,H) 
-            for d in range(0,D)))
-        
-        weekly_communication = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)] 
-               for d in range(0,D) 
-               for c in range(0,C) 
-               for h in range(0,H)) <= PMS.b)
-            for u in range(0,U)))
+        mdl, _ = super().start_model(False, PMS, C, U, H, D, I)
 
-        daily_communication = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]  
-                    for c in range(0,C) 
-                    for h in range(0,H)) <= PMS.k)
-                for d in range(0,D)
-                for u in range(0,U)))
-        
-        campaign_communication = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]  
-                for h in range(0,H) 
-                for d in range(0,D)) <= PMS.l_c[c] )
-            for c in range(0,C)
-            for u in range(0,U)))
-
-        weekly_quota = mdl.add_constraints((
-            (mdl.sum(X_cuhd[(c,u,h,d)]*PMS.q_ic[i,c]
-                for c in range(0,C)
-                for h in range(0,H) 
-                for d in range(0,D)) <= PMS.m_i[i])
-            for u in range(0,U)
-            for i in range(0,I)))
-        
         result = mdl.solve(log_output=False)
         v_non_integral = result.objective_value
         X_non_integral = [tuple(int(i.split(":")[1]) for i in ky.split("_")[1:]) for ky,val in result.as_name_dict().items() if val!=1]
@@ -92,7 +44,7 @@ class LpRelSolution(Solution):
         value = self.objective_fn(PMS.rp_c, X_cuhd2)
         end_time = time()
         duration = end_time - start_time
-        return SolutionResult(case, value, round(duration,4))
+        return (X_cuhd2, SolutionResult(case, value, round(duration,4)))
 
 if __name__ == '__main__':
     cases = [

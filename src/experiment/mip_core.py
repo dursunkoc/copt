@@ -59,10 +59,17 @@ class MipCore:
             for h in range(0,H)
             for d in range(0,D)))
 
-    def start_model(self, PMS, C, U, H, D, I, V_cuhd=None):
+    def start_model(self, binary:bool, PMS, C, U, H, D, I, V_cuhd=None):
         mdl = Model(name='Campaign Optimization')
         #variables
-        X = {(c,u,h,d): mdl.binary_var(f"X_c:{c}_u:{u}_h:{h}_d:{d}")
+        if binary:
+            X = {(c,u,h,d): mdl.binary_var(f"X_c:{c}_u:{u}_h:{h}_d:{d}")
+                for c in range(0,C)
+                for u in range(0,U) 
+                for h in range(0,H)
+                for d in range(0,D)}
+        else:
+            X = {(c,u,h,d): mdl.continuous_var(lb=0, ub=1, name=f"X_c:{c}_u:{u}_h:{h}_d:{d}")
             for c in range(0,C)
             for u in range(0,U) 
             for h in range(0,H)

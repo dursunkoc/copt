@@ -15,7 +15,7 @@ class MipSolution(Solution, MipCore):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
-        mdl, _ = super().start_model(PMS, C, U, H, D, I)
+        mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
 
         result = mdl.solve(log_output=False)
 
@@ -28,8 +28,10 @@ class MipSolution(Solution, MipCore):
         duration = end_time - start_time
 #        self.validate(result, PMS, C, D, H, U)
 #        self.anti_validate(result, PMS,  C, D, H, U)
-
-        return SolutionResult(case, value, round(duration,4))
+        resp = (self.create_var_for_greedy(result, C, D, H, U), SolutionResult(case, value, round(duration,4)))
+        del mdl
+        del result
+        return resp
 
     def create_var_for_greedy(self, solution, C, D, H, U):
         X_cuhd2 = np.zeros((C,U,H,D), dtype='int')
