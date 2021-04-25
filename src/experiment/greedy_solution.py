@@ -19,7 +19,7 @@ class GreedySolution(Solution):
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         for c in tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
-            for d in trange(D, desc=f"Days Loop for campaign-{c}"):
+            for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
                 for h in range(H):
                     for u in range(U):
                         X_cuhd[c,u,h,d]=1
@@ -44,8 +44,6 @@ if __name__ == '__main__':
             Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),
             Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),
             Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution())
@@ -82,3 +80,40 @@ if __name__ == '__main__':
 #    plt.subplot(1,2,2)
 #    plt.bar(durations, sizes)
 #    plt.show()
+
+#({'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 15141, 'duration': 0.413}
+#, {'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 4795, 'duration': 0.4176}
+#)
+#({'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 18464, 'duration': 1.4004}
+#, {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 1468, 'duration': 1.1328}
+#)
+#({'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 62916, 'duration': 2.248}
+#, {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 50334, 'duration': 1.2748}
+#)
+#({'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 87747, 'duration': 12.548}
+#, {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 5868, 'duration': 10.8955}
+#)
+#({'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 329468, 'duration': 24.2685}
+#, {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 270825, 'duration': 16.5951}
+#)
+#({'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 732261, 'duration': 56.9867}
+#, {'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 56670, 'duration': 49.0317}
+#)
+#({'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 1667254, 'duration': 68.7656}
+#, {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 463624, 'duration': 71.4095}
+#)
+#({'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 1655326, 'duration': 214.1147}
+#, {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 88238, 'duration': 101.9019}
+#)
+#({'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 2029337, 'duration': 146.6675}
+#, {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 948038, 'duration': 100.6385}
+#)
+#({'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 5775888, 'duration': 1119.5582}
+#, {'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 3477841, 'duration': 502.6625}
+#)
+#({'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 4800274, 'duration': 3110.077}
+#, {'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 3703118, 'duration': 949.0124}
+#)
+#({'case': {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1,'value': 11128645, 'duration': 7005.3723}
+#, {'case': {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2,'value': 2976370, 'duration': 1581.2668}
+#)
