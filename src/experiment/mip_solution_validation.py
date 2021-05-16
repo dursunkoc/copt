@@ -32,19 +32,17 @@ class MipSolutionValidation(Solution, MipCore):
         print("======================")
         print(f"Starting validation: value:{value}")
 
-        mdl, _ = self.start_model(PMS, C, U, H, D, I, X_cuhd)
-        
+        mdl, _ = self.start_model(True,PMS, C, U, H, D, I, X_cuhd)
+
         start_time = time()
         result = mdl.solve(log_output=False)
-#        for ky,_ in result.as_name_dict().items():
-#            print(f'{tuple([int(i.split(":")[1]) for i in ky.split("_")[1:]])}')
         if result is not None and value != 0:
             v_value = result.objective_value
-            if int(v_value) < int(value):
+            if int(v_value) != int(value):
                 raise ValueError(f"Value does not match {v_value}!= {value} !")    
         else:
             raise ValueError("No Valid Solution!")
-
+        print(f"{value} is a valid solution")
         end_time = time()
         duration = end_time - start_time
 

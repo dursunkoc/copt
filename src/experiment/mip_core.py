@@ -102,7 +102,8 @@ class MipCore:
                         for u in range(U):
                             if V_cuhd[c,u,h,d]==1:
                                 self.fix_variable(mdl, X, c, u, h, d)
-
+                            else:
+                                self.fix_variable_0(mdl, X, c, u, h, d)
         return (mdl, X)
 
     def fix_variable_0(self, mdl, X, c, u, h, d):

@@ -3,7 +3,7 @@ from tqdm import trange
 from tqdm import tqdm
 from time import time
 import numpy as np
-""
+
 class GreedySolution(Solution):
     def __init__(self):
         super().__init__("Greedy")
@@ -17,6 +17,9 @@ class GreedySolution(Solution):
         D = case.arguments["D"]  # number of planning days.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         #variables
+#        rvrs_D = list(range(D))
+#        if Xp_cuhd is not None:
+#            rvrs_D.sort(reverse=True)
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         for c in tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
             for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
@@ -32,17 +35,17 @@ class GreedySolution(Solution):
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),
-            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),
+            Case({"C":2,"U":10,"H":3, "D":7, "I":3, "P":3}),#1
+            Case({"C":5,"U":10,"H":3, "D":7, "I":3, "P":3}),#2
+            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
+            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
+            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),
             ]
     expr = Experiment(cases)
