@@ -17,12 +17,9 @@ class GreedySolution(Solution):
         D = case.arguments["D"]  # number of planning days.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         #variables
-#        rvrs_D = list(range(D))
-#        if Xp_cuhd is not None:
-#            rvrs_D.sort(reverse=True)
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         for c in tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
-            for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
+            for d in trange(D, desc=f"Days Loop for campaign-{c}"):
                 for h in range(H):
                     for u in range(U):
                         X_cuhd[c,u,h,d]=1
@@ -47,8 +44,8 @@ if __name__ == '__main__':
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
             Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
-#            Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),
-#            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})
+            Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),#13
+            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})#14
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution())
