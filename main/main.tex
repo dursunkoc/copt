@@ -40,7 +40,6 @@
 \newsavebox\tmpbox
 
 
-
 \usepackage{geometry}
 \geometry{
 	a4paper,
@@ -65,11 +64,9 @@ $^{\ast}$ Corresponding author \\ }
 \begin{document}
 \maketitle
 \begin{abstract}
-Buraya Özeti ekleyeceğiz.... \\
+The main objective for marketers is to introduce their companies’ products or services to their customers or potential customers. With this objective they have two different strategies; inbound and outbound marketing strategies. If a marketer wants to introduce a product with an outbound strategy she first selects a target audience, for example people living in a specific city, and age between 20 to 30 namely the young people, then she tries to send her message about the product to them with direct channels such as SMS, outbound call-center or IVR calls. On the other hand, if she wants to introduce her product with an inbound strategy, first she decides rules of whom to interact with. When a customer visits any of the inbound channels for example a web-page or inbound call-center, and the customer fulfills the rules, the message is given to the customer. So inbound marketing is also considered as content marketing. The marketer creates content and tries to gain interests of the customer using social media tactics whereas outbound marketing strategy depends on mass media tools to push the message about the product or the service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. \\
 
-Keywords: Campaign Optimization, Multi-criteria Knapsack Problem, Network Analysis.
-
-%Disasters may cause significant damages and long-lasting failures in lifeline infrastructure networks such as gas, power and water. It is important to repair the damaged network components quickly to resume providing essential services to the affected communities. However, lifeline infrastructure networks can be highly interconnected, and hence a damaged component in one network can affect the functionality of other components in different networks and cause cascading failures. Therefore, considering network interdependencies in repair planning is important to minimize recovery times.
+Keywords: Campaign Optimization, Multidimensional Knapsack Problem, Network Analysis.
 
 \end{abstract}
 
@@ -78,11 +75,11 @@ Keywords: Campaign Optimization, Multi-criteria Knapsack Problem, Network Analys
 
 \section{Introduction}
 
-The main objective for marketers is to introduce their companies’ products or services to their customers or potential customers. With this objective they have two different strategies; inbound and outbound marketing strategies. If a marketer wants to introduce a product with an outbound strategy she first selects a target audience for example people living in a specific city, and age between 20 to 30 namely the young people, then she tries to send her message about the product to them with direct channels such as SMS, outbound call-center or IVR calls. On the other hand, if she wants to introduce her product with an inbound strategy, first she decides rules of whom to interact with. When a customer visits any of the inbound channels for example a web-page or inbound call-center, and the customer fulfills the rules, the message is given to the customer. So inbound marketing is also considered as content marketing. The marketer creates content and tries to gain interests of the customer using social media tactics whereas outbound marketing strategy depends on mass media tools to push the message about the product or the service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. Besides, from the companies’ perspective it can be very inefficient; because sending a message to a customer who is unlikely to respond is a cost; moreover, not sending the message to a customer who is more likely to respond is a loss from revenue \citep{sarkar}. Deciding who should receive a specific offer is one of the essential questions of outbound (direct) marketing. Marketers have to wisely identify the right target audience because the key to a good relationship with customers is keeping your offers relevant to the customers’ need \citep{malthouse}. An irrelevant communication with customer can cause irritation, and they can block the communication channel, so the company will lose its chance to make a relevant or profitable communication opportunity in the future. Finding the right target audience will not make outbound marketing communication perfect, the most appropriate communication channel and the right time should also be found, and any opportunity to connect to the customers in the future should not be lost.
+The main objective for marketers is to introduce their companies’ products or services to their customers or potential customers. With this objective they have two different strategies; inbound and outbound marketing strategies. If a marketer wants to introduce a product with an outbound strategy she first selects a target audience, for example people living in a specific city, and age between 20 to 30 namely the young people, then she tries to send her message about the product to them with direct channels such as SMS, outbound call-center or IVR calls. On the other hand, if she wants to introduce her product with an inbound strategy, first she decides rules of whom to interact with. When a customer visits any of the inbound channels for example a web-page or inbound call-center, and the customer fulfills the rules, the message is given to the customer. So inbound marketing is also considered as content marketing. The marketer creates content and tries to gain interests of the customer using social media tactics whereas outbound marketing strategy depends on mass media tools to push the message about the product or the service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. Besides, from the companies’ perspective it can be very inefficient; because sending a message to a customer who is unlikely to respond is a cost; moreover, not sending the message to a customer who is more likely to respond is a loss from revenue \citep{sarkar}. Deciding who should receive a specific offer is one of the essential questions of outbound (direct) marketing. Marketers have to wisely identify the right target audience because the key to a good relationship with customers is keeping your offers relevant to the customers’ need \citep{malthouse}. An irrelevant communication with customer can cause irritation, and they can block the communication channel, so the company will lose its chance to make a relevant or profitable communication opportunity in the future. Finding the right target audience will not make outbound marketing communication perfect, the most appropriate communication channel and the right time should also be found, and any opportunity to connect to the customers in the future should not be lost.
 
 Outbound marketing (also called targeted advertising) needs large amount of personal data of customers, for being effective. So companies are collecting more information about their customers, which causes an information asymmetry \citep{waerdt}. As the governments are responsible for protecting their citizens’ rights, they make laws and regulations on this information asymmetry. The General Data Protection Regulation (GDPR) law in EU is an example. According to such regulations; a customer can request from the company to stop processing its data. Therefore, companies need to apply some limitation on outbound communication to their companies.
 
-Outbound marketing campaigns need to be very well planned and optimized with regard to time, target audience, channel and content. In this study we will optimize an outbound campaign regarding time and channel.
+Outbound marketing campaigns need to be very well planned and optimized with regard to time, target audience, channel and content. In this study we will optimize outbound campaigns regarding time and channel.
 
 The remaining of this paper is structured as follows. In \S \ref{s:litreview}, we review the related literature. In \S \ref{s:problemmodel}, we describe the problem and present our mathematical model. In \S \ref{s:res}, we describe our solution methods. In \S \ref{num_analysis}, we present computational results. Finally, we present our conclusions in \S \ref{s:conclusion}.
 
@@ -97,407 +94,116 @@ In the industry, outbound campaigns are mostly designed regarding the target aud
 
 In today’s world, marketers have multiple channels to introduce their product or services, and many studies have shown the importance of omnichannel sales strategies \citep{shankar, park}. In the essence customers want to interact with the company via multiple channels, companies’ challenge is to provide a nearly identical environment for each channel \citep{bell}. Customer can get information about a product or service from one channel, but the purchase can be from another channel \citep{park}. Even the information about the product or service can be solidified by a series of messages from different channels. At this point it is crucial to employ additional constraints regarding multiple channels when optimizing the campaign.
 
-Most of the studies about campaign optimization focus on obtaining the right target audience for the campaign \citep{goul}; however, they usually ignore campaign channels, or optimize the online campaigns. They are finding the best matched campaign for a given online search only, or web-page banner optimization [5], and the success criteria or the objective function for such models is often the click through rate or the action rate. Such objective functions do not truly represent the advertisers’ benefit and rather focus on the publishers’ benefit \citep{altshuler}. Our model will be directly related to the advertisers’ benefit.
+Most of the studies about campaign optimization focus on obtaining the right target audience for the campaign \citep{goul}; however, they usually ignore campaign channels, or optimize the online campaigns. They are finding the best matched campaign for a given online search only, or web-page banner optimization \citep{liu}, and the success criteria or the objective function for such models is often the click through rate or the action rate. Such objective functions do not truly represent the advertisers’ benefit and rather focus on the publishers’ benefit \citep{altshuler}. Our model will be directly related to the advertisers’ benefit.
 
 Although studies related to campaign management are common in marketing, there is increasing interest to this area from operations research and computer science areas, as the abundant data require complex data analysis skills. In my thesis, after such data analysis, we plan to introduce optimization methods which are not yet commonly used to tackle such problems. Specifically, one of our main contributions will be utilizing from network optimization tools to produce high quality solutions. 
 
-In this study, we plan to develop a model which tries to maximize the number of interactions and maximize the expected return on the messages sent to customers via different channels such as SMS, push-notifications, call-centers and IVR, while minimizing the cost of channel usage subject to the availability of channels during the day, and confirming the right time for customer interests. There will be two main types of data; call and content. We plan to obtain them from Turkcell. Data analysis will be done by statistical and machine learning techniques. Call data will provide us the basic network. Target audience will be shrunk down using network analysis techniques, by keeping the most influential customers on the target list and removing the ones who can be targeted indirectly. Identifying the right channel and the right time for each customer in the target audience will be achieved using optimization techniques. We will develop heuristic methods to solve this difficult problem and after thorough computational experiments we plan to produce managerial insights that can be generalized for similar communication networks.
+In this study, we plan to develop a model which tries to maximize the number of interactions and maximize the expected return on the messages sent to customers via different channels such as SMS, push-notifications, call-centers and IVR%{Bu kisimi duzeltmemiz gerekiyor.}, while minimizing the cost of channel usage subject to the availability of channels during the day, and confirming the right time for customer interests. There will be two main types of data; call and content. We plan to obtain them from Turkcell. Data analysis will be done by statistical and machine learning techniques. Call data will provide us the basic network. Target audience will be shrunk down using network analysis techniques, by keeping the most influential customers on the target list and removing the ones who can be targeted indirectly. Identifying the right channel and the right time for each customer in the target audience will be achieved using optimization techniques. We will develop heuristic methods to solve this difficult problem and after thorough computational experiments we plan to produce managerial insights that can be generalized for similar communication networks.
 
 \section{Problem Definition and Mathematical Model}  \label{s:problemmodel}
 
-In this section, we describe the proposed Interdependent Infrastructure Repair Routing Problem (IIRRP), which addresses coordinated repair efforts in a set of interdependent lifeline infrastructure networks as a part of post-disaster recovery efforts. In \S \ref{s:problem1}, we explain the important aspects of the IIRRP and in \S \ref{s:problem2}, we present our mathematical model.
+In this section, we describe the proposed mathematical model to maximize the number of interactions to customer by adhering the communication limitations. In \S \ref{s:problem-desc}, we detail the limitations to customer communication and in \S \ref{s:problem-math}, we present our mathematical model.
 
-\subsection{Problem Description} \label{s:problem1}
+\subsection{Problem Description} \label{s:problem-desc}
 
-Given a set of repair teams that are responsible for repairing damaged components of multiple interdependent infrastructure networks, IIRRP aims to construct the route of each repair team to visit the sites that involve damaged components by considering network interdependencies so that all networks are fully recovered as soon as possible. We describe important aspects of the IIRRP in the following subsections. 
+Turkcell, a telecommunication company in Turkey, provides different tariffs, services and product to its customers. In order to introduce these services and products to its customers and potential customers, the marketing team launches daily and weekly basis campaigns. Before launching these campaigns, they do some data analysis to find the right targeting group. After finding the right target audience, they apply a set of business rules to optimize their communication with their customers. During this optimization process, filters are applied to the target audience in order to keep the communication to customers in certain levels. The first filter assure that no customers are targeted by the same campaign from different channels. Next, they limit the number of total interactions to a customer in one day. Campaigns are categorized in two dimensions; first dimension is quota categories which describes filters for a campaign and the second one is priority categories which describes the importance of a campaign. Each campaign belongs to a quota category and each quota category has a limitation on the number of messages sent to a customer, both in a daily, and a weekly basis; moreover each campaign has a limitation unique to its own; and finally, each communication channel has a capacity that should not be exceeded for each day. Each campaign is bound to a priority category.
 
-\subsubsection{Infrastructure and logistics networks} \label{s:problem2}
+Turkcell launches about 70 campaigns on average for around 60-70 million customers through 3 channels each day, and these campaigns are planned in a weekly basis. Number of quota categories is fixed to 3, but priority categories can be variable around 10. 
 
-IIRRP addresses planning the repair activities of work crews that move on a road network to repair the damaged components of interdependent lifeline infrastructure networks. In IIRRP, lifelines are represented as directed graphs in which nodes represent the sites with infrastructure components. For ease of presentation, we illustrate two interdependent lifeline networks (power and gas) in Figure 2. While the infrastructure network represents all interdependency relations among the components (Figure 2a), the logistics network shows the roads that vehicles follow to repair sites with damaged infrastructure components (Figure 2b).  
+In our study to optimize the Turkcell’s outbound campaign management we start with an initial model that accepts the target audience without any inference, but in the next steps we will shrink the target audience using network optimization technics. The motivation behind using network optimization is the idea that people communicating can carry our message. 
 
+\subsection{Mathematical Model} \label{s:problem-math}
 
-%\includepdf[pages={1}]{figure_2.pdf}
-
-\begin{figure}[http!]
-	\centering
-	%\includegraphics[width= 1.0 \textwidth]{figure_2_new.PNG} \hfill
-	%\includegraphics[width=1.0\textwidth, angle=0]{figure_2_v3.pdf} \hfill
-	\includegraphics[width=1.0\textwidth, angle=0]{figure_2_v5.pdf} \hfill
-	\caption{Representation of infrastructure and logistics networks for power and gas networks}.
-\end{figure}
-
-In Figure 2a, for each infrastructure (i.e., gas and power), damaged and undamaged components are shown with different colors. Moreover, in each infrastructure network, directions of the arcs indicate the dependency relationships between the components. Specifically, a node $i$ is dependent on node $j$, if $i$ becomes nonfunctional when $j$ is broken (i.e., damaged) or nonfunctional. We use a directed arc $(j,i)$ to represent this interdependency. Note that interdependencies may occur between the components of the same network (e.g., $g_5$ and $g_3$) or different networks (e.g., $g_9$ and $p_8$). In the logistics network (Figure 2b), each node represents a site that involves a damaged component. Sites with undamaged components (e.g., $g_6$, $p_1$), which will not be visited by the repair teams, are not shown on the logistics network. Example routes of different repair teams, which originate from a repair center and visit the damaged nodes along the recovery period, are also shown in Figure 2b. 
-
-As shown in Figure 2, there exists a separate repair center for each infrastructure (i.e., $g_0$ and $p_0$) where repair teams and associated equipment are initially positioned. Each team has the skills and the equipment to repair the damages in one infrastructure. In IIRRP, there exist multiple teams for each infrastructure and each damaged component is repaired by one team. We assume that the repair plans are made based on estimated repair times for each damaged component. Moreover, repair times may vary across damaged components, but they are assumed to be the same for each team. Extending the proposed model to incorporate heterogeneous teams would be trivial by defining a different repair time for each team, which may depend on the size and experience of the specific team. We also assume that repair planning is made by using conservative estimates of post-disaster network travel times. In practice, it is difficult to obtain reliable estimates for network travel times immediately after a disaster. However, aerial information obtained from satellites and drones may support identifying disrupted and open roads and developing coarse estimations that would assist planning. 
-
-
-\subsubsection{Interdependency structure}
-
-%Given the two infrastructure networks, such as power and gas (see Figure 2), 
-IIRRP assumes that a set of nodes in each lifeline network may be damaged and  become nonfunctional. The damaged nodes require repair. We represent the interdependency relationship between nodes $i$ and $j$ by $d_{ij}$, which takes the value of 1 if node $i$ depends on node $j$, and 0 otherwise. All undamaged nodes that are dependent on a damaged node become nonfunctional; further, all nodes that are dependent on a nonfunctional node become nonfunctional. This interdependency structure may also cause cyclic failures; that is, if there exists a single nonfunctional (damaged or undamaged) node in an interdependency cycle, all nodes belonging to this cycle become nonfunctional. As a result, in IIRRP, damage in a single component in a lifeline network may lead to nonfunctional components in multiple infrastructures and wide-scale outages. For example, in Figure 2, $g_1$, $g_4$ and $p_5$ are in a cyclic interdependency, which implies that all three nodes must become functional for any of them to start being functional. Considering the effects of such dependencies on recovery times is important in planning repairs.
-
-
-
-%Accordingly is, a network component is nonfunctional if it depends on another nonfunctional component, which may be damaged or undamaged.
-
-%Therefore, the repair routing decisions can have a significant impact on recovery times. However, the complex interdependency structure makes the problem challenging to solve. We present an effective and practical heuristics to solve the proposed problem.
-
-%To incorporate the relative importance of each node, one can define weight w i to give priority such nodes
-
-% a nonfunctional component, which may be damaged or not, remain nonfunctional until all upstream components in the network become functional.
-
-
-
-
-%Dependencies can be \textit{between} networks (inter-network dependency), as well as \textit{within} networks (intra-network dependency). Moreover, we consider two types of interdependencies: unidirectional and bidirectional. In a unidirectional setting, only one network contains nodes that are dependent on the other network nodes. In a bidirectional setting, both networks have nodes that are dependent on the other network. A node $i$ may be dependent on multiple nodes, however failure of one node would be sufficient for $i$ to non-function. Similarly, $i$ may affect more than one node, and if $i$ is damaged, all nodes depending on $i$ will be non-functional. %We assume that graphs are acyclic, i.e., no dependency cycles are present.\footnote{Having cycles would require additional and more complex assumptions on completion time calculations.}
-
-
-
-
-
-%To clarify, consider the following example. In Stage 0, we have a network with nodes ... dependent on nodes .. In Stage 1, nodes ... are damaged by disaster. In Stage 2, nodes ... become inoperative as well. 
-
-
-\subsubsection{Recovery time objective}\\  
-In IIRRP, only damaged nodes are needed to be visited and repaired. However, undamaged nodes may also be nonfunctional due to the interdependency structure explained above. The IIRRP aims to schedule the repair tasks and construct routes for the repair teams to visit the sites with damaged nodes in such a way that all nodes in the network become functional again in the shortest possible time. 
-
-To capture the time sensitive nature of the repair operations, we define an objective function which minimizes the \textit{sum} of the times that each node becomes functional, that is, we minimize the sum of the recovery times of the nodes in the infrastructure network. The recovery time of node $i$, which is represented by $c_{i}$, depends on the repair time of node $i$, denoted by $r_i$, the arrival time of a repair team to node $i$, denoted by $a_i$, and the recovery times of the nodes in all infrastructure networks, $\mathcal{N}$, that node $i$ depends on; that is, $c_{j}$, $\forall j \in \mathcal{N} \ni d_{ij}=1$. We represent travel times between nodes $i$ and $j$ by $t_{ij}$ and then if node $j$ is visited after node $i$ on a route, the arrival time of a repair team to node $j$ is $a_j = a_i + r_i + t_{ij} $. According to the interdependency relationship in the IIRRP, the recovery time of node $i$ is larger than or equal to those of the nodes that it depends on; that is, $c_{i} \geq c_{j}, \hspace{0.2em} \forall j \in \mathcal{N} \ni d_{ij}=1$. Note that if a node is undamaged, then its recovery time would only depend on the recovery times of the nodes it is dependent on. Therefore, if an undamaged node does not depend on any other node to function, its recovery time value would be zero (e.g., nodes $p_{1}$ and $g_{6}$ in Figure 2). Such nodes can be removed from the problem since they will not affect the solution. The recovery times all other nodes must be computed by accounting for the existing interdependency relationships.
-
-
-While IIRRP assumes that all infrastructure network components have the same importance, it is possible to assign importance weights to the components, which may represent the number of people or critical facilities (e.g., hospitals) that can receive service once a component starts functioning. If such importance weights, denoted by $w_{i}$, are defined, then the objective function of the IIRRP can be modified to minimize the sum of $w_{i} \cross c_{i}, \hspace{0.1em} \forall i \in \mathcal{N}$. We illustrate the effects of including component importance weights on solutions in our computational study (\S 5.5). Moreover, an alternative objective function for the IIRRP can consider minimizing the maximum of the recovery times among all nodes, which focuses on the latest time that the affected people would get service. We prefer using a minsum objective over a minmax objective, since the minsum objective considers service times to all users in the network. Similar minsum objectives are used in modeling different time sensitive humanitarian operations such as in relief distribution and needs assessment routing (e.g., \citet{campbell2008routing}, \citet{huang2012} and \citet{pamukcu2020}).
-
-
-
-%The completion times are equal to 0 for the undamaged nodes. To calculate the completion time for the non-functional nodes, we take into account whether a node is broken or not, and whether the nodes that it depends on are broken or not. Table \ref{compltimecalc} summarizes how completion time calculations are done for all non-functional nodes. Let $i$ be the non-functional node considered and $j\in I_i$, where $I_i$ is the set of all nodes that affect node $i$; i.e., node $i$ becomes non-functional once at least one node in set $I_i$ is broken. In Case 1, if node $i$ is broken and there is no dependency onto other nodes, completion time of $i$ is the sum of arrival time of a repair vehicle to that node and the repair time; i.e., $a_i+r_i$. In Case 2, if the node is not broken but non-functional due to other nodes that it depends on, completion time is the maximum of sum of arrival and repair times of all damaged nodes, $j \in I_i$, that $i$ depends on. Finally in Case 3, if node $i$ is broken and also dependent on at least one other node, completion time of $i$ equals to the maximum of the sum of own arrival and repair time, $(a_i + r_i)$, and the maximum of sum of arrival and repair times of all nodes in $j \in I_i$. Note that, due to the one-stage cascading effects, if a node is not broken it cannot cause other nodes to fail when it is non-functional. As a result, a non-functional (due to broken node $j$) but undamaged node $i$ cannot affect node $k$ although arcs $(j,i)$ and $(i,k)$ are present in the network.
-
-%\begin{table}[ht]
-%	\centering
-%	\begin{tabular}{|c|l|l|l|}
-%		\hline
-%		&Broken? & Dependent on other node(s)?     &  Completion Time\\
-%		\hline
-%		Case 1 & Yes & No     &  $a_{i}+r_{i}$   \\
-%		\hline
-%		Case 2 & No & Yes   & $\max_{j \in I_i} \{a_{j}+r_{j}\}$      \\
-%		\hline
-%		Case 3 & Yes & Yes     &  $\max\{a_i + r_i$, $\max_{j \in I_i} \{a_j+r_j\}\}$ \\
-%		\hline
-%	\end{tabular}%
-%		\caption{Completion time calculations for a non-functional node $i$.}
-%	\label{compltimecalc}%
-%\end{table}%
-
-
-
-%\subsubsection{An illustrative example}
-
-%We provide a simple example to illustrate how considering dependencies and completion time objective in our problem affect repair scheduling decisions. In Figure \ref{fig1_model}, we show two networks where arcs represent dependencies between the nodes. There are five power and four gas nodes. Nodes $p_1$, $p_2$, $p_5$, $g_1$ and $g_3$ are directly affected from the disaster; i.e., they are broken and require a repair. On the other hand, nodes $p_3$ and $g_2$ are non-functional only because of their dependencies on nodes $p_5$, $g_1$ and $g_3$. Node $g_3$ on the gas network is dependent on node $p_5$ from the power network. 
-
-%In this example, repair times are assumed to be one hour for each node. Moreover, travel times between all nodes are assumed to be one hour. We consider one vehicle and one repair center for each network where the repair team will depart from. For the power network, it takes 1 hour from the power repair center to reach $p_1$ and $p_2$, and 1.5 hours to reach $p_5$. For the gas network, it takes 1 hour from the gas repair center to reach $g_3$ and 1.5 hours to reach $g_1$.
-
-% \begin{figure}[h]
-% 	\centering
-% 	\includegraphics[width=10cm]{ornek1}
-% 	\caption{An illustrative example for interdependent networks.}
-% 	\label{fig1_model}
-% \end{figure}
-
-% \begin{figure}[h]
-% 	\centering
-%     \subfloat[Uncoordinated planning.]{{\includegraphics[width=10cm]{ornek1-uncoor}}}
-% 	\quad \\
-% 	\subfloat[Coordinated planning (IIRSP schedules). ]{{\includegraphics[width=10cm]{coord2}}}
-% 	\caption{Comparison of coordinated and uncoordinated solutions.}
-% 	\label{fig2_model}
-% \end{figure}
-
-
-%In Figure \ref{fig2_model}(a), we present the repair schedules and completion times when the repairs are scheduled by ignoring the inter-network dependencies; that is, when power and gas repairs are planned in an uncoordinated way. Figure \ref{fig2_model}(b) presents the routes of the repair teams, when repair scheduling decisions are made by considering the inter-network dependencies in a coordinated way. In these figures, $R$ represents the time repairing of the node is finished, $c$ denotes the time node becomes functional again; i.e., the completion time of each node. When infrastructure restoration is carried out without paying attention to inter-network dependencies, each network focuses on minimizing total completion time of their own nodes separately. In this case, some of the nodes (although they are repaired) may not be functional due to dependency on the other network. In this example, the power network has three nodes to be visited. The optimal route that minimizes the total completion time if there was no dependency between networks, would be \{repair center, $p_1$, $p_2$, $p_5$\} with a total completion time of 18 hours, where completion times of all power nodes are 2, 4, 6, 0, 6 hours, respectively. Similarly, for the gas network, the optimal route would be \{repair center, $g_3$, $g_1$\}. However, since $g_3$ is dependent on $p_5$, the completion time realized for $g_3$ would be 6 rather than 2. Therefore, the total completion time would be 16 hours, where completion times of gas nodes are 4, 6, 6, 0 hours, respectively. 
-
-
-% \begin{figure}[h]
-% \label{swap}
-% 	\centering
-% 	\subfloat[Swap method]{{\includegraphics[width=6cm]{swap} }}% 
-%     \qquad
-%     \subfloat[Exchange method]{{\includegraphics[width=6cm]{exchange} }}%
-% 	\qquad
-% 	\subfloat[Remove and insert method]{{\includegraphics[width=6cm]{removeinsert} }}%
-% 	%\includegraphics[width= 0.4\textwidth]{swap} 
-% 	%\caption{Illustrative example of swap method}
-	
-% \end{figure}
-
-
-% When infrastructure restoration is carried out by paying attention to inter-network dependencies, the optimal route for the power network is the same; i.e., \{repair center, $p_1$, $p_2$, $p_5$\}. However, the optimal route for the gas network would be \{repair center, $g_1$, $g_3$\} with a completion time of 14.5 hours, where completion times of gas nodes are 2.5, 6, 6, 0 hours respectively. 
-
-%The reason behind this difference in the uncoordinated and coordinated solutions can be explained as follows. In the uncoordinated case, when minimizing total completion time, we first visit the closest nodes to the repair center so that their completion times become as small as possible. However, the actual completion times may be larger due to dependencies. In the coordinated case, since we take into account dependencies, we know that even we repair a damaged node, we may have to wait until some other network components to function. Therefore, it may be better to utilize this idle time of waiting and visit nodes farther from the repair center sooner. Thus, in our example, when the gas network takes the network dependency into account, it would visit $g_1$ before $g_3$ leading to a smaller total completion time. Considering this idle time that result from dependencies lead to an interesting combinatorial optimization problem that requires coordinated routing with node precedences. Interestingly, as explained earlier, precedences are not strictly enforced in our problem, but they are implicitly considered to minimize the total completion time.
-
-
-
-% \begin{figure}
-% \centering
-% \begin{subfigure}{.5\textwidth}
-%   \centering
-%   \includegraphics[width=.5\linewidth]{fig2}
-%   \caption{A subfigure}
-%   \label{fig:sub1}
-% \end{subfigure}%
-% \begin{subfigure}{.5\textwidth}
-%   \centering
-%   \includegraphics[width=.5\linewidth]{fig3}
-%   \caption{A subfigure}
-%   \label{fig:sub2}
-% \end{subfigure}
-% \caption{Comparison of solutions i) without dependency consideration, and ii) with dependency consideration}
-% \label{fig:test}
-% \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Illustrative Example}\\  \label{s:example}
-
-The IIRRP constructs repair routes by considering travel times of the repair teams along the road network, component repair times, and the interdependencies in the infrastructure networks. In this subsection, we present an example with two infrastructure networks to illustrate that considering interdependencies may be highly critical for fast recovery. Specifically, for an example instance presented in Figure 3, we show that repair plans made by (i) considering only network travel times, and ii) ignoring the interdependencies among different networks, may significantly increase the recovery times. 
-
-
-\begin{table}[ht]
-  \begin{varwidth}[b]{0.56\linewidth}
-    \centering
-    %\captionsetup{font=footnotesize}
-    %\includegraphics[width=90mm]{small_figure.PNG}
-    \includegraphics[width=0.975\textwidth, angle=0]{figure_3_v3.pdf} \hfill
-    \captionof{figure}{Example infrastructure networks.}
-    \label{illustrative_figure}  
-  \end{varwidth}%
-  \hfill
-  \begin{minipage}[b]{0.44\linewidth}
-    \centering
-    \footnotesize
-    %\captionsetup{font=footnotesize}
-        \begin{tabular}{@{}cccccccc@{}}
-        \toprule
-        \multicolumn{8}{c}{Power Network} \\ \midrule
-         & $p_0$ & $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ & $p_6$ \\ \cmidrule(l){2-8} 
-        \multicolumn{1}{c|}{$p_0$} & - & 2.5 & 2.0 & 2.5 & 2.5 & 2.0 & \multicolumn{1}{c|}{2.5} \\
-        \multicolumn{1}{c|}{$p_1$} &  & - & 2.0 & 2.5 & 4.0 & 4.5 & \multicolumn{1}{c|}{4.0} \\
-        \multicolumn{1}{c|}{$p_2$} &  &  & - & 3.5 & 4.0 & 3.5 & \multicolumn{1}{c|}{2.5} \\
-        \multicolumn{1}{c|}{$p_3$} &  &  &  & - & 2.0 & 3.5 & \multicolumn{1}{c|}{4.5} \\
-        \multicolumn{1}{c|}{$p_4$} &  &  &  &  & - & 2.5 & \multicolumn{1}{c|}{4.5} \\
-        \multicolumn{1}{c|}{$p_5$} &  &  &  &  &  & - & \multicolumn{1}{c|}{2.5} \\
-        \multicolumn{1}{c|}{$p_6$} &  &  &  &  &  &  & \multicolumn{1}{c|}{-} \\ \cmidrule(l){2-8} 
-         &  &  &  &  &  &  &  \\
-        \multicolumn{8}{c}{Gas Network} \\ \midrule
-         & $g_0$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ \\ \cmidrule(l){2-8} 
-        \multicolumn{1}{c|}{$g_0$} & - & 1.5 & 2.5 & 3.0 & 1.5 & 1.5 & \multicolumn{1}{c|}{2.5} \\
-        \multicolumn{1}{c|}{$g_1$} &  & - & 2.5 & 4.5 & 3.0 & 2.5 & \multicolumn{1}{c|}{3.5} \\
-        \multicolumn{1}{c|}{$g_2$} &  &  & - & 5.0 & 3.5 & 4.0 & \multicolumn{1}{c|}{2.5} \\
-        \multicolumn{1}{c|}{$g_3$} &  &  &  & - & 1.5 & 2.5 & \multicolumn{1}{c|}{3.5} \\
-        \multicolumn{1}{c|}{$g_4$} &  &  &  &  & - & 1.5 & \multicolumn{1}{c|}{2.0} \\
-        \multicolumn{1}{c|}{$g_5$} &  &  &  &  &  & - & \multicolumn{1}{c|}{3.5} \\
-        \multicolumn{1}{c|}{$g_6$} &  &  &  &  &  &  & \multicolumn{1}{c|}{-} \\ 
-        \cmidrule(l){2-8} \bottomrule
-        \end{tabular}
-    \caption{Network travel times.}
-    \label{illustrative_travel_times}
-  \end{minipage}
-\end{table}
-
-
-% \begin{table}[H]
-%   \centering
-%   \footnotesize
-%   \captionsetup{font=scriptsize}
-% \begin{tabular}{@{}cccccccc@{}}
-% \toprule
-% \multicolumn{8}{c}{Power Nodes} \\ \midrule
-%  & $p_d$ & $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ & $p_6$ \\ \cmidrule(l){2-8} 
-% \multicolumn{1}{c|}{$p_d$} & 0 & 2.5 & 2.0 & 2.5 & 2.5 & 2.0 & \multicolumn{1}{c|}{2.5} \\
-% \multicolumn{1}{c|}{$p_1$} & 2.5 & 0 & 2.0 & 2.5 & 4.0 & 4.5 & \multicolumn{1}{c|}{4.0} \\
-% \multicolumn{1}{c|}{$p_2$} & 2.0 & 2.0 & 0 & 3.5 & 4.0 & 3.5 & \multicolumn{1}{c|}{2.5} \\
-% \multicolumn{1}{c|}{$p_3$} & 2.5 & 2.5 & 3.5 & 0 & 2.0 & 3.5 & \multicolumn{1}{c|}{4.5} \\
-% \multicolumn{1}{c|}{$p_4$} & 2.5 & 4.0 & 4.0 & 2.0 & 0 & 2.5 & \multicolumn{1}{c|}{4.5} \\
-% \multicolumn{1}{c|}{$p_5$} & 2.0 & 4.5 & 3.5 & 3.5 & 2.5 & 0 & \multicolumn{1}{c|}{2.5} \\
-% \multicolumn{1}{c|}{$p_6$} & 2.5 & 4.0 & 2.5 & 4.5 & 4.5 & 2.5 & \multicolumn{1}{c|}{0} \\ \cmidrule(l){2-8} 
-%  &  &  &  &  &  &  &  \\
-% \multicolumn{8}{c}{Gas Nodes} \\ \midrule
-%  & $g_d$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ \\ \cmidrule(l){2-8} 
-% \multicolumn{1}{c|}{$g_d$} & 0 & 1.5 & 2.5 & 3.0 & 1.5 & 1.5 & \multicolumn{1}{c|}{2.5} \\
-% \multicolumn{1}{c|}{$g_1$} & 1.5 & 0 & 2.5 & 4.5 & 3.0 & 2.5 & \multicolumn{1}{c|}{3.5} \\
-% \multicolumn{1}{c|}{$g_2$} & 2.5 & 2.5 & 0 & 5.0 & 3.5 & 4.0 & \multicolumn{1}{c|}{2.5} \\
-% \multicolumn{1}{c|}{$g_3$} & 3.0 & 4.5 & 5.0 & 0 & 1.5 & 2.5 & \multicolumn{1}{c|}{3.5} \\
-% \multicolumn{1}{c|}{$g_4$} & 1.5 & 3.0 & 3.5 & 1.5 & 0 & 1.5 & \multicolumn{1}{c|}{2.0} \\
-% \multicolumn{1}{c|}{$g_5$} & 1.5 & 2.5 & 4.0 & 2.5 & 1.5 & 0 & \multicolumn{1}{c|}{3.5} \\
-% \multicolumn{1}{c|}{$g_6$} & 2.5 & 3.5 & 2.5 & 3.5 & 2.0 & 3.5 & \multicolumn{1}{c|}{0} \\ \bottomrule
-% \end{tabular}
-% \caption{Distance Matrix.}
-% 	\label{testt}% 
-% \end{table}
-
-% \begin{table}[H]
-%   \centering
-%   \footnotesize
-%   \captionsetup{font=scriptsize}
-% \begin{tabular}{@{}llllllllllllll@{}}
-% \toprule
-% \multicolumn{14}{c}{Distance Matrix}                                                                 \\ \midrule
-% \multicolumn{7}{c}{Power Nodes}                               & \multicolumn{7}{c}{Gas Nodes}          \\ \midrule
-% $p_d$ & $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ &  \multicolumn{1}{l||}{$p_6$}  & $g_d$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$  & $g_6$ \\ \midrule
-% 0    & 2.5 & 2.0 & 2.5 & 2.5 & 2.0 & \multicolumn{1}{l||}{2.5} & 0    & 1.5 & 2.5 & 3.0 & 1.5 & 1.5 & 2.5 \\
-% 2.5  & 0   & 2.0 & 2.5 & 4.0 & 4.5 & \multicolumn{1}{l||}{4.0} & 1.5  & 0   & 2.5 & 4.5 & 3.0 & 2.5 & 3.5 \\
-% 2.0  & 2.0 & 0   & 3.5 & 4.0 & 3.5 & \multicolumn{1}{l||}{2.5} & 2.5  & 2.5 & 0   & 5.0 & 3.5 & 4.0 & 2.5 \\
-% 2.5  & 2.5 & 3.5 & 0   & 2.0 & 3.5 & \multicolumn{1}{l||}{4.5} & 3.0  & 4.5 & 5.0 & 0   & 1.5 & 2.5 & 3.5 \\
-% 2.5  & 4.0 & 4.0 & 2.0 & 0   & 2.5 & \multicolumn{1}{l||}{4.5} & 1.5  & 3.0 & 3.5 & 1.5 & 0   & 1.5 & 2.0 \\
-% 2.0  & 4.5 & 3.5 & 3.5 & 2.5 & 0   & \multicolumn{1}{l||}{2.5} & 1.5  & 2.5 & 4.0 & 2.5 & 1.5 & 0   & 3.5 \\
-% 2.5  & 4.0 & 2.5 & 4.5 & 4.5 & 2.5 & \multicolumn{1}{l||}{0}   & 2.5  & 3.5 & 2.5 & 3.5 & 2.0 & 3.5 & 0   \\ \bottomrule
-% \end{tabular}
-% \caption{Distance Matrix.}
-% 	\label{example_distance_matrix}% 
-% \end{table}
-
-% \begin{table}[H]
-%   \centering
-%   \footnotesize
-%   \captionsetup{font=footnotesize}
-% \begin{tabular}{@{}ccccccccccccccccc@{}}
-% \toprule
-% \multicolumn{17}{c}{Dependency Structure}                                                                                                                                   \\ \midrule
-% \multicolumn{8}{c}{Power-Power Dependency}                                         &  & \multicolumn{8}{c}{Gas-Gas Dependency}                                              \\ \cmidrule(r){1-8} \cmidrule(l){10-17} 
-%                           &$p_0$ & $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ & $p_6$   &  &                           & $g_0$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$  \\ \cmidrule(lr){2-8} \cmidrule(l){11-17} 
-% \multicolumn{1}{c|}{$p_0$}   & 1    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$g_0$} & 1    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_1$}   & 0    & 1  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{1} &  & \multicolumn{1}{c|}{$g_1$}   & 0    & 1  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_2$}   & 0    & 0  & 1  & 0  & 0  & 0  & \multicolumn{1}{c|}{1} &  & \multicolumn{1}{c|}{$g_2$}   & 0    & 0  & 1  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_3$}   & 0    & 0  & 0  & 1  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$g_3$}   & 0    & 0  & 0  & 1  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_4$}   & 0    & 0  & 0  & 0  & 1  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$g_4$}   & 0    & 0  & 0  & 1  & 1  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_5$}   & 0    & 0  & 0  & 0  & 0  & 1  & \multicolumn{1}{c|}{1} &  & \multicolumn{1}{c|}{$g_5$}   & 0    & 0  & 0  & 0  & 1  & 1  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$p_6$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{1} &  & \multicolumn{1}{c|}{$g_6$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{1}  \\ \cmidrule(r){1-8} \cmidrule(l){10-17} 
-%                           &      &    &    &    &    &    &                        &  &                           &      &    &    &    &    &    &                         \\
-% \multicolumn{8}{c}{Power-Gas Dependency}                                           &  & \multicolumn{8}{c}{Gas-Power Dependency}                                            \\ \cmidrule(r){1-8} \cmidrule(l){10-17} 
-%                          &$p_0$ & $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ & $p_6$    &  &                           & $g_0$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ \\ \cmidrule(lr){2-8} \cmidrule(l){11-17} 
-% \multicolumn{1}{c|}{$g_0$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_0$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_1$}   & 0    & 1  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_1$}   & 0    & 0  & 1  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_2$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_2$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_3$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_3$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_4$}   & 0    & 0  & 0  & 0  & 0  & 1  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_4$}   & 0    & 0  & 0  & 1  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_5$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_5$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0}  \\
-% \multicolumn{1}{c|}{$g_6$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{0} &  & \multicolumn{1}{c|}{$p_6$}   & 0    & 0  & 0  & 0  & 0  & 0  & \multicolumn{1}{c|}{1} \\
-% \bottomrule    
-% \end{tabular}
-% \caption{Dependency Structure.}
-% 	\label{example_Dependency}% 
-% \end{table}
-
-
-In Figure 3, there exists six sites with critical network components for each infrastructure.  Five nodes in each network are damaged by the effects of the disaster. Interdependencies between components are indicated by directed arcs. In Appendix A, we provide the interdependency parameters for these infrastructure networks. Travel times, which are symmetrical, are presented in Table 1. Component repair times are assumed to be identical and set at 2 time units. These identical repair times do not affect repair plans.
-
-
-
-We present the solutions obtained by solving three different problems in Table \ref{illustrative_example_result}. Node recovery times achieved in each case and the corresponding objective values are also presented in the table. First, we present the optimal IIRRP routes, whose total recovery time is 153 units. We observe that nodes (such as $p_6$ and $g_6$) that affect the functionality of several other nodes are prioritized in the repair routes.
-
-
-
-
-\begin{table}[H] \small
-  \centering
- % \captionsetup{font=footnotesize}
-  \scriptsize
-\begin{tabular}{cccrrrrrrrrrrrr}
-    \toprule
-    \multirow{2}{*}{\phantom} & \multirow{2}{*}{Routes} & \multirow{2}{*}{\shortstack{Obj. \\ Value}} & \multicolumn{12}{c}{Node Recovery Times} \\ \cline{4-15}
-     &  &  &  $p_1$ & $p_2$ & $p_3$ & $p_4$ & $p_5$ & $p_6$ & $g_1$ & $g_2$ & $g_3$ & $g_4$ & $g_5$ & $g_6$ \\ 
-    \midrule
-    \multirow{2}{*}{IIRRP}   &  $p_0$-$p_6$-$p_5$-$p_4$-$p_2$-$p_1$  & \multirow{2}{*}{153}           & \multirow{2}{*}{23.5} & \multirow{2}{*}{19.5} & \multirow{2}{*}{0} 
-                                                                                                 & \multirow{2}{*}{13.5} & \multirow{2}{*}{9} & \multirow{2}{*}{4.5} 
-                                                                                                 & \multirow{2}{*}{23.5} & \multirow{2}{*}{19} & \multirow{2}{*}{12} 
-                                                                                                 & \multirow{2}{*}{12} & \multirow{2}{*}{12} & \multirow{2}{*}{4.5}  
-              &              &  $g_0$-$g_6$-$g_4$-$g_3$-$g_2$-$g_1$   \\  \midrule
-              
-    \multirow{2}{*}{Case I}  &  $p_0$-$p_5$-$p_6$-$p_2$-$p_1$-$p_4$  & \multirow{2}{*}{175.5}        & \multirow{2}{*}{17} & \multirow{2}{*}{13} & \multirow{2}{*}{0} 
-                                                                                                & \multirow{2}{*}{23} & \multirow{2}{*}{12.5} & \multirow{2}{*}{12.5}  
-                                                                                                & \multirow{2}{*}{17} & \multirow{2}{*}{8} & \multirow{2}{*}{20} 
-                                                                                                & \multirow{2}{*}{20} & \multirow{2}{*}{20} & \multirow{2}{*}{12.5}
-
-             &             &  $g_0$-$g_1$-$g_2$-$g_6$-$g_4$-$g_3$    \\  \midrule
-             
-    \multirow{2}{*}{Case II} &  $p_0$-$p_6$-$p_2$-$p_1$-$p_4$-$p_5$  & \multirow{2}{*}{189.5}        & \multirow{2}{*}{17} & \multirow{2}{*}{12.5} & \multirow{2}{*}{0} 
-                                                                                                & \multirow{2}{*}{19} & \multirow{2}{*}{23.5} & \multirow{2}{*}{12.5} 
-                                                                                                & \multirow{2}{*}{21.5} & \multirow{2}{*}{17} & \multirow{2}{*}{7} 
-                                                                                                & \multirow{2}{*}{23.5} & \multirow{2}{*}{23.5} & \multirow{2}{*}{12.5}
-             &            &  $g_0$-$g_4$-$g_3$-$g_6$-$g_2$-$g_1$   \\
-    \bottomrule                 
-\end{tabular}
-\caption{\normalsize Comparison of the IIRRP solution by the alternative solutions on the illustrative network.}
-	\label{illustrative_example_result}% 
-\end{table}
-
-
-Case I problem variant constructs the repair routes by only considering network travel times and minimizing the latest arrival to a damaged node. That is, Case I illustrates a possible repair plan, which is made by only considering logistical convenience and ignoring all possible interdependencies within an infrastructure network and also between different networks. We obtain the Case I solution by setting all interdependency parameters ($d_{ij}$) to 0 (Appendix A) and solving the IIRRP model. As reported in Table 2, if Case I routes are followed to make repairs, total recovery time would be 175.5. Moreover, some nodes which are visited in the last order in the optimal solution are visited much earlier in the Case I solution (e.g., $g_1$ and $g_2$), which delays repairing some nodes (e.g., $g_6$) that affect functionality of several other nodes. 
-
-Case II problem variant constructs a routing plan by ignoring the interdependencies between different networks, but accounting for the interdependencies in the same network. This case can be motivated by the fact that, in practice, there may be challenges for the organizations responsible for repairing different infrastructures to develop plans in a coordinated way. We obtain the Case II solution by setting the values of interdependency parameters ($d_{ij}$) for different lifelines (i.e., the bottom half of Table \ref{illustrative_dependency} in Appendix A) to 0 and solving the IIRRP. As reported in Table 2, total recovery time would be 189.5 units in this case. This may be a surprising result since we obtain a worse solution than that of Case I which ignores all interdependencies. However, when routes are observed, we see that recovery times for some nodes are higher due to delayed visit of an important node $p_5$, which affects the functionality of $g_4$ and $g_5$. In Case I, visiting $p_5$ earlier was possible when only travel times were considered. 
-
-
-This example indicates that given the scarce resources after a disaster, it is essential to develop repair plans in a coordinated environment, which requires evaluating the possible effects of all interdependencies on the recovery times. In particular, ignoring interdependencies between different networks may significantly delay the recovery of critical infrastructure. In \S 5.4, we further evaluate the benefits of coordinated planning on a larger number of instances. 
-
-Although it is critical to consider interdependencies in repair planning, it may be difficult to obtain high quality solutions without using any analytical tools. Next, we present a mathematical model for the IIRRP to support decision making in developing repair plans.
-
-
-\subsection{Mathematical Model} \label{s:problem2}
-
-In this section, we present a mixed integer programming formulation for the IIRRP. We first introduce the notation and then present our model. \\
-
-%To model this problem as a mixed integer program, let $N^a$ represent the set of all nodes in the overall system. In addition, let $N$ represent the set of all but the repair center nodes. $N$ consists of two parts: let ${N}_{p}$ represent the set of power network nodes and ${N}_{g}$ represent the set of gas network nodes. Let $D$ be the set of repair centers, i.e., $N^a(={N}_{p} \cup {N}_{g}\cup D) $. Similarly, let ${K}$ represent the set of all repair teams (vehicles). There are ${k}_{p}$ vehicles for the power network and ${k}_{g}$ vehicles for the gas network. Let $B$ represent the set of all broken/damaged power and gas nodes. Dependency between nodes $i$ and $j$ is represented by $d_{ij} \;\;\forall i, j \in N$. $d_{ij}$ takes the value 1 if node $i \in N$ depends on $j \in N$, and $0$ otherwise. 
-%Set $b_i=1$ if a node is damaged and 0 otherwise; $i \in B$.
-%Travel time between nodes $i$ and $j$ is represented by $t_{ij} \;\;\forall i, j \in N^a$. Repair time of node $i$ is denoted by $r_{i} \;\; \forall i \in {N}$. $M$ is assumed to be a large number.
-
-% are three sets of decision variables. $x_{ij}$ takes the value 1 if node $j \in N^a$ is visited/repaired after node $i \in N^a$, and $0$ otherwise. Arrival time at a node is represented by $a_{i}$ and completion time is represented by $c_{i} \;\; \forall i \in {N}$. The notation and the mathematical formulation for the IIRSP are as follows:
+In this section, we present a mixed integer programming model for the campaign optimization problem described at \S \ref{s:problem-desc}. We first introduce the notation and then present our model.\\
 
 % General Math Model
 \noindent \textbf{Sets}\\
-${\mathcal{L}}$: set of infrastructures. \\
-$N_l$: set of nodes in infrastructure network $l \in \mathcal{L}$.  \\
-$\mathcal{N}$: set of all infrastructure nodes; $\mathcal{N} = \bigcup\limits_{l \in \mathcal{L}} {N_l}$.  \\  %$\mathcal{N} = {N}_{p} \cup {N}_{g} $
-%$\{D_l\}$: the repair center of infrastructure network $l \in \mathcal{L}$\\
-$\mathcal{D}$: set of repair centers; $\mathcal{D} = \bigcup\limits_{l \in \mathcal{L}} \{D_l\}$, where $D_l$ is the repair center of infrastructure network $l$.  \\
-$B_l$: set of broken nodes in infrastructure network $l \in \mathcal{L}$. \\
-$\mathcal{B}$: set of all broken nodes; $\mathcal{B} = \bigcup\limits_{l \in \mathcal{L}} {B_l}$.\\ % $B = B_p \cup B_g$
-%$D$: set of repair centers, which includes the repair center for the power $D_p=\{0\}$ and the repair center for the gas $D_g=\{1\}$  infrastructures; $D=D_p \cup D_g$. \\
-%$N^a$: set of all nodes in both networks; $N^a = N \cup D$. \\
-%$K$: Set of vehicles of power and gas networks, where $K_p$ is the number of vehicles for power and $K_g$ is the number of vehicles for gas, $K_p \cup K_g$. \\
+${\mathcal{C}}$: set of campaigns. \\
+${\mathcal{U}}$: set of customers. \\
+${\mathcal{H}}$: set of channels. \\
+${\mathcal{D}}$: set of planning days. \\
+${\mathcal{I}}$: set of quota categories. \\
+${\mathcal{P}}$: set of priority categories. \\
 
 \noindent \textbf{Parameters}\\
-$d_{ij}=1$, if node $i \in \mathcal{N}$ depends on $j \in \mathcal{N}$, and 0, otherwise. ($d_{ii}=1$,\;\;$\forall i \in \mathcal{N}$).  \\
-$t^l_{ij}$: travel time between nodes $i \in B_l \cup \{D_l\}$ and $j \in B_l \cup \{D_l\}$ \\
-$r_{i}$: repair time for node $i \in \mathcal{B}$. \\
-$k_l$: number of repair teams for infrastructure network $l \in \mathcal{L}$.\\
-$M_{l}$: a large number set for infrastructure network $l \in \mathcal{L}$. \\
-%$b_i=1$, if $i$ is damaged, $\forall i \in N$. \
+
+\noindent $e_{{c}{u}}=1$, if customer $u \in \mathcal{U}$ is eligible for campaign $c \in \mathcal{C}$, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$)\\
+
+\noindent $s_{{c}{u}{h}{d}}=1$, if customer $u \in \mathcal{U}$ received a communication for campaign $c \in \mathcal{C}$, through channel $h \in \mathcal{H}$, at day $d \in \mathcal{D}$ previous week and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
+
+\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in $i \in \mathcal{I}$ quota category, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent $r_{{c}{p}}$ priority value of campaign $c \in \mathcal{C}$ regarding priority type $p \in \mathcal{P}$.
+($\forall c \in \mathcal{C}$, $\forall p \in \mathcal{P}$)\\
+
+\noindent $b$ communication limit per customer $u \in \mathcal{U}$ for the whole period.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent $k$ communication limit per customer $u \in \mathcal{U}$ at each day.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent $l_{c}$ communication limit per customer $u \in \mathcal{U}$ for campaign $c \in \mathcal{C}$.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$)\\
+
+\noindent $m_{i}$ communication limit per customer $u \in \mathcal{U}$ for $i \in \mathcal{I}$ quota category for the whole period.
+($\forall u \in \mathcal{U}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent $n_{i}$ communication limit per customer $u \in \mathcal{U}$ for $i \in \mathcal{I}$ quota category at each day.
+($\forall d \in \mathcal{D}$, $\forall u \in \mathcal{U}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent $t_{{h}{d}}$ capacity for channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$.
+($\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$)\\
 
 \noindent \textbf{Decision Variables}\\
-$x^l_{ij}=1$, if node $j \in B_l\cup D_l$ is visited after node $i \in B_l\cup D_l$, and $0$ otherwise; $ \forall l \in \mathcal{L}$. \\
-% $x^l_{ij}=1$, if node $j \in N_l$ is visited after node $i \in N_l$, and $0$ otherwise; $ \forall l \in \mathcal{L}$. \\
-$c_i$: recovery time for node $i \in \mathcal{N}$.\\
-$a_i$: arrival time at node $i \in \mathcal{B}$.\\
+$X_{{c}{u}{h}{d}}=1$, if campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
 
-\noindent The formulation for the IIRRP is presented next.
+\noindent The formulation for the campaign optimization is presented next.
 
 \begin{align}
-\text{Minimize} \hspace{0.50cm} \sum\limits_{i\in \mathcal{N}} c_i \label{recobj_new} \\
-\quad\quad \quad  \text{subject to} \notag \\
-&c_{i} \geq d_{ij}(a_{j}+r_{j}) &\forall i \in \mathcal{N}, j \in \mathcal{B} \label{comp_2_new}\\
-&c_{i} \geq d_{ij}c_{j} &\forall i \in \mathcal{N}, j \in  \mathcal{N},\label{comp_new_new}\\
-&a_{j}\geq t^l_{D_l,j} x^l_{D_l,j} &\forall j \in B_{l}, l \in \mathcal{L}  \label{first_arrival_new}\\
-&a_{i}+r_{i}+t^l_{ij} \leq a_{j}+M_l(1-x^l_{ij}) &\forall i,j \in B_{l}, l \in \mathcal{L}, \label{arrival_new}\\
-&\sum\limits_{j\in B_{l} \cup \{D_l\}} x^{l}_{ij}=1 &\forall i \in B_{l}, l \in \mathcal{L}, \label{repairdamaged_new} \\
-&\sum\limits_{j\in B_{l} \cup \{D_l\}} x^{l}_{ji}=1 &\forall i \in B_{l}, l \in \mathcal{L}, \label{backrepairdamaged_new} \\
-&\sum\limits_{j\in B_l} x^l_{D_l,j}\leq k_l & \forall l \in \mathcal{L}, &\label{v_new}\\
-&c_{i} \geq 0 &\forall i \in \mathcal{N}, \label{nonneg1_new}\\
-& a_{i} \geq 0 &\forall i \in \mathcal{B}, \label{nonneg2_new}\\
-% &x^l_{ij}  \in \{0,1\} &\forall i, j \in N_l, l \in \mathcal{L}. \label{xij_new}
-&x^l_{ij}  \in \{0,1\} &\forall i, j \in \mathcal{B} \cup \mathcal{D}, l \in \mathcal{L}. \label{xij_new}
+\text{Maximize} & \displaystyle
+\sum\limits_{p\in \mathcal{P}}
+\sum\limits_{c\in \mathcal{C}}
+\sum\limits_{u\in \mathcal{U}}
+\sum\limits_{h\in \mathcal{H}}
+\sum\limits_{d\in \mathcal{D}}
+X_{{c}{u}{h}{d}} \cdot r_{{c}{p}} \label{mathmodel_obj}&\\
+\text{subject to} \notag\\
+&X_{{c}{u}{h}{d}} \leq e_{{c}{u}},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D} \label{mathmodel_eligibility}&\\
+&\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq 1, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall d \in \mathcal{D} \label{mathmodel_singlechannel}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [2,7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh1}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1,2]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [3,7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh2}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1,3]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [4,7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh3}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1,4]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [5,7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh4}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1,5]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [6,7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh5}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [1,6]}X_{{c}{u}{h}{d}} + \sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in [7]}s_{{c}{u}{h}{d}} \leq b, &\forall u \in \mathcal{U} \label{mathmodel_percustomercommlimit_rh6}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq k, &\forall u \in \mathcal{U}, \forall d \in \mathcal{D} \label{mathmodel_percustomercommlimit_day}&\\
+&\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit}&\\
+&\sum\limits_{d\in[1]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[2,7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh1}&\\
+&\sum\limits_{d\in[1,2]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[3,7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh2}&\\
+&\sum\limits_{d\in[1,3]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[4,7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh3}&\\
+&\sum\limits_{d\in[1,4]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[5,7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh4}&\\
+&\sum\limits_{d\in[1,5]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[6,7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh5}&\\
+&\sum\limits_{d\in[1,6]}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} + \sum\limits_{d\in[7]}\sum\limits_{h\in\mathcal{H}}s_{{c}{u}{h}{d}} \leq l_{c}, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_percustomercamplimit_rh6}&\\
+&\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit}&\\
+&\sum\limits_{d\in[1]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[2,7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh1}&\\
+&\sum\limits_{d\in[1,2]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[3,7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh2}&\\
+&\sum\limits_{d\in[1,3]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[4,7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh3}&\\
+&\sum\limits_{d\in[1,4]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[5,7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh4}&\\
+&\sum\limits_{d\in[1,5]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[6,7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh5}&\\
+&\sum\limits_{d\in[1,6]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} + \sum\limits_{d\in[7]}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}s_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq m_{i}, &\forall u \in \mathcal{U}, \forall i \in \mathcal{I} \label{mathmodel_weeklyquotalimit_rh6}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq n_{i}, &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \forall i \in \mathcal{I} \label{mathmodel_dailyquotalimit}&\\
+&\sum\limits_{u\in\mathcal{U}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq t_{{h}{d}}, &\forall d \in \mathcal{D}, \forall h \in \mathcal{H} \label{mathmodel_channellimit}&\\
+&X_{{c}{u}{h}{d}} \in \{0,1\},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D} \label{mathmodel_integrity}
 \end{align}
 
 % {\color{blue}genel model icin aciklama gelmeli}The objective function \eqref{recobj} minimizes total recovery time of all nodes. Constraints \eqref{comp_2} ensure that the recovery time of a node can occur after all the broken (damaged) nodes that it depends on have been repaired. Constraints \eqref{comp_new} define the recovery time of a node based on the recovery times of other nodes by considering the interdependencies between them. Consequently, if the recovery of a damaged node $i$ does not depend on any other node, then the recovery time of $i$ occurs once it is repaired. However, if recovery of node $i$ depends on other nodes, then it is fully recovered once all $j$ $(i\neq j)$ for which $d_{ij}=1$ are recovered. Arrival times of the repair teams to the first visited damaged nodes of power and gas networks are defined by using Constraints \eqref{first_parrival} and \eqref{first_garrival}, respectively. Constraints \eqref{parrival} and \eqref{garrival} calculate the arrival times to the other damaged nodes. In these constraints, $M_{p}$ and $M_{g}$ values are set for specific instance by computing a loose upper bound for the node arrival times. Specifically, for each infrastructure, we multiply the largest travel time in the corresponding logistics network by the number of damaged nodes in the infrastructure and add the sum of repair time for all damaged nodes except the smallest repair time; for instance, $M_{p}$ = $\displaystyle\max_{i,j\in {N}_{p}} t_{ij} \times |B_p| + \sum\limits_{i\in B_p} r_{i} - \min_{i\in B_p} r_{i}$. Constraints \eqref{v_power} and \eqref{v_gas} limit the number of vehicles leaving the repair center. Constraints \eqref{prepairdamaged} and \eqref{grepairdamaged} guarantee  that one vehicle leaves each visited damaged node, and Constraints \eqref{backprepairdamaged} and \eqref{backgrepairdamaged} ensure one vehicle arrives at each damaged node. Constraints \eqref{parrival} and \eqref{garrival} along with Constraints \eqref{prepairdamaged}-\eqref{backgrepairdamaged} prevent subtours. Note that since the objective function minimizes total recovery  time, and all recovery times can be computed once the last damage node is repaired, we are not necessarily interested in a vehicle's return to the repair center. That is, although we construct closed routes that return to the repair center, the length of the last travelled link does not affect the objective function. Lastly, \eqref{nonneg1}, \eqref{nonneg2} and \eqref{xij} define variable domains. 
 
-The objective function \eqref{recobj_new} minimizes total recovery time of all nodes. Constraints \eqref{comp_2_new} ensure that the recovery time of a node can occur after all the broken (damaged) nodes that it depends on have been repaired. Constraints \eqref{comp_new_new} define the recovery time of a node based on the recovery times of other nodes by considering the interdependencies between them. Consequently, if the recovery of a damaged node $i$ does not depend on any other node, then the recovery time of $i$ occurs once it is repaired. However, if recovery of node $i$ depends on other nodes, then it is fully recovered once all $j$ $(i\neq j)$ for which $d_{ij}=1$ are recovered. Note that since the objective function minimizes total recovery  time, and all recovery times can be computed once the last damage node is repaired, we are not necessarily interested in a vehicle's return to the repair center. That is, although we construct closed routes that return to the repair center, the length of the last travelled link does not affect the objective function. Constraints \eqref{first_arrival_new} determine arrival times of the repair teams to the first visited damaged node of each infrastructure network. Constraints \eqref{arrival_new} set the arrival times of the subsequently visited damaged nodes. In these constraints, $M_{l}$ values are set for each instance by computing a loose upper bound for the node arrival times. Specifically, for each infrastructure, we multiply the largest travel time in the corresponding logistics network by the number of damaged nodes in the infrastructure and add the sum of repair times for all damaged nodes except the smallest repair time; that is, $M_{l}$ = $\displaystyle\max_{i,j\in {N}_{l}} t_{ij} \times |B_l| + \sum\limits_{i\in B_l} r_{i} - \min_{i\in B_l} \{r_{i}\}$. Constraints \eqref{repairdamaged_new} and \eqref{backrepairdamaged_new} guarantee that one vehicle leaves and arrives at each visited damaged node, respectively. Constraints \eqref{first_arrival_new}-\eqref{backrepairdamaged_new} prevent subtours. Constraints \eqref{v_new} limit the number of vehicles leaving the repair center for each infrastructure network. Lastly, \eqref{nonneg1_new}-\eqref{xij_new} define the  domains of the variables.
+%The objective function \eqref{recobj_new} minimizes total recovery time of all nodes. Constraints \eqref{comp_2_new} ensure that the recovery time of a node can occur after all the broken (damaged) nodes that it depends on have been repaired. Constraints \eqref{comp_new_new} define the recovery time of a node based on the recovery times of other nodes by considering the interdependencies between them. Consequently, if the recovery of a damaged node $i$ does not depend on any other node, then the recovery time of $i$ occurs once it is repaired. However, if recovery of node $i$ depends on other nodes, then it is fully recovered once all $j$ $(i\neq j)$ for which $d_{ij}=1$ are recovered. Note that since the objective function minimizes total recovery  time, and all recovery times can be computed once the last damage node is repaired, we are not necessarily interested in a vehicle's return to the repair center. That is, although we construct closed routes that return to the repair center, the length of the last travelled link does not affect the objective function. Constraints \eqref{first_arrival_new} determine arrival times of the repair teams to the first visited damaged node of each infrastructure network. Constraints \eqref{arrival_new} set the arrival times of the subsequently visited damaged nodes. In these constraints, $M_{l}$ values are set for each instance by computing a loose upper bound for the node arrival times. Specifically, for each infrastructure, we multiply the largest travel time in the corresponding logistics network by the number of damaged nodes in the infrastructure and add the sum of repair times for all damaged nodes except the smallest repair time; that is, $M_{l}$ = $\displaystyle\max_{i,j\in {N}_{l}} t_{ij} \times |B_l| + \sum\limits_{i\in B_l} r_{i} - \min_{i\in B_l} \{r_{i}\}$. Constraints \eqref{repairdamaged_new} and \eqref{backrepairdamaged_new} guarantee that one vehicle leaves and arrives at each visited damaged node, respectively. Constraints \eqref{first_arrival_new}-\eqref{backrepairdamaged_new} prevent subtours. Constraints \eqref{v_new} limit the number of vehicles leaving the repair center for each infrastructure network. Lastly, \eqref{nonneg1_new}-\eqref{xij_new} define the  domains of the variables.
 
 
 Due to its complexity, large instances of the IIRRP may not be solved quickly by using exact methods. To support rapid decision making in practice, we develop a metaheuristic that can attain high-quality solutions for the realistic instances of the IIRRP quickly.
@@ -1681,7 +1387,6 @@ Inst. & min & max & avg & $n_{best}$ & min & max & avg & min & max & avg & $n_{b
 \caption{Comparison of $SA_2$ solutions with different cooling parameters and $CPLEX$ solutions for small instances (Set 1).}
 	\label{sa_cooling_effects}% 
 \end{table}
-
 
 \end{document}
 
