@@ -1,0 +1,8 @@
+Followings contain reviews for KPs and literature on methods to solve:
+3. Martello, S., Toth, P.: Knapsack Problems: Algorithms and Computer Implementations. Wiley-Inrescience Series in Discrete Mathematics and Optimization, 1990, John Wiley & Sons, Chichester, England.
+4. Kellerer, H., Pferschy, U., Pisinger, D.: Knapsack Problems. Springer, 2004 ,ISBN: 3- 540-40286-1, p. 546.
+
+The exact solution is the branch and bound.
+Heuristics:
+    1. graceful degradation from the most valuable items based on lagrange multipliers.  --> fails on short resources, and feasible solutuions are few. ?This is way when we add rh the greedy aproach fails?
+    2. HEU is based on the aggregate resources 
