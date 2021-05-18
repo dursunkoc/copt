@@ -51,7 +51,7 @@
 
 
 	
-\title{Campaign Optimization under Communication Limitation, using Network Analysis \\}
+\title{Campaign Optimization under Communication Limitations \\}
 \author{Dursun KOC $^{a}$ \\ 
 	e-mail: dursun.koc@turkcell.com.tr, \\\\
 	Dilek Gunnec $^{a}$ \\ 
@@ -81,7 +81,7 @@ Outbound marketing (also called targeted advertising) needs large amount of pers
 
 Outbound marketing campaigns need to be very well planned and optimized with regard to time, target audience, channel and content. In this study we will optimize outbound campaigns regarding time and channel.
 
-The remaining of this paper is structured as follows. In \S \ref{s:litreview}, we review the related literature. In \S \ref{s:problemmodel}, we describe the problem and present our mathematical model. In \S \ref{s:res}, we describe our solution methods. In \S \ref{num_analysis}, we present computational results. Finally, we present our conclusions in \S \ref{s:conclusion}.
+The remaining of this paper is structured as follows. In \S \ref{s:litreview}, we review the related literature. In \S \ref{s:problemmodel}, we describe the problem and present our mathematical model. In \S \ref{s:solutionmethod}, we describe our solution methods. In \S \ref{num_analysis}, we present computational results. Finally, we present our conclusions in \S \ref{s:conclusion}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,7 +90,7 @@ The remaining of this paper is structured as follows. In \S \ref{s:litreview}, w
 
 \section{Literature Review}  \label{s:litreview}
 
-In the industry, outbound campaigns are mostly designed regarding the target audience. Machine learning methods, statistics and business rules and regulations are used to find the right target audience, and the message about the product is sent to customers. In direct marketing, marketers select a portion of the customer group with the highest probability of expecting the offer, and then add them to their target audience for the marketing campaign \citep{owczarczuk}. However, even if the offer addresses the customer’s need, most of the time customer can dismiss the message because of the wrong channel or because of the wrong time. Having the right channel and the right time with the right audience is the most desired case, but it is not free. The cost of some channels can be high while some others are cheaper. Further, with social network effects some of the targeting can become unnecessary and costly. %A model will be proposed to develop an influence maximization problem with the aim of increasing the revenue of viral marketing campaigns while reducing the cost of free items or discounts.
+In the industry, outbound campaigns are mostly designed regarding the target audience. Machine learning methods, statistics and business rules and regulations are used to find the right target audience, and the message about the product is sent to customers. In direct marketing, marketers select a portion of the customer group with the highest probability of expecting the offer, and then add them to their target audience for the marketing campaign \citep{owczarczuk}. However, even if the offer addresses the customer’s need, most of the time customer can dismiss the message because of the wrong channel or because of the wrong time. Having the right channel and the right time with the right audience is the most desired case, but it is not free. The cost of some channels can be high while some others are cheaper. Further, with social network effects some of the targeting can become unnecessary and costly.
 
 In today’s world, marketers have multiple channels to introduce their product or services, and many studies have shown the importance of omnichannel sales strategies \citep{shankar, park}. In the essence customers want to interact with the company via multiple channels, companies’ challenge is to provide a nearly identical environment for each channel \citep{bell}. Customer can get information about a product or service from one channel, but the purchase can be from another channel \citep{park}. Even the information about the product or service can be solidified by a series of messages from different channels. At this point it is crucial to employ additional constraints regarding multiple channels when optimizing the campaign.
 
@@ -114,16 +114,22 @@ In our study to optimize the Turkcell’s outbound campaign management we start 
 
 \subsection{Mathematical Model} \label{s:problem-math}
 
-In this section, we present a mixed integer programming model for the campaign optimization problem described at \S \ref{s:problem-desc}. We first introduce the notation and then present our model.\\
+In this section, we present a mixed integer programming model for the campaign optimization problem described at \S \ref{s:problem-desc}. We first introduce the notation and then present the mathematical model.\\
 
 % General Math Model
 \noindent \textbf{Sets}\\
-${\mathcal{C}}$: set of campaigns. \\
-${\mathcal{U}}$: set of customers. \\
-${\mathcal{H}}$: set of channels. \\
-${\mathcal{D}}$: set of planning days. \\
-${\mathcal{I}}$: set of quota categories. \\
-${\mathcal{P}}$: set of priority categories. \\
+
+\noindent ${\mathcal{C}}$: set of campaigns. \\
+\noindent ${\mathcal{U}}$: set of customers. \\
+\noindent ${\mathcal{H}}$: set of channels. \\
+\noindent ${\mathcal{D}}$: set of planning days. \\
+\noindent ${\mathcal{I}}$: set of quota categories. \\
+\noindent ${\mathcal{P}}$: set of priority categories. \\
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $X_{{c}{u}{h}{d}}=1$, if campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
 
 \noindent \textbf{Parameters}\\
 
@@ -156,10 +162,6 @@ ${\mathcal{P}}$: set of priority categories. \\
 
 \noindent $t_{{h}{d}}$ capacity for channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$.
 ($\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$)\\
-
-\noindent \textbf{Decision Variables}\\
-$X_{{c}{u}{h}{d}}=1$, if campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$, and 0 otherwise.
-($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
 
 \noindent The formulation for the campaign optimization is presented next.
 
@@ -199,70 +201,16 @@ X_{{c}{u}{h}{d}} \cdot r_{{c}{p}} \label{mathmodel_obj}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \cdot q_{{i}{c}} \leq n_{i}, &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \forall i \in \mathcal{I} \label{mathmodel_dailyquotalimit}&\\
 &\sum\limits_{u\in\mathcal{U}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq t_{{h}{d}}, &\forall d \in \mathcal{D}, \forall h \in \mathcal{H} \label{mathmodel_channellimit}&\\
 &X_{{c}{u}{h}{d}} \in \{0,1\},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D} \label{mathmodel_integrity}
-\end{align}
+\end{align}\\
 
-% {\color{blue}genel model icin aciklama gelmeli}The objective function \eqref{recobj} minimizes total recovery time of all nodes. Constraints \eqref{comp_2} ensure that the recovery time of a node can occur after all the broken (damaged) nodes that it depends on have been repaired. Constraints \eqref{comp_new} define the recovery time of a node based on the recovery times of other nodes by considering the interdependencies between them. Consequently, if the recovery of a damaged node $i$ does not depend on any other node, then the recovery time of $i$ occurs once it is repaired. However, if recovery of node $i$ depends on other nodes, then it is fully recovered once all $j$ $(i\neq j)$ for which $d_{ij}=1$ are recovered. Arrival times of the repair teams to the first visited damaged nodes of power and gas networks are defined by using Constraints \eqref{first_parrival} and \eqref{first_garrival}, respectively. Constraints \eqref{parrival} and \eqref{garrival} calculate the arrival times to the other damaged nodes. In these constraints, $M_{p}$ and $M_{g}$ values are set for specific instance by computing a loose upper bound for the node arrival times. Specifically, for each infrastructure, we multiply the largest travel time in the corresponding logistics network by the number of damaged nodes in the infrastructure and add the sum of repair time for all damaged nodes except the smallest repair time; for instance, $M_{p}$ = $\displaystyle\max_{i,j\in {N}_{p}} t_{ij} \times |B_p| + \sum\limits_{i\in B_p} r_{i} - \min_{i\in B_p} r_{i}$. Constraints \eqref{v_power} and \eqref{v_gas} limit the number of vehicles leaving the repair center. Constraints \eqref{prepairdamaged} and \eqref{grepairdamaged} guarantee  that one vehicle leaves each visited damaged node, and Constraints \eqref{backprepairdamaged} and \eqref{backgrepairdamaged} ensure one vehicle arrives at each damaged node. Constraints \eqref{parrival} and \eqref{garrival} along with Constraints \eqref{prepairdamaged}-\eqref{backgrepairdamaged} prevent subtours. Note that since the objective function minimizes total recovery  time, and all recovery times can be computed once the last damage node is repaired, we are not necessarily interested in a vehicle's return to the repair center. That is, although we construct closed routes that return to the repair center, the length of the last travelled link does not affect the objective function. Lastly, \eqref{nonneg1}, \eqref{nonneg2} and \eqref{xij} define variable domains. 
+The objective function \eqref{mathmodel_obj} maximizes campaign communication regarding the campaign priority. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed when the customer is eligible for the campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} defines an upper-bound for total number of communication to each customer for the whole period; and constraints from \eqref{mathmodel_percustomercommlimit_rh1} to \eqref{mathmodel_percustomercommlimit_rh6} extends the upper-bound for total number of communication to each customer regarding the previous period. Constraints \eqref{mathmodel_percustomercommlimit_day} defines an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} defines an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints from \eqref{mathmodel_percustomercamplimit_rh1} to \eqref{mathmodel_percustomercamplimit_rh6} extends the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are group by their marketing purpose, and for each of these groups we have combined limitations, constraints \eqref{mathmodel_weeklyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ stands for if the campaign $c$ is in the $i$ category. Likewise constraints from \eqref{mathmodel_weeklyquotalimit_rh1} to \eqref{mathmodel_weeklyquotalimit_rh6} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that our variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
 
-%The objective function \eqref{recobj_new} minimizes total recovery time of all nodes. Constraints \eqref{comp_2_new} ensure that the recovery time of a node can occur after all the broken (damaged) nodes that it depends on have been repaired. Constraints \eqref{comp_new_new} define the recovery time of a node based on the recovery times of other nodes by considering the interdependencies between them. Consequently, if the recovery of a damaged node $i$ does not depend on any other node, then the recovery time of $i$ occurs once it is repaired. However, if recovery of node $i$ depends on other nodes, then it is fully recovered once all $j$ $(i\neq j)$ for which $d_{ij}=1$ are recovered. Note that since the objective function minimizes total recovery  time, and all recovery times can be computed once the last damage node is repaired, we are not necessarily interested in a vehicle's return to the repair center. That is, although we construct closed routes that return to the repair center, the length of the last travelled link does not affect the objective function. Constraints \eqref{first_arrival_new} determine arrival times of the repair teams to the first visited damaged node of each infrastructure network. Constraints \eqref{arrival_new} set the arrival times of the subsequently visited damaged nodes. In these constraints, $M_{l}$ values are set for each instance by computing a loose upper bound for the node arrival times. Specifically, for each infrastructure, we multiply the largest travel time in the corresponding logistics network by the number of damaged nodes in the infrastructure and add the sum of repair times for all damaged nodes except the smallest repair time; that is, $M_{l}$ = $\displaystyle\max_{i,j\in {N}_{l}} t_{ij} \times |B_l| + \sum\limits_{i\in B_l} r_{i} - \min_{i\in B_l} \{r_{i}\}$. Constraints \eqref{repairdamaged_new} and \eqref{backrepairdamaged_new} guarantee that one vehicle leaves and arrives at each visited damaged node, respectively. Constraints \eqref{first_arrival_new}-\eqref{backrepairdamaged_new} prevent subtours. Constraints \eqref{v_new} limit the number of vehicles leaving the repair center for each infrastructure network. Lastly, \eqref{nonneg1_new}-\eqref{xij_new} define the  domains of the variables.
-
-
-Due to its complexity, large instances of the IIRRP may not be solved quickly by using exact methods. To support rapid decision making in practice, we develop a metaheuristic that can attain high-quality solutions for the realistic instances of the IIRRP quickly.
-
-%Constraints \eqref{visit_gas} and \eqref{visit_power} prevent visits between networks; i.e., vehicles for power and gas networks may only repair their own networks.  In this way, together with constraints \eqref{prepairdamaged} and \eqref{grepairdamaged}, we formulate a multi-vehicle model without a vehicle index.
-
-% \begin{align}
-% s.t. \hspace{1.5cm} 
-% &c_{i} \geq d_{ij}(a_{j}+r_{j}) &\forall i \in N, \forall j \in B,\label{comp_2}\\
-% %&c_{i} \geq d_{ij}c_{j} &\forall i \in N, &\forall j \in  \{N-B\}\label{comp_3}\\
-% &a_{i}\geq \sum\limits_{l\in D} t_{li} x_{li} &\forall i \in B, \label{first_arrival}\\
-% &a_{i}+r_{i}+t_{ij} \leq a_{j}+M(1-x_{ij}) &\forall i,j \in B, \label{arrival}\\
-% &\sum\limits_{j\in B \cup D} x_{ji}= 1 &\forall i \in B, \label{repairdamaged2} \\
-% &\sum\limits_{j\in B \cup D} x_{ij}=1 &\forall i \in B, \label{repairdamaged} \\
-% %&\sum\limits_{j\in B \cup D} x_{ij}-\sum\limits_{j\in B \cup D} x_{ji} =0 &\forall i \in B \cup D \label{balance}\\
-% &x_{ij} =0 &\forall i \in B_p \cup \{0\},\forall j \in B_g \cup \{1\}, \label{visit_gas}\\
-% &x_{ji} =0 &\forall j \in B_g \cup \{1\},\forall i \in B_p \cup \{0\}, \label{visit_power}\\
-% &\sum\limits_{j\in B_p} x_{0j}\leq k_p, &\label{v_power}\\
-% &\sum\limits_{j\in B_g} x_{1j}\leq k_g, &\label{v_gas}\\
-% &c_{i} \geq 0 &\forall i \in N, \label{nonneg1}\\
-% & a_{i} \geq 0 &\forall i \in B, \label{nonneg2}\\
-% &x_{ij} \in \{0,1\} &\forall i, j \in B \cup D. \label{xij}
-% \end{align}
+Due to its complexity, large instances of the campaign optimization problem may not be solved quickly by using exact methods. To support time to market objectives of marketing teams, we developed a heuristic approach that can attain high-quality solutions within a reasonable duration.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-
-
-%We design a Peer Heuristic $(P)$ for repair scheduling, where we consider dependencies in planning routes for each network while watching over the other network's needs, i.e., peer's considerations are taken into account. Peer Heuristic has two steps. First one is determining damaged node precedences. The second is assigning nodes to vehicles (routes) in a way that minimizes total completion time. We obtain initial routes for the IIRSP at the end of the constructive heuristic and improve these solutions by using local search methods. We provide a short outline of the algorithm below. It is then explained in detail along with illustrative examples. \\
-
-
-%\noindent\fbox{%
-%    \parbox{\textwidth}{%
-
-%\noindent \textbf{Outline of the solution method}\textbf{\hline} %\label{thealgorithm}
-
-%\vspace{0.3cm}
-
-%\noindent \textbf{Constructive Heuristic}\\
-%\noindent \textbf{\textit{Step 1}} [Node Prioritization] \\
-%Determine which nodes are more critical in terms of the number of other %nodes they affect. 
-
-%\noindent \textbf{\textit{Step 2}} [Assignment to Routes]\\
-%Create a route for each vehicle in a way that minimizes the total %completion time. 
-
-%\noindent \textbf{Improvement Method}\\
-%\noindent \textbf{\textit{Step 3}} [Local Search]\\
-%Reconsider routes with local search moves to avoid getting stuck with bad %initial solutions. If there is any improvement in the objective function %value, then repeat step 3. 
-%Else, STOP. 
-%\vspace{0.3cm}
-%\textbf{\hline}
-%\vspace{0.4cm}
-
-%}}\\ \\
-
-\section{Solution Method: A Simulated Annealing (SA) Heuristic}  \label{s:res}
-
+\section{Solution Method: A Greedy Heuristic}  \label{s:solutionmethod}
 
 In this section, we describe a Simulated Annealing (SA) based heuristic developed to solve the IIRRP. The SA is one of the first metaheuristic algorithms with an explicit strategy to avoid local minima. It is motivated by the annealing process, in which a melted metal cools and freezes into a minimum energy crystalline structure. \cite{metropolis1953} proposed SA as a means of finding the equilibrium configuration of a collection of atoms at a given temperature, and later \cite{kirkpatrick_optimization_1983} introduced SA as an optimization technique. The typical characteristic of SA is that it allows moves resulting in solutions of worse quality than the current solution in order to escape from local minima. The probability of accepting degraded solutions is decreased during the search, which is controlled by the temperature parameter $T$. More specifically, at a given $T$, the probability of accepting a new solution is computed by using the Metropolis criterion, which accepts non-improving solutions with a probability of $e^{-\Delta/T}$, where $\Delta$ is the difference between the objective values of the candidate solution and the current solution. An annealing (cooling) schedule controls $T$ and determines the degree of uphill movement permitted during the search, which may highly affect the algorithm's performance. In an annealing schedule, the initial temperature must be high enough to ``melt'' the system completely, and the temperature must be reduced gradually as the search progresses until the system reaches its ``freezing point''. 
 
