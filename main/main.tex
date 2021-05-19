@@ -21,7 +21,7 @@
 \usepackage{rotating}
 \usepackage{xcolor}
 \usepackage{placeins}
-\usepackage{amssymb,algorithm,algorithmic}
+\usepackage{amssymb,algorithm,algorithmic,algpseudocode}
 \usepackage{natbib}
 \usepackage{setspace} 
 \usepackage{latexsym}
@@ -49,6 +49,9 @@
 	bottom=30mm,
 }
 
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+
 
 	
 \title{Campaign Optimization under Communication Limitations \\}
@@ -75,44 +78,44 @@ Keywords: Campaign Optimization, Knapsack Problem, Greedy Heuristic, Multi-dimen
 
 \section{Introduction}
 
-The main objective for marketers is to introduce their companies’ products or services to their customers or potential customers. With this objective they have two different strategies; inbound and outbound marketing strategies. If a marketer wants to introduce a product with an outbound strategy she first selects a target audience, for example people living in a specific city, and age between 20 to 30 namely the young people, then she tries to send her message about the product to them with direct channels such as SMS, outbound call-center or IVR calls. On the other hand, if she wants to introduce her product with an inbound strategy, first she decides rules of whom to interact with. When a customer visits any of the inbound channels for example a web-page or inbound call-center, and the customer fulfills the rules, the message is given to the customer. So inbound marketing is also considered as content marketing. The marketer creates content and tries to gain interests of the customer using social media tactics whereas outbound marketing strategy depends on mass media tools to push the message about the product or the service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. Besides, from the companies’ perspective it can be very inefficient; because sending a message to a customer who is unlikely to respond is a cost; moreover, not sending the message to a customer who is more likely to respond is a loss from revenue \citep{sarkar}. Deciding who should receive a specific offer is one of the essential questions of outbound (direct) marketing. Marketers have to wisely identify the right target audience because the key to a good relationship with customers is keeping your offers relevant to the customers’ need \citep{malthouse}. An irrelevant communication with customer can cause irritation, and they can block the communication channel, so the company will lose its chance to make a relevant or profitable communication opportunity in the future. Finding the right target audience will not make outbound marketing communication perfect, the most appropriate communication channel and the right time should also be found, and any opportunity to connect to the customers in the future should not be lost.
+The main objective for marketers is to introduce their companies’ products or services to their customers or potential customers. With this objective they have two different strategies; inbound and outbound marketing strategies. If a marketer wants to introduce a product with an outbound strategy she first selects a target audience, for example people living in a specific city, and age between 20 to 30 namely the young people, then she tries to send her message about the product to them with direct channels such as SMS, outbound call-center or IVR calls. On the other hand, if she wants to introduce her product with an inbound strategy, first she decides rules of whom to interact with. When a customer visits any of the inbound channels for example a web-page or inbound call-center, and the customer fulfills the rules, the message is given to the customer. So inbound marketing is also considered as content marketing. The marketer creates content and tries to gain interests of the customer using social media tactics whereas outbound marketing strategy depends on mass media tools to push the message about the product or the service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. Besides, from the companies’ perspective it can be very inefficient; because sending a message to a customer who is unlikely to respond is a cost; moreover, not sending the message to a customer who is more likely to respond is a loss from revenue \citep{sarkar}. Deciding who should receive a specific offer is one of the essential questions of outbound (direct) marketing. Marketers have to wisely identify the right target audience because the key to a good relationship with customers is keeping your offers relevant to the customers’ need \citep{malthouse}. An irrelevant communication with customer can cause irritation, and they can block the communication channel, so the company will lose its chance to make a relevant or profitable communication opportunity in the future. Finding the right target audience will not make outbound marketing communication perfect, the most appropriate communication channel and the right time should also be found, and any opportunity to connect to the customers in the future should not be lost.\\
 
-Outbound marketing (also called targeted advertising) needs large amount of personal data of customers, for being effective. So companies are collecting more information about their customers, which causes an information asymmetry \citep{waerdt}. As the governments are responsible for protecting their citizens’ rights, they make laws and regulations on this information asymmetry. The General Data Protection Regulation (GDPR) law in EU is an example. According to such regulations; a customer can request from the company to stop processing its data. Therefore, companies need to apply some limitation on outbound communication to their companies.
+Outbound marketing (also called targeted advertising) needs large amount of personal data of customers, for being effective. So companies are collecting more information about their customers, which causes an information asymmetry \citep{waerdt}. As the governments are responsible for protecting their citizens’ rights, they make laws and regulations on this information asymmetry. The General Data Protection Regulation (GDPR) law in EU is an example. According to such regulations; a customer can request from the company to stop processing its data. Therefore, companies need to apply some limitation on outbound communication to their companies.\\
 
-Outbound marketing campaigns need to be very well planned and optimized with regard to time, target audience, channel and content. In this study we will optimize outbound campaigns regarding time and channel with keeping communication under certain limitations, those limitations can either be a result of legislation or a result of marketing strategy not to irritate customer.
+Outbound marketing campaigns need to be very well planned and optimized with regard to time, target audience, channel and content. In this study we will optimize outbound campaigns regarding time and channel with keeping communication under certain limitations, those limitations can either be a result of legislation or a result of marketing strategy not to irritate customer.\\
 
-The remaining of this paper is structured as follows. In \S \ref{s:literature_review}, we review the related literature. In \S \ref{s:problemmodel}, we describe the problem and present our mathematical model. In \S \ref{s:solutionmethod}, we describe our solution methods. In \S \ref{num_analysis}, we present computational results. Finally, we present our conclusions in \S \ref{s:conclusion}.
+The remaining of this paper is structured as follows. In \S \ref{s:literature-review}, we review the related literature. In \S \ref{s:problem-model}, we describe the problem and present our mathematical model. In \S \ref{s:solution-method}, we describe our solution methods. In \S \ref{num-analysis}, we present computational results. Finally, we present our conclusions in \S \ref{s:conclusion}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Literature Review}  \label{s:literature_review}
+\section{Literature Review}  \label{s:literature-review}
 
-In the industry, outbound campaigns are mostly designed regarding the target audience. Machine learning methods, statistics and business rules and regulations are used to find the right target audience, and the message about the product is sent to customers; moreover database marketing community also tries to estimate the expected value of an offer to a specific customer from a specific channel \citep{cohen_exp, oliveira_hypr}. In direct marketing, marketers select a portion of the customer group with the highest probability of expecting the offer, and then add them to their target audience for the marketing campaign \citep{owczarczuk}. However, even if the offer addresses the customer’s need, most of the time customer can dismiss the message because of the wrong channel or because of the wrong time. Having the right channel and the right time with the right audience is the most desired case, but it is not free. The cost of some channels can be high while some others are cheaper. Further, with social network effects some of the targeting can become unnecessary and costly.
+In the industry, outbound campaigns are mostly designed regarding the target audience. Machine learning methods, statistics and business rules and regulations are used to find the right target audience, and the message about the product is sent to customers; moreover database marketing community also tries to estimate the expected value of an offer to a specific customer from a specific channel \citep{cohen_exp, oliveira_hypr}. In direct marketing, marketers select a portion of the customer group with the highest probability of expecting the offer, and then add them to their target audience for the marketing campaign \citep{owczarczuk}. However, even if the offer addresses the customer’s need, most of the time customer can dismiss the message because of the wrong channel or because of the wrong time. Having the right channel and the right time with the right audience is the most desired case, but it is not free. The cost of some channels can be high while some others are cheaper. Further, with social network effects some of the targeting can become unnecessary and costly.\\
 
-In today’s world, marketers have multiple channels to introduce their product or services, and many studies have shown the importance of omni-channel sales strategies \citep{shankar, park}. In the essence customers want to interact with the company via multiple channels, companies’ challenge is to provide a nearly identical environment for each channel \citep{bell}. Customer can get information about a product or service from one channel, but the purchase can be from another channel \citep{park}. Even the information about the product or service can be solidified by a series of messages from different channels. At this point it is crucial to employ additional constraints regarding multiple channels when optimizing the campaign.
+In today’s world, marketers have multiple channels to introduce their product or services, and many studies have shown the importance of omni-channel sales strategies \citep{shankar, park}. In the essence customers want to interact with the company via multiple channels, companies’ challenge is to provide a nearly identical environment for each channel \citep{bell}. Customer can get information about a product or service from one channel, but the purchase can be from another channel \citep{park}. Even the information about the product or service can be solidified by a series of messages from different channels. At this point it is crucial to employ additional constraints regarding multiple channels when optimizing the campaign.\\
 
-Most of the studies about campaign optimization focus on obtaining the right target audience for the campaign \citep{goul}; however, they usually ignore campaign channels, or optimize the online campaigns. They are finding the best matched campaign for a given online search only, or web-page banner optimization \citep{liu}, and the success criteria or the objective function for such models is often the click through rate or the action rate. Such objective functions do not truly represent the advertisers’ benefit and rather focus on the publishers’ benefit \citep{altshuler}. Our model will be directly related to the advertisers’ benefit.
+Most of the studies about campaign optimization focus on obtaining the right target audience for the campaign \citep{goul}; however, they usually ignore campaign channels, or optimize the online campaigns. They are finding the best matched campaign for a given online search only, or web-page banner optimization \citep{liu}, and the success criteria or the objective function for such models is often the click through rate or the action rate. Such objective functions do not truly represent the advertisers’ benefit and rather focus on the publishers’ benefit \citep{altshuler}. Our model will be directly related to the advertisers’ benefit.\\
 
-Different studies work on different industries and various business constraints; but the mathematical models mostly seems similar, and can be counted as assignment problem, or more specifically multi-dimensional knapsack problem \citep{cohen_exp, oliveira_hypr}. 
+Different studies work on different industries and various business constraints; but the mathematical models mostly seems similar, and can be counted as assignment problem, or more specifically multi-dimensional knapsack problem \citep{cohen_exp, oliveira_hypr}. For solving ILP (Integer Linear Programming), MIP(Mixed Integer Programming) models, numerous methods and tools have been introduced\citep{fallah_bb, chu_mip}, however due to the complexity of the problem, handling big models remains a technical difficulty. Although the branch and bound (B&B) algorithm has been presented as the definitive and deterministic solution, when the number of variables and the number of constraints get larger, the B&B algorithm does not provide a solution in reasonable time \citep{herrera_pbb, sato}. Because of that reason some work on parallel B&B algorithm\citep{fallah_bb, sato}; but computational resources required to run the algorithm increases.\\ \citeauthor{cohen_exp} applied a greedy approach to a similar problem \citep{cohen_exp}. Multidimensional knapsack problems having multiple resource constraints with binary decision variables, which is similar to our model have been dealt with greedy-like heuristic methods \citep{akcay_mdkp}.
 
-Although studies related to campaign management are common in marketing, there is increasing interest to this area from operations research and computer science areas, as the abundant data require complex data analysis skills. In my thesis, after such data analysis, we plan to introduce optimization methods which are not yet commonly used to tackle such problems. Specifically, one of our main contributions will be utilizing from network optimization tools to produce high quality solutions. 
+Although studies related to campaign management are common in marketing, there is increasing interest to this area from operations research and computer science areas, as the abundant data require complex data analysis skills. In my thesis, after such data analysis, we plan to introduce optimization methods which are not yet commonly used to tackle such problems. Specifically, one of our main contributions will be utilizing from network optimization tools to produce high quality solutions.\\
 
-In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations.%{Bu kisimi duzeltmemiz gerekiyor.}, while minimizing the cost of channel usage subject to the availability of channels during the day, and confirming the right time for customer interests. There will be two main types of data; call and content. We plan to obtain them from Turkcell. Data analysis will be done by statistical and machine learning techniques. Call data will provide us the basic network. Target audience will be shrunk down using network analysis techniques, by keeping the most influential customers on the target list and removing the ones who can be targeted indirectly. Identifying the right channel and the right time for each customer in the target audience will be achieved using optimization techniques. We will develop heuristic methods to solve this difficult problem and after thorough computational experiments we plan to produce managerial insights that can be generalized for similar communication networks.
+In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations. In the second place, we also try to increase the number of interaction to the most influential customers. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data from Turkcell.
 
-\section{Problem Definition and Mathematical Model}  \label{s:problemmodel}
+\section{Problem Definition and Mathematical Model}  \label{s:problem-model}
 
 In this section, we describe the proposed mathematical model to maximize the number of interactions to customer by adhering the communication limitations. In \S \ref{s:problem-desc}, we detail the limitations to customer communication and in \S \ref{s:problem-math}, we present our mathematical model.
 
 \subsection{Problem Description} \label{s:problem-desc}
 
-Turkcell, a telecommunication company in Turkey, provides different tariffs, services and product to its customers. In order to introduce these services and products to its customers and potential customers, the marketing team launches daily and weekly basis campaigns. Before launching these campaigns, they do some data analysis to find the right targeting group. After finding the right target audience, they apply a set of business rules to optimize their communication with their customers. During this optimization process, filters are applied to the target audience in order to keep the communication to customers in certain levels. The first filter assure that no customers are targeted by the same campaign from different channels. Next, they limit the number of total interactions to a customer in one day. Campaigns are categorized in two dimensions; first dimension is quota categories which describes filters for a campaign and the second one is priority categories which describes the importance of a campaign. Each campaign belongs to a quota category and each quota category has a limitation on the number of messages sent to a customer, both in a daily, and a weekly basis; moreover each campaign has a limitation unique to its own; and finally, each communication channel has a capacity that should not be exceeded for each day. Each campaign is bound to a priority category.
+Turkcell, a telecommunication company in Turkey, provides different tariffs, services and product to its customers. In order to introduce these services and products to its customers and potential customers, the marketing team launches daily and weekly basis campaigns. Before launching these campaigns, they do some data analysis to find the right targeting group. After finding the right target audience, they apply a set of business rules to optimize their communication with their customers. During this optimization process, filters are applied to the target audience in order to keep the communication to customers in certain levels. The first filter assure that no customers are targeted by the same campaign from different channels. Next, they limit the number of total interactions to a customer in one day. Campaigns are categorized in two dimensions; first dimension is quota categories which describes filters for a campaign and the second one is priority categories which describes the importance of a campaign. Each campaign belongs to a quota category and each quota category has a limitation on the number of messages sent to a customer, both in a daily, and a weekly basis; moreover each campaign has a limitation unique to its own; and finally, each communication channel has a capacity that should not be exceeded for each day. Each campaign is bound to a priority category.\\
 
-Turkcell launches about 70 campaigns on average for around 60-70 million customers through 3 channels each day, and these campaigns are planned in a weekly basis. Number of quota categories is fixed to 3, but priority categories can be variable around 10. 
+Turkcell launches about 70 campaigns on average for around 60-70 million customers through 3 channels each day, and these campaigns are planned in a weekly basis. Number of quota categories is fixed to 3, but priority categories can be variable around 10.\\
 
-In our study to optimize the Turkcell’s outbound campaign management we start with an initial model that accepts the target audience without any inference, but in the next steps we will shrink the target audience using network optimization technics. The motivation behind using network optimization is the idea that people communicating can carry our message. 
+In our study to optimize the Turkcell’s outbound campaign management we start with an initial model that accepts the target audience without any inference, but in the next steps we will shrink the target audience using network optimization technics. The motivation behind using network optimization is the idea that people communicating can carry our message.
 
 \subsection{Mathematical Model} \label{s:problem-math}
 
@@ -127,6 +130,7 @@ In this section, we present a mixed integer programming model for the campaign o
 \noindent ${\mathcal{D}}$: set of planning days. \\
 \noindent ${\mathcal{I}}$: set of quota categories. \\
 \noindent ${\mathcal{P}}$: set of priority categories. \\
+
 
 \noindent \textbf{Decision Variables}\\
 
@@ -212,164 +216,90 @@ Due to its complexity, large instances of the campaign optimization problem may 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Solution Method: A Greedy Heuristic}  \label{s:solutionmethod}
+\section{Solution Method: A Greedy Heuristic}  \label{s:solution-method}
 
-In this section, we describe a Simulated Annealing (SA) based heuristic developed to solve the IIRRP. The SA is one of the first metaheuristic algorithms with an explicit strategy to avoid local minima. It is motivated by the annealing process, in which a melted metal cools and freezes into a minimum energy crystalline structure. \cite{metropolis1953} proposed SA as a means of finding the equilibrium configuration of a collection of atoms at a given temperature, and later \cite{kirkpatrick_optimization_1983} introduced SA as an optimization technique. The typical characteristic of SA is that it allows moves resulting in solutions of worse quality than the current solution in order to escape from local minima. The probability of accepting degraded solutions is decreased during the search, which is controlled by the temperature parameter $T$. More specifically, at a given $T$, the probability of accepting a new solution is computed by using the Metropolis criterion, which accepts non-improving solutions with a probability of $e^{-\Delta/T}$, where $\Delta$ is the difference between the objective values of the candidate solution and the current solution. An annealing (cooling) schedule controls $T$ and determines the degree of uphill movement permitted during the search, which may highly affect the algorithm's performance. In an annealing schedule, the initial temperature must be high enough to ``melt'' the system completely, and the temperature must be reduced gradually as the search progresses until the system reaches its ``freezing point''. 
+In this section, we describe a Greedy based heuristic developed to solve the campaign optimization problem described in \ref{s:problem-desc}. In general a greedy algorithm heuristic is based on the selection of the best available choice. In a classical knapsack problem, where we need to fill a bag with some stuff; and each stuff has a weight $w$ and a value $v$. We need to decide on which items to be put on the bag, or shall we put the $i^{th}$ item on the bag or not $X_{i}$, by not exceeding the capacity $C$ and gaining the maximum value. The mathematical formulation can expressed as following;
+\begin{align*}
+\text{Maximize} & \displaystyle
+\sum\limits_{i\in \mathcal{I}} X_{i} \cdot v_{i} \label{knapsack_mathmodel_obj}&\\
+\text{subject to} \notag\\
+&\sum\limits_{i\in \mathcal{I}}X_{i} \cdot w_{i} \leq C, \label{knapsack_mathmodel_capacity}&\\
+&X_{i} \in \{0,1\},&\forall i \in \mathcal{I} \label{knapsack_mathmodel_integrity}
+\end{align*}\\
 
-%Thus, a slow cooling schedule would make the SA algorithm more likely to converge to the global optimal but this would require more computational effort, while a fast cooling schedule would require less function evaluations but it would be more likely that the algorithm will converge to a local optima. 
-
-We develop an SA algorithm to solve the IIRRP due to its practicality and previous successful implementations in scheduling and routing problems (e.g., \citet{li2005, afifi2016}). Our algorithm consists of a constructive heuristic that finds an initial feasible solution for the IIRRP, a set of neighborhood moves applied within a SA framework, and intensification and diversification strategies to improve the effectiveness of the SA. As discussed before, in IIRRP, assessing the objective function value of a given routing solution by simple algebra may not be possible due to the complex interdependency structure. Therefore, throughout our algorithm, we utilize the formulation \eqref{comp_2_new}-\eqref{nonneg2_new} to compute the value of a given solution. Specifically, given a feasible solution (i.e., $x^l_{ij}$ values), we evaluate \eqref{comp_2_new}-\eqref{nonneg2_new} to attain the $c_i$ values and calculate the objective value. 
-
-We next describe the main aspects of the SA algorithm in detail. The  parameters used in implementing the algorithm are provided in \S 5.2.
-
-% We next describe the main aspects of the SA algorithm in detail. The pseudocode of the proposed solution method is provided in Appendix A. The  parameters used in implementing the algorithm are provided in \S Section 5.2.
-
-\subsection{Initialization: Constructive Heuristic (CH)}  \label{s:res1}
-
-Our SA algorithm starts with generating a reasonably good initial solution for the IIRRP by using a constructive heuristic (CH), which builds a solution from scratch by considering infrastructure interdependencies, component repair times, and network travel times. In the CH, routes of different infrastructures are constructed separately. We prioritize repairs of damaged nodes based on their out-degree value, which is considered as a measure to indicate the criticality of a node. More precisely, we set a priority score for each damaged node by identifying the total number of nodes that are directly dependent on it in both infrastructure networks. For example, in the network in Figure 3, the out-degree of nodes $p_6$ and $g_3$ are 3 and 2, respectively.
-
-%We then rank the damaged nodes according to decreasing priority scores and start assigning nodes to the teams (vehicles) while aacounting for travel times and repair times. 
-
-%Nodes are assigned to vehicles in a balanced way such that the disparity between vehicle path durations (i.e., the time from when the vehicle leaves the depot and completes its work at the last node it visits) are kept small as much as possible. 
-
-There are two main steps of the CH. In the first step, we initiate routes by assigning one or more nodes to each available vehicle by considering the priority scores and network travel times. We rank the damaged nodes with respect to their priority scores, and begin assigning the nodes to the vehicles by considering the node with the next largest score in each iteration. A node can be assigned either to one of the used vehicles or a new one. This decision is made by evaluating a prespecified travel time threshold, denoted by $\Gamma$. Specifically, we check how far the node to be assigned is from the current position (i.e., the last visited node) of each used vehicle. If the travel time between the node and a vehicle's last visited node is less than $\Gamma$, the node is appended to the path of that vehicle. If there exist multiple such vehicles satisfying the $\Gamma$ threshold, the node is assigned to the vehicle that leads to the smallest increase in its total travel time after its addition to the current path. If no vehicle can satisfy the threshold, the node is assigned to a new vehicle, which has not been assigned a node yet, thereby initiating a new route. This step is repeated until at least one node is assigned to all vehicles or all nodes are assigned to the vehicles. In our computational experiments, $\Gamma$ is set equal to the average travel time between the damaged nodes of the infrastructure network in each instance. 
-
-%\footnote{Bu parametrenin etkisini analiz etmemizi buyuk ihtimalle isterler. Belki sadece CH icin birkac run daha alinabilir farkli Gamma degerleriyle, ve bu parametrenin CH performansina etkisi kisaca tartisilabilir.}
-
-%Note that node assignments in this step may be highly affected by the value of $\Gamma$.
-
-The second step of the CH adds the remaining unassigned damaged nodes, if any, to the existing vehicle paths. Nodes are again selected sequentially according to descending priority scores. Here, the goal is to make assignments in a balanced way such that the disparities among the latest node recovery times on each vehicle's path (i.e., the time from when the vehicle leaves the depot and completes its work at the last visited node) are kept small as much as possible in each iteration. Therefore, each node is appended to the path of the vehicle that leads to the smallest increase in the latest recovery time, which is computed by solving \eqref{comp_2_new}-\eqref{nonneg2_new}. 
-
-%After the initial routes are constructed, we feed them into the mathematical model to evaluate the recovery times, $c_i$, for all nodes, and the objective function value. 
-
-The solution obtained by the CH is improved using a set of neighborhood moves applied in an SA framework, which is explained next.
+Here the greedy approach tells us to calculate the unit value $v_{i}/w_{i}$ of each item, and sort items by their calculated unit value, starting from the greatest unit value to smallest try to add to bag until the last item, by not exceeding the capacity.
 
 
-% \begin{figure}[h!]
-% 	\centering
-% 	\includegraphics[width=10cm]{nodepriorlist}
-% 	\caption{An illustrative example for constructive heuristic.}
-% 	\label{priorornek}
-% \end{figure}
+\begin{algorithm}[H]
+\KwIn{A set $w = \{w_1, w_2, \ldots, w_n\}$ weight of items}
+\KwIn{A set $v = \{v_1, v_2, \ldots, v_n\}$ value of items}
+\KwOut{A list of $X_1,X_2,\ldots,X_k$, such that $\sum_{i=1}^n X_i \cdot w_i \leq C$ and ${\sum\limits_{i\in \mathcal{I}} X_{i} \cdot v_{i}}$ is maximized}
+$b \gets 0$\;
+
+\For{$i \gets 1$ \textbf{to} $n$}{
+  $X_i \gets 0$\;
+\\
+  \If{$b + w_i \leq C$} {
+    $X_i \gets 1$\;
+\\
+    $b \gets $b + w_i\;
+  }
+}
+\Return{$X$}\;
+\caption{Greedy Algorithm for a classical Knapsack Problem}
+\label{algo:change}
+\end{algorithm}\\
+
+We use the following greedy algorithm to solve the campaign optimization problem described in \ref{s:problem-desc}.
+
+\begin{algorithm}[H]
+\KwIn{A set $c\in\mathcal{C}$ of campaigns}
+\KwIn{A set $u\in\mathcal{U}$ of customers}
+\KwIn{A set $h\in\mathcal{H}$ of channels}
+\KwIn{A set $d\in\mathcal{D}$ of days}
+\KwOut{A list of $X_{{c}{u}{h}{d}}$, such that equations from \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\\
+Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p}$
+\\
+\For{$c \gets 1$ \textbf{to} $C$}{
+    \For{$d \gets 1$ \textbf{to} $D$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 $X_{cuhd} \gets 1$\;
+\\
+                $EQ$ \gets Equations containing $X_{cuhd}$ 
+\\
+                 \If{not $EQ$ satisfied} {
+                    $X_{cuhd} \gets 0$\;
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{Greedy Algorithm for Campaign Optimization}
+\label{algo:change}
+\end{algorithm}\\
 
 
-% \begin{table}[htbp]
-% 	\centering
-% 	\begin{tabular}{|c|ccc|cc|c|c|}
-% 		\hline
-% 		 & \multicolumn{5}{c|}{Out-degree}&\multicolumn{2}{c|}{Priority List} \\\hline 
-% 		& $p_1$ & $p_2$ & $p_5$& $g_1$ & $g_3$ &Power & Gas\\
-% 		\hline
-% 		\textbf{$CH$} & 0     & 4     & 3   & 1 & 2 & $p_2-p_5-p_1$ & $g_3-g_1$\\
-% 		\hline
-% 	\end{tabular}%
-% 		\caption{Node prioritization of the illustrative example in Figure \ref{priorornek}.}
-% 	\label{priorliste}%
-% \end{table}%
+\section{Computational Study} \label{num-analysis}
 
-\subsection{Neighborhood Moves}  \label{s:res2}
+In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_instances}. We evaluate the performance of the greedy heuristics in \S \ref{test_evaluation}.
 
-%In order to create new feasible solutions, we employ several epochs in each iteration ($k$) of our SA algorithm. 
-We implement a series of neighborhood moves (i.e., 2-Opt, Swap, Exchange and Remove \& Insert) to search the solution space. An epoch parameter controls the number of times this series of moves is applied at each iteration of the SA. In each epoch, the series of four neighborhood moves is applied for all networks sequentially. At the beginning of an epoch, we randomly determine in which order of networks the moves will be applied to. We also introduce an intensification strategy that modifies the value of epoch parameter depending on the progress of the algorithm, which is explained in \S \ref{s:res3}. %and apply the four moves in the same order
-%The order (power or gas) in which the moves are applied would affect the recovery times due to network dependencies between the networks.
-
-In each network, the four neighborhood moves are applied in the same order. The first two neighborhood moves (2-Opt and Swap) keep the node assignments to the vehicles fixed and only affect the order of site visits, whereas in the other two moves (Exchange and Remove \& Insert) the nodes visited by a vehicle may also change. In the 2-Opt move, we remove two links in a given route and create new links to reconnect the nodes in a different way. The Swap move changes the positions of a pair of nodes in a route. The Exchange move exchanges nodes between two different routes. In Remove \& Insert, we remove a node from a route and insert it into a different route. In each move, all possible solutions are evaluated and the solution that improves the current solution in terms of the recovery time objective the most or deteriorates the least is selected; that is, a best-improvement search strategy is followed in each move to determine the candidate solution. We apply a diversification strategy by modifying this best-improvement search strategy, explained in \S \ref{s:res3}. At the end of each move, the candidate solution is evaluated for acceptance according to the Metropolis criterion. 
-
-%The Exchange move exchanges nodes between two different routes {\color{blue} of two randomly selected networks}.
-
-%After each neighborhood move, the new solution is evaluated as follows: All improving solutions are accepted immediately. Non-improving solutions are accepted with an acceptance probability based on the classical metropolis criterion.
-
-
-%Two of them  include a search in the solution space of the existing routes (i.e.,  2-Opt and  Swap)  and  two  include moves between routes  (i.e.,  Exchange  and  Remove  \&  Insert). 
-
-% A series of iterations are implemented to create new feasible solutions with  and we employ several epochs in each iteration $k$. 
-
-% In each iteration, if a neighborhood solution is improving, it is accepted; otherwise it may be   accepted with the classical metropolis criterion. In each epoch, we apply the SA moves described below respectively. Later on, whether accepting the new solution or not is controlled. Once admissible solutions are gathered, the SA selects the one which improves the current solution the most, or at least it selects the one which deteriorates the existing solution the least.
-
-% Four route-improving moves are utilized, which include two intra-route moves (i.e., 2-Opt and Swap) and two inter-route moves (i.e., Exchange and Remove \& Insert). In each move, the admissible solution which brings about the largest decrease (or smallest increase if accepted based on metropolis criterion) in the total duration of the route is accepted as the new solution. These four moves are applied for both power and gas networks one by one. In other words, in each iteration, each move is respectively applied for both networks in order to continue with the following move. Since there are inter-network dependencies, to which network the moves are applied first affects the result. Therefore, rather than using a fixed order, it is randomly determined whether the priority would be to power or gas before each iteration, the prioritization is kept the same as applying moves during the iteration. 
-
-%\begin{itemize}
-
-%\item \textbf{2-Opt.} The classical 2-opt move is implemented on each route of the selected network (i.e., gas or power). The idea is to remove two links in a given route and create new links to reconnect the nodes in a different way. All pairs of links are considered in implementing the move.
-%Herewith, a different scenario is constructed within an infrastructure by changing the connection among affected nodes.
-%\item \textbf{Swap.} In this move, we focus on changing the order of visits within each route of a given network. We consider swapping the positions of every pair of nodes in a route, and repeat it for all routes. 
-% \item \textbf{Swap.} In this move, we focus on changing node sequences within each route. The move is applied to all routes within the network. All possible combinations of sequences are examined by changing the positions of each pair of nodes in all routes. In other words, all node positions are considered for a swap in each route. At the end of this move, node assignments to vehicles do not change, but the order of visits may be different. 
-%\item \textbf{Exchange.} This move exchanges nodes between two different routes. Specifically, each node in a route is exchanged with another node in another route. This is repeated until all possible node exchanges between all pairs of routes are evaluated.  
-
-%\item \textbf{Remove \& Insert.} In this move, for each node, we calculate the recovery time when that node is removed from its route and inserted into a different route. All possible insertion positions in the new route are considered for the removed node. 
-
-%\end{itemize}
-
-\subsection{Annealing (Cooling) Schedule}  \label{s:res4}
-
-Setting an annealing schedule for SA involves determining two main components, namely, an initial temperature and a cooling rule, which may significantly affect the algorithm's performance. The cooling rule in SA is a function that controls the decrease in the temperature throughout the algorithm. We apply the classical geometric cooling rule that sets the temperature in iteration $k$, $T_{k}$, by multiplying $T_{k-1}$ by a parameter $\alpha \le 1$ (such as $\alpha=0.90$). As discussed before, the initial temperature of SA, $T_{0}$, must be high enough to allow the algorithm to move to further points in the solution space. Moreover, the final temperature reached at the end of the algorithm, $T_{f}$, must be low enough so that the probability of accepting worse moves becomes very small (e.g., $\le 0.1$) in the end. Since there is also a maximum solution time limit in our experiments, which is set to one hour, $T_{0}$ must be set for each instance such that the algorithm reaches a small temperature in the end. We describe the SA algorithm parameters used in our experiments in \S 5.2.
-
-%{\color{red} We explore the effects of using different cooling parameters in our experiments (see \s \ref{s:xx} appendix X)}
-
-
- 
- %We performed preliminary experiments to set $T_{0}$. For medium-size problem instances with 16-24 damaged nodes, given the initial solution obtained by the CH, we set an initial temperature such that a solution 5\% worse than the initial solution has a 50\% probability for being accepted. As proposed by , the initial temperature ($T_{0}$) is set such . 
-
-
-The algorithm described above involves the basic elements of a SA metaheuristic. To enhance the performance of the basic SA algorithm in solving the IIRRP, we also design and implement diversification and intensification strategies, described next. In our computational study (\S \ref{RIISRP_Solutions}), we evaluate the impact of incorporating these strategies on the performance of our algorithm.
-
-
-\subsection{Diversification and Intensification Strategies}  \label{s:res3}
-
-The aim of diversification is to reach unexplored parts of the solution space. To facilitate this, we modify each neighborhood move described above so that we do not always select the best solution among the feasible solutions explored by the move. As described earlier, we apply a best-improvement search strategy in each move to specify the candidate solution to be evaluated for acceptance by the Metropolis criterion. While this strategy is helpful to identify high-quality candidates, given a feasible solution, a neighborhood move would always yield the same candidate solution, which may cause cycling and decrease the efficiency of the search. Therefore, we design a diversification strategy, in which we consider $s$ best solutions in applying a neighborhood move instead of always picking the best solution. More specifically, if the best solution among these $s$ solutions is improving the current solution, it is directly accepted. If all of these $s$ solutions are worse than the current solution, we pick a random solution among $s$ solutions and evaluate it with respect to the Metropolis criterion.
-
-
-%With these strategies, the algorithm eases the acceptance of a solution, and adapts the number of iterations with respect to when the best solution is found, respectively. 
-
-%In order to enhance the basic SA structure explained above and improve the derived solutions, two strategies are constructed. In this way, we aim to create an adaptive SA algorithm, which is capable of providing more efficient and robust outcomes.
-
-%Firstly, we apply a diversification strategy in which we aim to improve solutions without changing the number of iterations applied in the algorithm. As described earlier, out of the four moves, only the best solution was considered in the original SA method. This logic is changed with the insertion of diversification strategy. Thanks to diversification, the algorithm reaches new, different solutions. More importantly, any cycling that might be resulted from applying the sequential moves is prevented. The number of $N$ best solutions resulted from each move is recorded. If the best solution among $N$ solutions is better than the best solution obtained so far (incumbent solution), the best solution among $N$ solutions is accepted as the new best solution as a result of the move. If not, a random solution among $N$ solutions is selected and accepted as the result of the move. Later on, it is evaluated whether it should be accepted or not within the basic SA structure that is mentioned earlier.
-
-We also consider an adaptive intensification strategy that increases the amount of time spent in searching the promising regions of the solution space. We achieve this by spending more time to search for solutions at the temperature values where a new incumbent (the best solution so far) is identified. Specifically, when the incumbent is updated, we temporarily increase the number of epochs in that iteration to deepen the search at a fixed temperature. Specifically, in our experiments, the standard epoch length is two, and it is automatically increased to five once an incumbent is detected. Note that the incumbent may be frequently updated in the initial iterations of the algorithm (at high temperature values), and hence implementing the proposed intensification strategy in initial iterations may be wasteful in terms of computational effort. Therefore, we begin applying the proposed intensification strategy in later stages of the local search. In our preliminary experiments, we evaluated alternative options to start applying the intensification strategy and specified a point that balances the computational effort and solution quality, which is after completing 10\% of the algorithm iterations.
-
-%This strategy is applied when the algorithm finds a better result than the incumbent solution. It is aimed to have a wider search at the temperature that leads to a better solution in order to improve the results. To do so, the number of epochs is increased at the relevant temperature so that a more extensive search here is enabled. This strategy is not applied from the beginning of the algorithm. Instead, it is started to be applied after a certain identified point. In the first iterations, the algorithm is expected to update the incumbent solution frequently. Therefore, by considering the time spent by the algorithm, this strategy is started to be applied after the temperature falls to a certain point.
-
-
-
-
-%It is defined so that probability that will allow the acceptance of the initial result obtained by the constructive heuristic result. Then, the geometric cooling schedule is applied. The temperature falls by multiplication with the cooling rate α. When the algorithm reaches to the identified temperature level or lower, it is terminated (i.e., \(T_{end}\) can be equal to 0.01). 
-
-%We evaluate the performance of the SA heuristic on a comprehensive set of problem instances. The obtained computational results are presented next in order to analyze the model solutions and the heuristic performance.
-
-
-\section{Computational Study} \label{num_analysis}
-
-In this section, we present the results of our computational study conducted to evaluate the performance of our heuristic algorithms. We describe our test instances in \S 5.1 and algorithm parameters in \S 5.2. We evaluate the performance of the CH and SA heuristics in \S 5.3. In \S 5.4, we present results that show the benefits of making coordinated repair plans by considering network interdependencies. Finally, in \S 5.5, we present results for instances that include node importance weights.
-
-All computations were performed on a computer with 64-bit Windows Server with two 2.0 GHz Intel Xeon CPU’s and with 32 GB RAM, and CPLEX 12.9 was used in Java with Concert technology to solve IIRRP by exact methods. Heuristic algorithms were also coded in Java.
+All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Greedy heuristic algorithm is also coded in Python using Numpy library for fast mathematical operations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Test Instances} \label{Test_instances}
+\subsection{Test Instances} \label{test_instances}
 
-%In order to bring about various considerable test instances automatically in computational results, a web-based input generator is constructed.
+%\begin{itemize}
+%\item \textit{Network structure}. We generate small and large sized instances based on networks with 40 and 80 nodes, respectively. In Tables 3 and 4, $|\mathcal{N}|$ is the total number of infrastructure nodes, while $|N_p|$ and $|N_g|$ show the number of nodes in the power and gas networks, respectively. To generate a network with $|\mathcal{N}|$ nodes, we obtain the first $|\mathcal{N}|$ nodes of  100-node random Solomon instances \citep{solomon1987algorithms}, and assign the first $|N_p|$ of these $|\mathcal{N}|$ nodes as the power infrastructure nodes. The sites with damaged nodes in both networks are chosen randomly. The repair centers of the power and gas networks, $D_p$ and $D_g$, are located at coordinates (45,50) and (50,45), respectively. Network travel times are set equal to the Euclidean distances.
 
-As discussed in \citet{almoghathawi2019resilience}, it is hard to obtain data for real-world infrastructure networks. Due to lack of any available data sets, we develop test instances by synthetically generating data and considering two interdependent networks. Specifically, we consider power and gas infrastructure networks ($\mathcal{N} = {N}_{p} \cup {N}_{g}$), which are served by $k_{p}$ and $k_{g}$ teams, respectively. Furthermore, to facilitate generating a variety of instances efficiently and assist future benchmark data set generation efforts in this domain, we developed an Instance Generator tool, which is briefly described in Appendix B. 
-
-%{\color{blue} The mathematical model for the IIRRP includes multiple infrastructure networks. In our computational study, we focus on two networks, such as power and gas, for ease of demonstrating results (why? elaborate). The mathematical model for only two networks is given in Appendix D. We evaluate the performance of the SA heuristic (adapted to two networks) on a set of problem instances.} 
-
-
-%The fact that IIRSP is kind of a problem containing numerous inputs as a set, the nature of the problem and therefore results are very dependent to what is given as input. Hence, there is a severe need to create various inputs in a time-efficient way. In order to improve the process of creating test instances, we construct an input generator which creates different scenarios for the plant automatically. 
-
-%Initially, a dataset should be given into input generator. This dataset has coordinates, longitudes and latitudes, of the nodes. After all the coordinates in network are defined in input generator, desired test instance can be created with the selectable parameters. In this problem, these parameters are the total number of nodes and their characteristic distribution (e.g. the number of power/gas nodes and vehicles, damaged number of power/gas nodes). Additionally, the other parameters are related to their repairing process and dependencies to each other. For instance, how much time is needed to repair power and gas nodes and the nodes’ interdependency. There are dependencies among not only with the same type of nodes but also the crosswise. As determining the dependencies, we aim to keep the complexity of the problem alive in order to stay close to the real-life scenario for the problem. The dependencies among the same type of nodes and the crosswise of those are assigned partially random, partially damaged on purpose. The number of those are under control of the user. The reason for that is eliminating the possible selection of nodes which have dependencies but all non-damaged. In such a case, the dependency issue would be redundant, so this circumstance is prevented and kept controlled.
-
-In our computational study, we test the proposed model and heuristics on a set of small and large sized instances. We use small instances, some of which can be solved to optimality by CPLEX solver, to test the performance of SA versions with different search strategies and algorithm parameters. We select the best SA version that balances solution time and quality based on the results of small instances, and then solve the large instances to further evaluate the performance of the SA. The features of the 44 test instances used in our computational study are summarized in Tables \ref{instance_information} and 4. We describe our instances below.
-
-
-
-\begin{itemize}
-\item \textit{Network structure}. We generate small and large sized instances based on networks with 40 and 80 nodes, respectively. In Tables 3 and 4, $|\mathcal{N}|$ is the total number of infrastructure nodes, while $|N_p|$ and $|N_g|$ show the number of nodes in the power and gas networks, respectively. To generate a network with $|\mathcal{N}|$ nodes, we obtain the first $|\mathcal{N}|$ nodes of  100-node random Solomon instances \citep{solomon1987algorithms}, and assign the first $|N_p|$ of these $|\mathcal{N}|$ nodes as the power infrastructure nodes. The sites with damaged nodes in both networks are chosen randomly. The repair centers of the power and gas networks, $D_p$ and $D_g$, are located at coordinates (45,50) and (50,45), respectively. Network travel times are set equal to the Euclidean distances.
-
-Given the set of nodes, we generate instances that differ in terms of the locations of damaged nodes, interdependency links, and repair times. As shown in Table 3, we consider two sets of small instances. Locations of damaged nodes and interdependency links are the same for the instances with the same number of damaged nodes in the same set. In all small instances, we consider two repair teams (vehicles) per infrastructure (i.e., $k_{p}$=$k_{g}$=2). For large instances, we create six different network structures, and solve instances with two and three teams for each network (Table 4).
+%Given the set of nodes, we generate instances that differ in terms of the locations of damaged nodes, interdependency links, and repair times. As shown in Table 3, we consider two sets of small instances. Locations of damaged nodes and interdependency links are the same for the instances with the same number of damaged nodes in the same set. In all small instances, we consider two repair teams (vehicles) per infrastructure (i.e., $k_{p}$=$k_{g}$=2). For large instances, we create six different network structures, and solve instances with two and three teams for each network (Table 4).
 
 %They are generated from Solomon instances (\ref{}) present in the literature. In small sized data, power (gas) nodes of Set 1 and Set 2 instances are chosen as the first (second) 20 nodes of one Solomon instance. Similarly in large sized data, power (gas) nodes of Set 1 and Set 2 instances are chosen as the first (second) 40 nodes of one Solomon instance. {\color{red}Set 2?}  
 
 
-\item \textit{Interdependencies}. For each instance, the number of interdependency links that exist within and between different networks, denoted by $\delta_{ij} \: \forall i,j \in \mathcal{N}$, are presented in Tables 3 and 4. For example, $\delta_{pg}$ is the total number of links that represents a dependency of power network nodes on gas network nodes. The interdependency links are generated by selecting pairs of interdependent nodes randomly. Note that if dependencies are created only among the undamaged nodes, we may not capture the potential difficulties caused by interdependencies among the damaged nodes. Therefore, in generating the test instances, we use the Instance Generator to make sure that at least $50\%$ of the interdependency links are among the damaged nodes. 
+%\item \textit{Interdependencies}. For each instance, the number of interdependency links that exist within and between different networks, denoted by $\delta_{ij} \: \forall i,j \in \mathcal{N}$, are presented in Tables 3 and 4. For example, $\delta_{pg}$ is the total number of links that represents a dependency of power network nodes on gas network nodes. The interdependency links are generated by selecting pairs of interdependent nodes randomly. Note that if dependencies are created only among the undamaged nodes, we may not capture the potential difficulties caused by interdependencies among the damaged nodes. Therefore, in generating the test instances, we use the Instance Generator to make sure that at least $50\%$ of the interdependency links are among the damaged nodes. 
 
 
 \begin{table}[t!]
@@ -445,8 +375,8 @@ Instance & $k_p$=$k_g$ & $|\mathcal{N}|$ & $|N_p|$ & $|N_g|$ & $|B_p|$ & $|B_g|$
 %To construct dependency relationships, we select how many dependencies of a particular infrastructure has (both from the same infrastructure and the other one). {\color{red} how many nodes of a particular infrastructure will be dependent on how many other nodes (both from the same infrastructure and the other one) Sadece sayilari belirliyoruz degil mi, 3 power 5 gas'a bagli olsun gibi?} We make sure ({\color{red} how?}) that we select the type of component such as damaged or nondamaged, and also we create an option for random selection so that dependency links include both damaged and undamaged nodes. Therefore the dependency structure in the problem is not lost. 
 %\vspace{-0.7cm}
 
-\item \textit{Repair times}. Repair times, $r_i$ $\forall i \in \mathcal{B}$, used in our instances are presented in Tables 3 and 4. We consider instances with equal repair times, which are set at 40 time units for each damaged node, and instances with different repair times, in which repair times are generated randomly between 30 and 50.
-\end{itemize}
+%\item \textit{Repair times}. Repair times, $r_i$ $\forall i \in \mathcal{B}$, used in our instances are presented in Tables 3 and 4. We consider instances with equal repair times, which are set at 40 time units for each damaged node, and instances with different repair times, in which repair times are generated randomly between 30 and 50.
+%\end{itemize}
 
 %These values are set by considering the average network travel time between all nodes, which is 33.4.
 
@@ -521,7 +451,7 @@ In our preliminary experiments, we tested three SA variants, which differ in ter
 %Firstly, we create main algorithm parameters for both implementation methods and those are described as follows. Initial temperature is identified based on the constructive heuristic results. We use these results as the initial solutions in SA. Considering the metropolis criterion, the temperature values are calculated with the acceptance rate of $50\%$ for the results of constructive heuristic so that initial temperature is set uniquely for each instance. Terminal temperature is set as 0,001 for all instances. Afterwards, cooling rate is given as 0,90 for all instances and geometric cooling schedule is applied. Lastly, epoch length is set as 2. 
 
 
-\subsection{Results: Performance of the SA Heuristic} \label{RIISRP_Solutions}
+\subsection{Results: Performance of the SA Heuristic} \label{test_evaluation}
 
 In our computational study, we solve the IIRRP model by using CPLEX and compare the solutions obtained by the solver with those of the two heuristic variants, $SA_{1}$ and $SA_{2}$. The solutions by CPLEX are obtained by imposing a one-hour solution time limit for each instance. Solving the mathematical model for the IIRRP to optimality is computationally expensive, affected mainly by the number of damaged nodes. Indeed, only a limited number of small instances with eight damaged nodes per infrastructure could be solved to optimality by CPLEX. For the rest of the instances, the average optimality gap is $43.0\%$, and minimum and maximum optimality gaps are $39.2\%$ and $46.4\%$, respectively. Objective values obtained by CPLEX, $Z_{CP}$, and the corresponding optimality gaps are reported in Tables 6 and 7 for small and large instances, respectively. 
 
