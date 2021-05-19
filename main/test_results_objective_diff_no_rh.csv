@@ -1,0 +1,3 @@
+Method,Case1,Case2,Case3,Case4,Case5,Case6,Case7,Case8,Case9,Case10,Case11,Case12,Case13,Case14
+Greedy,0,0,0,0,0.28,6.67,0.01,0.21,0.12,4.01,0.08,16.73,0.025,0.02
+LP-Relexation,0,0,0,0,0,1.08,0.02,0,0,0.02,0.01,0.07,0.01,0.01
