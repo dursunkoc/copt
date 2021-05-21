@@ -53,8 +53,8 @@ class Experiment:
     def __init__(self, cases: List[Case]):
         self.cases = cases
 
-    def run_cases_with(self, solution) -> List[Tuple[Case, SolutionResult]]:
-        return [solution.run(case) for case in tqdm(self.cases, f"Case ->")]
+    def run_cases_with(self, solution, ph=True) -> List[Tuple[Case, SolutionResult]]:
+        return [solution.run(case, ph) for case in tqdm(self.cases, f"Case ->")]
 
 class Solution:
     c_i = 0
@@ -72,14 +72,19 @@ class Solution:
         value = 2.1
         return SolutionResult(case, value, duration)
 
-    def run(self, case:Case)->SolutionResult:
+    def run(self, case:Case, ph=True)->SolutionResult:
         (Xp_cuhd1, sr1)=self.runPh(case,None)
-        (Xp_cuhd2, sr2)=self.runPh(case, Xp_cuhd1)
+        if ph:
+            (Xp_cuhd2, sr2)=self.runPh(case, Xp_cuhd1)
         del Xp_cuhd1
-        del Xp_cuhd2
+        if ph:
+            del Xp_cuhd2
         sr1.set_phase(1)
-        sr2.set_phase(2)
-        return (sr1, sr2)
+        if ph:
+            sr2.set_phase(2)
+        if ph:
+            return (sr1, sr2)
+        return (sr1, sr1)
 
     def generate_parameters(self, case: Case, Xp_cuhd=None) -> Parameters:
         import numpy as np
@@ -110,10 +115,10 @@ class Solution:
         ##campaign blockage
         l_c = np.random.choice([2,3,4],C)
         ##quota limitations daily/weekly
-        m_i = np.random.choice([4,5,6],I)#m_i = np.ones((I), dtype='int8')*10
-        n_i = np.random.choice([2,3,4],I)#n_i = np.ones((I), dtype='int8')*10
+        m_i = np.random.choice([4,3,5],I)#m_i = np.ones((I), dtype='int8')*10
+        n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
         ##capacity for channel
-        t_hd = np.random.choice([U*.4, U*.2, U*.3], (H, D))
+        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)
@@ -128,6 +133,8 @@ class Solution:
         return X[:,u,:,:f_d].sum() + s[:,u,:,f_d:].sum() <= b
     def daily_limitation (self, k, X, u, d):
         return X[:,u,:,d].sum() <= k
+    def campaign_limitation(self, l_c, X, c, u):
+        return X[c,u,:,:].sum() <=l_c[c]
     def campaign_limitation_rh(self, l_c, X, s, c, u, f_d):
         return X[c,u,:,:f_d].sum() + s[c,u,:,f_d:].sum() <=l_c[c]
     def weekly_quota(self, m_i, q_ic, X, u):
@@ -158,7 +165,24 @@ class Solution:
         if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
             return False
         return True
-    
+
+    def check_no_rh(self, X, PMS, indicies):
+        if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
+            return False
+        if not self.weekly_limitation(PMS.b, X, indicies[self.u_i]):
+            return False
+        if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
+            return False
+        if not self.campaign_limitation(PMS.l_c, X, indicies[self.c_i],indicies[self.u_i]):
+            return False
+        if not self.weekly_quota(PMS.m_i, PMS.q_ic, X, indicies[self.u_i]):
+                return False
+        if not self.daily_quota(PMS.n_i, PMS.q_ic, X, indicies[self.u_i],indicies[self.d_i]):
+            return False
+        if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
+            return False
+        return True
+
     def objective_fn(self, rp_c, X):
         return np.matmul(rp_c, X.sum(axis=(1,2,3)))
 
