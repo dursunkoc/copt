@@ -25,6 +25,14 @@ class MipCore:
                 for h in range(0,H)) <= PMS.b)
             for u in range(0,U)))
 
+    def mip_weekly_communication(self, mdl, X_cuhd, PMS, C, U, H, D):
+        return mdl.add_constraints((
+            (mdl.sum(X_cuhd[(c,u,h,d)]
+                for d in range(0,D) 
+                for c in range(0,C) 
+                for h in range(0,H)) <= PMS.b)
+            for u in range(0,U)))
+
     def mip_campaign_communication_rh(self, mdl, X_cuhd, PMS, C, U, H, D, f_d):
         return mdl.add_constraints((
             (mdl.sum(X_cuhd[(c,u,h,d)] if d< f_d else PMS.s_cuhd[(c,u,h,d)]
@@ -33,9 +41,26 @@ class MipCore:
             for c in range(0,C)
             for u in range(0,U)))
 
+    def mip_campaign_communication(self, mdl, X_cuhd, PMS, C, U, H, D):
+        return mdl.add_constraints((
+            (mdl.sum(X_cuhd[(c,u,h,d)]
+                for d in range(0,D)
+                for h in range(0,H)) <= PMS.l_c[c] )
+            for c in range(0,C)
+            for u in range(0,U)))
+
     def mip_weekly_quota_rh(self, mdl, X_cuhd, PMS, C, U, H, D, I, f_d):
         return mdl.add_constraints((
             (mdl.sum( (X_cuhd[(c,u,h,d)] if d < f_d else PMS.s_cuhd[(c,u,h,d)]) * PMS.q_ic[i,c]
+                for d in range(0,D)
+                for c in range(0,C)
+                for h in range(0,H)) <= PMS.m_i[i])
+            for u in range(0,U)
+            for i in range(0,I)))
+
+    def mip_weekly_quota(self, mdl, X_cuhd, PMS, C, U, H, D, I):
+        return mdl.add_constraints((
+            (mdl.sum( (X_cuhd[(c,u,h,d)]) * PMS.q_ic[i,c]
                 for d in range(0,D)
                 for c in range(0,C)
                 for h in range(0,H)) <= PMS.m_i[i])
@@ -83,13 +108,16 @@ class MipCore:
         #constraints
         eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
         
-        weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+        if PMS.s_cuhd is not None:
+            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+            campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+            weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
+        else:
+            weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
+            campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
+            weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
 
         daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
-        
-        campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-        
-        weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
 
         daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
 
