@@ -1,46 +1,44 @@
 import numpy as np
 
+
 #seed randomization
 np.random.seed(23)
 
-C = 2 # number of campaigns
-U = 1000 # number of customers.
+C = 10 # number of campaigns
+U = 2000 # number of customers.
 H = 3 # number of channels.
 D = 7 # number of planning days.
 I = 3 # number of quota categories.
 P = 3 # number of priority categories.
 
 #Parameters
-
+s_cuhd = np.zeros((C,U,H,D))
 ##eligibility
 e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
-p_x_cud = np.random.choice(2,(C,U,D)) 
-
-##previous period planning
-s_cuhd = np.random.choice(2,(C,U,H,D))
-
 ##quota categories
 q_ic = np.random.choice(2, (I,C)) #q_ic = np.zeros((I,C), dtype='int8')
-
 ##priority categories
 r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
 rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
-
 ##blokage
 b = 7
-
 ##daily blokage
 k = 3
-
 ##campaign blockage
 l_c = np.random.choice([2,3,4],C)
-
 ##quota limitations daily/weekly
 m_i = np.random.choice([4,3,5],I)#m_i = np.ones((I), dtype='int8')*10
 n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
-
 ##capacity for channel
 t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
+e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
+m_i_X = np.stack([m_i for _ in range(U)], axis=1)
+n_i_X = np.stack([n_i for _ in range(U)], axis=1)
+
+
+##eligibility
+p_x_cud = np.random.choice(2,(C,U,D)) 
+
 
 #Constraint Functions
 eligibility = lambda X, c, u, h, d: X[c,u,h,d]<=e_cu[c,u]
