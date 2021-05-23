@@ -64,15 +64,14 @@ class Solution:
     def __init__(self, name: str):
         self.name = name
 
-    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
-        #TODO solve with a solution algorith
-        parameters = self.generate_parameters(case, Xp_cuhd)
-#        print(parameters)
-        duration = 10
-        value = 2.1
-        return SolutionResult(case, value, duration)
+#    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
+#        parameters = self.generate_parameters(case, Xp_cuhd)
+##        print(parameters)
+#        duration = 10
+#        value = 2.1
+#        return SolutionResult(case, value, duration)
 
-    def run(self, case:Case, ph=True)->SolutionResult:
+    def run(self, case:Case, ph)->SolutionResult:
         (Xp_cuhd1, sr1)=self.runPh(case,None)
         if ph:
             (Xp_cuhd2, sr2)=self.runPh(case, Xp_cuhd1)
@@ -84,7 +83,7 @@ class Solution:
             sr2.set_phase(2)
         if ph:
             return (sr1, sr2)
-        return (sr1, sr1)
+        return (sr1,sr1)
 
     def generate_parameters(self, case: Case, Xp_cuhd=None) -> Parameters:
         import numpy as np
@@ -100,7 +99,7 @@ class Solution:
         if Xp_cuhd is not None:
             s_cuhd = Xp_cuhd
         else:
-            s_cuhd = None#np.zeros((C,U,H,D))
+            s_cuhd = np.zeros((C,U,H,D))
         ##eligibility
         e_cu = np.random.choice(2,(C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##quota categories

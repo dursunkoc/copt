@@ -58,7 +58,7 @@
 \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
 
 \title{Campaign Optimization under Communication Limitations \\}
-\author{Dursun KOC $^{a}$ \\ 
+\author{Dursun Koc $^{a}$ \\ 
 	e-mail: dursun.koc@turkcell.com.tr, \\\\
 	Dilek Gunnec $^{a}$ \\ 
 	e-mail: dilek.gunnec@ozyegin.edu.tr, ORCID ID: 0000-0002-0749-2584 \\\\
@@ -181,7 +181,8 @@ In this section, we present a mixed integer programming model for the campaign o
 \sum\limits_{u\in \mathcal{U}}
 \sum\limits_{h\in \mathcal{H}}
 \sum\limits_{d\in \mathcal{D}}
-X_{{c}{u}{h}{d}} \cdot r_{{c}{p}} \label{mathmodel_obj}&\\
+X_{{c}{u}{h}{d}} \cdot r_{{c}{p}} \label{mathmodel_obj}&
+\\
 \text{subject to} \notag\\
 &X_{{c}{u}{h}{d}} \leq e_{{c}{u}},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D} \label{mathmodel_eligibility}&\\
 &\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq 1, &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall d \in \mathcal{D} \label{mathmodel_singlechannel}&\\
@@ -212,7 +213,7 @@ X_{{c}{u}{h}{d}} \cdot r_{{c}{p}} \label{mathmodel_obj}&\\
 &X_{{c}{u}{h}{d}} \in \{0,1\},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D} \label{mathmodel_integrity}
 \end{align}\\
 
-The objective function \eqref{mathmodel_obj} maximizes campaign communication regarding the campaign priority. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed when the customer is eligible for the campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} defines an upper-bound for total number of communication to each customer for the whole period; and constraints from \eqref{mathmodel_percustomercommlimit_rh1} to \eqref{mathmodel_percustomercommlimit_rh6} extends the upper-bound for total number of communication to each customer regarding the previous period. Constraints \eqref{mathmodel_percustomercommlimit_day} defines an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} defines an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints from \eqref{mathmodel_percustomercamplimit_rh1} to \eqref{mathmodel_percustomercamplimit_rh6} extends the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are group by their marketing purpose, and for each of these groups we have combined limitations, constraints \eqref{mathmodel_weeklyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ stands for if the campaign $c$ is in the $i$ category. Likewise constraints from \eqref{mathmodel_weeklyquotalimit_rh1} to \eqref{mathmodel_weeklyquotalimit_rh6} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that our variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
+The objective function \eqref{mathmodel_obj} maximizes campaign communication regarding the campaign priority. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed when the customer is eligible for the campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} defines an upper-bound for total number of communication to each customer for the whole period; and constraints from \eqref{mathmodel_percustomercommlimit_rh1} to \eqref{mathmodel_percustomercommlimit_rh6} extends the upper-bound for total number of communication to each customer regarding the previous period. Constraints \eqref{mathmodel_percustomercommlimit_day} defines an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} defines an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints from \eqref{mathmodel_percustomercamplimit_rh1} to \eqref{mathmodel_percustomercamplimit_rh6} extends the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are group by their marketing purpose, and for each of these groups we have combined limitations, constraints \eqref{mathmodel_weeklyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ stands for if the campaign $c$ is in the $i$ category. Likewise constraints from \eqref{mathmodel_weeklyquotalimit_rh1} to \eqref{mathmodel_weeklyquotalimit_rh6} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that the variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
 
 Due to its complexity, large instances of the campaign optimization problem may not be solved quickly by using exact methods. To support time to market objectives of marketing teams, we developed a heuristic approach that can attain high-quality solutions within a reasonable duration.
 
@@ -221,7 +222,10 @@ Due to its complexity, large instances of the campaign optimization problem may 
 
 \section{Solution Method: A Greedy Heuristic}  \label{s:solution-method}
 
-In this section, we describe a Greedy based heuristic developed to solve the campaign optimization problem described in \ref{s:problem-desc}. In general a greedy algorithm heuristic is based on the selection of the best available choice. In a classical knapsack problem, where we need to fill a bag with some stuff; and each stuff has a weight $w$ and a value $v$. We need to decide on which items to be put on the bag, or shall we put the $i^{th}$ item on the bag or not $X_{i}$, by not exceeding the capacity $C$ and gaining the maximum value. The mathematical formulation can expressed as following;
+In this section, we describe a Greedy based heuristic developed to solve the campaign optimization problem described in \ref{s:problem-desc}. First at \S \ref{s:greedy_heuristic_basic} we will implement a basis greedy heuristic which considers only the campaign priority, later at \S \ref{s:greedy_heuristic_improved} we will improve greedy heuristic to consider the number of assignable slot beside campaign priority.
+
+\subsection{Basis Greedy Heuristic} \label{s:greedy_heuristic_basic}
+In general a greedy algorithm heuristic is based on the selection of the best available choice. In a classical knapsack problem, where we need to fill a bag with some stuff; and each stuff has a weight $w$ and a value $v$. We need to decide on which items to be put on the bag, or shall we put the $i^{th}$ item on the bag or not $X_{i}$, by not exceeding the capacity $C$ and gaining the maximum value. The mathematical formulation can expressed as following;
 \begin{align*}
 \text{Maximize} & \displaystyle
 \sum\limits_{i\in \mathcal{I}} X_{i} \cdot v_{i} \label{knapsack_mathmodel_obj}&\\
@@ -250,10 +254,10 @@ $b \gets 0$\;
 }
 \Return{$X$}\;
 \caption{Greedy Algorithm for a classical Knapsack Problem}
-\label{algo:change}
+\label{algo:generic_greedy}
 \end{algorithm}\\
 
-We use the following greedy algorithm to solve the campaign optimization problem described in \ref{s:problem-desc}.
+We use the following greedy algorithm to solve the campaign optimization problem described in \ref{s:problem-desc}. Greedy algorithm - 1 is tries to assign to most important campaign to every possible slot; without any reference to the unit value.
 
 \begin{algorithm}[H]
 \KwIn{A set $c\in\mathcal{C}$ of campaigns}
@@ -270,7 +274,103 @@ Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p
             \For{$u \gets 1$ \textbf{to} $U$}{
                  $X_{cuhd} \gets 1$\;
 \\
-                $EQ$ \gets Equations containing $X_{cuhd}$ 
+                $EQ$ \gets \text{EquationsContaining}($X_{cuhd}$)
+\\
+                 \If{not $EQ$ \text{satisfied}} {
+                    $X_{cuhd} \gets 0$\;
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{Greedy Heuristic for Campaign Optimization}
+\label{algo:greedy_impl1}
+\end{algorithm}\\
+
+In order to find better solution, we improved our understanding of prior campaigns by implementing an linear programming model of the problem. In this model we try to find the number of person for each campaign for each day with in limitations.
+
+\subsection{Mathematical Model for assignable number for each campaign} \label{s:problem-math-lp}
+
+In this section, we present a linear programming model for the campaign optimization problem described at \S \ref{s:problem-desc}, but this time instead of assigning specific customers to specific campaigns, we will investigate how many customer can be assigned, later that we will improve our greedy heuristic. We first introduce the notation and then present the mathematical model for LP. Note that following model is not considering the rolling horizon.\\
+% General Math Model
+\noindent \textbf{Sets}\\
+
+\noindent ${\mathcal{C}}$: set of campaigns. \\
+\noindent ${\mathcal{D}}$: set of planning days. \\
+\noindent ${\mathcal{I}}$: set of quota categories. \\
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $Y_{{c}{d}}$, number of customers that will receive message about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
+($\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ )\\
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{c}$, number of customers eligible for campaign $c \in \mathcal{C}$.
+($\forall c \in \mathcal{C}$)\\
+
+\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in $i \in \mathcal{I}$ quota category, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent $b$ communication limit per customer $u \in \mathcal{U}$ for the whole period.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent $k$ communication limit per customer $u \in \mathcal{U}$ at each day.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent $l_{c}$ communication limit per customer $u \in \mathcal{U}$ for campaign $c \in \mathcal{C}$.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$)\\
+
+\noindent $m_{i}$ communication limit per customer $u \in \mathcal{U}$ for $i \in \mathcal{I}$ quota category for the whole period.
+($\forall u \in \mathcal{U}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent $n_{i}$ communication limit per customer $u \in \mathcal{U}$ for $i \in \mathcal{I}$ quota category at each day.
+($\forall d \in \mathcal{D}$, $\forall u \in \mathcal{U}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent The formulation for the campaign optimization is presented next.
+
+\begin{align}
+\text{Maximize} & \displaystyle
+\sum\limits_{c\in \mathcal{C}}
+\sum\limits_{d\in \mathcal{D}}
+Y_{{c}{d}} \label{mathmodel2_obj}&
+\\
+\text{subject to} \notag\\
+&\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq l_{c} \cdot e_{c}, &&&\forall c \in \mathcal{C} \label{mathmodel2_campaignlimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \cdot q_{{i}{c}} \leq q_{{i}{c}} \cdot e_{c} \cdot m_{i}, &&&\forall i \in \mathcal{I} \label{mathmodel2_weeklyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}Y_{{c}{d}} \cdot q_{{i}{c}} \leq q_{{i}{c}} \cdot e_{c} \cdot n_{i}, &&&\forall d \in \mathcal{D}, \forall i \in \mathcal{I} \label{mathmodel2_dailyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq e_{c} \cdot b, \label{mathmodel2_weeklylimit}&\\
+&\sum\limits_{c\in\mathcal{C}}Y_{{c}{d}} \leq e_{c} \cdot k, &&&\forall d \in \mathcal{D}\label{mathmodel2_dailylimit}&\\
+&Y_{{c}{d}} \geq 0,&&&\forall c \in \mathcal{C}, \forall d \in \mathcal{D} \label{mathmodel2_positive}
+\end{align}\\
+
+The objective function \eqref{mathmodel2_obj} maximizes number of campaign communication. Constraints \eqref{mathmodel2_campaignlimit} ensures that the number of communication for each campaign can not exceeds the number of eligible customers for the campaign regarding the campaign limit. Constraints \eqref{mathmodel2_weeklyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups for the whole period. $q_{{i}{c}}$ stands for if the campaign $c$ is in the $i$ category. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups for a specific day. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensures that the number of communications in total are not exceeded weekly and daily limits respectively; and finally constraint \eqref{mathmodel2_positive} ensures that the variable $Y_{{c}{d}}$ is a positive number.\\
+
+\subsection{Greedy Heuristic improved by LP} \label{s:greedy_heuristic_improved}
+In this section we show the way we improved the greedy heuristic using the LP described at \S \ref{s:problem-math-lp}. The $Y_{{c}{d}}$ values from the \S \ref{s:problem-math-lp} give us a clue how much a campaign can get hit, and by $Y_{{c}{d}}\cdot r_{{c}{p}}$, we get an expected priority value. So we get a more robust best available choice than bare $r_{{c}{p}}$ value.\\
+%Another improvement point is to sort the customer by their assignments, 
+
+\begin{algorithm}[H]
+\KwIn{A set $c\in\mathcal{C}$ of campaigns}
+\KwIn{A set $u\in\mathcal{U}$ of customers}
+\KwIn{A set $h\in\mathcal{H}$ of channels}
+\KwIn{A set $d\in\mathcal{D}$ of days}
+\KwOut{A list of $X_{{c}{u}{h}{d}}$, such that equations from \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\\
+$Y_{{c}{d}}$ \gets \textbf{Solve LP Model} \eqref{mathmodel2_obj} to \eqref{mathmodel2_positive}
+\\
+\For{$d \gets 1$ \textbf{to} $D$}{
+\\
+Order and reindex campaigns $c\in\mathcal{C}$ so that $Y_{{c_{1}}{d}} \cdot r_{c_{1}p} \geq Y_{{c_{2}}{d}} \cdot r_{c_{2}p}$
+\\
+    \For{$c \gets 1$ \textbf{to} $C$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+        Order and reindex customers $u\in\mathcal{U}$ so that $\sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{1}}{h}{d}} \leq \sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{2}}{h}{d}}$
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 $X_{cuhd} \gets 1$\;
+\\
+                $EQ$ \gets \text{Equations containing}($X_{cuhd}$)
 \\
                  \If{not $EQ$ satisfied} {
                     $X_{cuhd} \gets 0$\;
@@ -280,7 +380,7 @@ Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p
     }
 }
 \Return{$X$}\;
-\caption{Greedy Algorithm for Campaign Optimization}
+\caption{Greedy Algorithm - 2 for Campaign Optimization}
 \label{algo:change}
 \end{algorithm}\\
 
@@ -292,12 +392,22 @@ All computations were performed on a computer with 64-bit Windows 10 operating s
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Test Cases} \label{test_cases}
-
+Table \ref{table:tbl_test_instances} shows the cases we tested our algorithms described at \S \ref{s:solution-method}. Cases from 1 to 4 can be regarded as low profile problems, cases from 5 to 9 can be seen as medium profile problems, and cases from 10 to 14 can be seen as high profile problems. A real world scenario can be 7 times bigger than the case 14. In our test machine, problems bigger than 14 cannot be executed, even case 11 is also become hard enough to blow up the environment.\\
+We executed three sets of these test cases, and each of these there sets we run a cplex MIP model to find the exact solution to the problem, later we execute our code for greedy heuristic, and finally we execute our code for linear programming relaxation heuristic. 
 \begin{table}[htb]
     \centering
     \caption[Short Caption for LoT]{Test cases for campaign optimization problem}\label{table:tbl_test_instances}
 \csvautobooktabular{test_instances.csv}
 \end{table}
+
+\subsection{Results: Performance of the Greedy Heuristic and LP Relaxation Heuristic} \label{test_evaluation}
+Table-\ref{table:tbl_test_obj_diff_no_rh} and figure-\ref{fig:fig_value_diff_no_rh} shows the objective values of basis greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_no_rh} and figure-\ref{fig:fig_durations_no_rh} show how fast they executes.
+For exact solution provided by cplex MIP solver the duration is exponentially increase as the problem size increases, and that increase become evident after case-12. Objective value difference for LP-relaxation heuristic is almost invisible; however the objective value difference for basis greedy heuristic has more variations.\\
+
+We executed test case with rolling horizon perspective as well, table-\ref{table:tbl_test_obj_diff_with_rh_ph2} and figure-\ref{fig:fig_value_diff_with_rh} shows the objective values of basis greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_with_rh_ph2} and figure-\ref{fig:fig_durations_with_rh} show how fast they executes. Both performance figures and objective value differences are compatible with the ones with no rolling horizon values.\\
+
+We executed test cases to test our greedy heuristic described at \S \ref{s:greedy_heuristic_improved}, table-\ref{table:tbl_test_obj_diff_bett_no_rh} and figure-\ref{fig:fig_value_diff_bett_no_rh} shows the objective values of improved greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_bett_no_rh} and figure-\ref{fig:fig_durations_bett_no_rh} show how fast they executes. Improved seems to be worked as difference at case-12 dropped from around \%16 to \%5.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -306,7 +416,6 @@ All computations were performed on a computer with 64-bit Windows 10 operating s
     \clearpage% Flush earlier floats (otherwise order might not be correct)
     \thispagestyle{empty}% empty page style (?)
     \begin{landscape}% Landscape page
-        \subsection{Results: Performance of the Greedy Heuristic} \label{test_evaluation}
         \begin{table}[htb]
                 \centering
                 \caption[Short Caption for LoT]{Durations-No Rolling Horizon Constraints}\label{table:tbl_test_durations_no_rh}
@@ -330,40 +439,54 @@ All computations were performed on a computer with 64-bit Windows 10 operating s
             \caption{\% Objective Value Differentiation-No Rolling Horizon Constraints}
             \label{fig:fig_value_diff_no_rh}
         \end{figure}
-
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{Durations at Phase-1 With Rolling Horizon Constraints}\label{table:tbl_test_durations_with_rh_ph1}
-            \csvautobooktabular{test_results_durations_with_rh_ph1.csv}
-        \end{table}
+\newpage
         \begin{table}[htb]
                 \centering
                 \caption[Short Caption for LoT]{Durations at Phase-2 With Rolling Horizon Constraints}\label{table:tbl_test_durations_with_rh_ph2}
             \csvautobooktabular{test_results_durations_with_rh_ph2.csv}
         \end{table}
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Value Differentiation at Phase-2 with Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_with_rh_ph1}
-            \csvautobooktabular{test_results_objective_diff_with_rh_ph1.csv}
-        \end{table}
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Value Differentiation at Phase-2 with Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_with_rh_ph2}
-            \csvautobooktabular{test_results_objective_diff_with_rh_ph2.csv}
-        \end{table}
-\newpage
+        
         \begin{figure}[htp]
             \centering
             \includegraphics[width=20cm]{durations_with_rh}
             \caption{Durations with Rolling Horizon Constraints}
             \label{fig:fig_durations_with_rh}
         \end{figure}
-
+        
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{\% Objective Value Differentiation at Phase-2 with Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_with_rh_ph2}
+            \csvautobooktabular{test_results_objective_diff_with_rh_ph2.csv}
+        \end{table}
         \begin{figure}[htp]
             \centering
             \includegraphics[width=20cm]{value_diff_with_rh}
             \caption{\% Objective Value Differentiation}
-            \label{fig:fig_durations_with_rh}
+            \label{fig:fig_value_diff_with_rh}
+        \end{figure}
+\newpage
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{Durations After Betterment-No Rolling Horizon Constraints}\label{table:tbl_test_durations_bett_no_rh}
+            \csvautobooktabular{test_results_durations_bett_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{durations_bett_no_rh}
+            \caption{Durations After Betterment-No Rolling Horizon Constraints}
+            \label{fig:fig_durations_bett_no_rh}
+        \end{figure}
+
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{\% Objective Value Differentiation After Betterment-No Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_bett_no_rh}
+            \csvautobooktabular{test_results_objective_diff_bett_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{value_diff_bett_no_rh}
+            \caption{\% Objective Value Differentiation After Betterment-No Rolling Horizon Constraints}
+            \label{fig:fig_value_diff_bett_no_rh}
         \end{figure}
     \end{landscape}
     \clearpage% Flush page

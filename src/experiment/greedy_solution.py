@@ -20,18 +20,22 @@ class GreedySolution(Solution):
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
-        mdl, Y = camps_order_model(C, D, I, PMS.l_c, PMS.q_ic, PMS.m_i, PMS.n_i)
+        mdl, Y = camps_order_model(C, D, I, PMS)
         camps_order_result = mdl.solve()
 
-        for d in range(D):#[::-1]:#trange(D, desc=f"Days Loop for campaign-{c}"):
-            camp_order = [(int(camps_order_result.get_var_value(Y[(c,d)])*1000)+PMS.l_c[c]) for c in range(C)]
-            for c in tqdm(np.argsort(-(PMS.rp_c*camp_order)), desc="Campaigns Loop"):
-                #try to sort customer with e_cu - X_cuhd # of avaliable campaigns for customer, we should assign first customer who do not have much option.
+        camp_order = np.array(
+            [
+                [(camps_order_result.get_var_value(Y[(c,d)])) for c in range(C)]
+            for d in range(D)]
+            , dtype='int')
+        camp_prio = (camp_order) * PMS.rp_c
+        for c in tqdm(np.lexsort((-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
+            for d in range(D):
                 Ur = X_cuhd.sum(axis=(0,2,3)).argsort()
-                for u in Ur[::-1]:#range(U):
+                for u in Ur[::-1]:
                     for h in range(H):
                         X_cuhd[c,u,h,d]=1
-                        if not self.check_no_rh(X_cuhd, PMS, (c, u, h, d)):
+                        if not self.check(X_cuhd, PMS, (c, u, h, d)):
                             X_cuhd[c,u,h,d]=0
         end_time = time()
         value=self.objective_fn(PMS.rp_c, X_cuhd)
@@ -40,25 +44,30 @@ class GreedySolution(Solution):
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
-            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
-            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
-            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
-            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
-            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
-            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
+#            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
+#            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
+#            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
+#            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
+#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+#            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
+#            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
+#            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
             Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),#13
             Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})#14
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution(), False)
-    for solution in solutions:
-        print(solution)
+    print("values:")
+#    print(" ".join([str(v.value) for v in [c for solution in solutions for c in solution]]))
+    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
+    print("durations:")
+#    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
+    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+
 #
 #<case: {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 12180, duration: 0.3595>
 #<case: {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 340699, duration: 6.0798>
@@ -198,3 +207,83 @@ if __name__ == '__main__':
 #({'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 4800274, 'duration': 2534.8457}
 #, {'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 4800274, 'duration': 1474.5264}
 #)
+
+#
+##After Fix
+#({'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 13083, 'duration': 0.1159}
+#, {'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 13083, 'duration': 0.1159}
+#)
+#({'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11964, 'duration': 0.1693}
+#, {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11964, 'duration': 0.1693}
+#)
+#({'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 62616, 'duration': 0.2474}
+#, {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 62616, 'duration': 0.2474}
+#)
+#({'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 47806, 'duration': 1.689}
+#, {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 47806, 'duration': 1.689}
+#)
+#({'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 313771, 'duration': 2.7625}
+#, {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 313771, 'duration': 2.7625}
+#)
+#({'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 687984, 'duration': 6.7322}
+#, {'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 687984, 'duration': 6.7322}
+#)
+#({'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1555894, 'duration': 8.8569}
+#, {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1555894, 'duration': 8.8569}
+#)
+#({'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1102844, 'duration': 14.9555}
+#, {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1102844, 'duration': 14.9555}
+#)
+#({'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1716160, 'duration': 19.6974}
+#, {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1716160, 'duration': 19.6974}
+#)
+#({'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 5291782, 'duration': 226.9922}
+#, {'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 5291782, 'duration': 226.9922}
+#)
+#({'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 3339926, 'duration': 1521.3785}
+#, {'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 3339926, 'duration': 1521.3785}
+#)
+#({'case': {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11467206, 'duration': 3485.0269}
+#, {'case': {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11467206, 'duration': 3485.0269}
+#)
+#({'case': {'C': 20, 'U': 40000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 25556643, 'duration': 8933.781}
+#, {'case': {'C': 20, 'U': 40000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 25556643, 'duration': 8933.781}
+#)
+#({'case': {'C': 20, 'U': 50000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 20915792, 'duration': 7938.3072}
+#, {'case': {'C': 20, 'U': 50000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 20915792, 'duration': 7938.3072}
+#)
+
+
+
+#({'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 13083, 'duration': 0.1538}
+#, {'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 13083, 'duration': 0.1004}
+#)
+#({'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11964, 'duration': 0.2005}
+#, {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 11964, 'duration': 0.2001}
+#)
+#({'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 62616, 'duration': 0.3004}
+#, {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 62616, 'duration': 0.2852}
+#)
+#({'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 47806, 'duration': 1.6795}
+#, {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 47806, 'duration': 1.6732}
+#)
+#({'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 313771, 'duration': 2.7229}
+#, {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 313771, 'duration': 2.6702}
+#)
+#({'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 687984, 'duration': 6.4081}
+#, {'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 687984, 'duration': 6.4945}
+#)
+#({'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1555894, 'duration': 8.6748}
+#, {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 1555894, 'duration': 8.7125}
+#)
+#({'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1102844, 'duration': 14.9939}
+#, {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 1102844, 'duration': 14.8641}
+#)
+#({'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1716160, 'duration': 19.4305}
+#, {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 1716160, 'duration': 19.2857}
+#)
+#({'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 5291782, 'duration': 236.2984}
+#, {'case': {'C': 20, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 5291782, 'duration': 231.6517}
+#)
+#({'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 3339926, 'duration': 1524.5995}
+#, {'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 2, 'value': 3339926, 'duration': 1508.7853}
