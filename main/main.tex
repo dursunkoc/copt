@@ -220,9 +220,9 @@ Due to its complexity, large instances of the campaign optimization problem may 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Solution Method: A Greedy Heuristic}  \label{s:solution-method}
+\section{Solution Methods}  \label{s:solution-method}
 
-In this section, we describe a Greedy based heuristic developed to solve the campaign optimization problem described in \ref{s:problem-desc}. First at \S \ref{s:greedy_heuristic_basic} we will implement a basis greedy heuristic which considers only the campaign priority, later at \S \ref{s:greedy_heuristic_improved} we will improve greedy heuristic to consider the number of assignable slot beside campaign priority.
+In this section, we describe three heuristic, first two are based on greedy heuristic, and the third is based on the linear programming relaxation heuristic. First at \S \ref{s:greedy_heuristic_basic} we will implement a basis greedy heuristic which considers only the campaign priority, later at \S \ref{s:greedy_heuristic_improved} we will improve greedy heuristic to consider the number of assignable slot beside campaign priority, and finally at \S \ref{s:lp_relaxation_heuristic} we will solve the model by LP-Relaxation heuristic by defining $X_{{c}{d}{h}{d}}$ as a real number between 0 and 1.
 
 \subsection{Basis Greedy Heuristic} \label{s:greedy_heuristic_basic}
 In general a greedy algorithm heuristic is based on the selection of the best available choice. In a classical knapsack problem, where we need to fill a bag with some stuff; and each stuff has a weight $w$ and a value $v$. We need to decide on which items to be put on the bag, or shall we put the $i^{th}$ item on the bag or not $X_{i}$, by not exceeding the capacity $C$ and gaining the maximum value. The mathematical formulation can expressed as following;
@@ -290,7 +290,12 @@ Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p
 
 In order to find better solution, we improved our understanding of prior campaigns by implementing an linear programming model of the problem. In this model we try to find the number of person for each campaign for each day with in limitations.
 
-\subsection{Mathematical Model for assignable number for each campaign} \label{s:problem-math-lp}
+
+\subsection{Greedy Heuristic improved by LP} \label{s:greedy_heuristic_improved}
+In this section we show the way we improved the greedy heuristic using the LP described at \S \ref{s:problem-math-lp}. The $Y_{{c}{d}}$ values from the \S \ref{s:problem-math-lp} give us a clue how much a campaign can get hit, and by $Y_{{c}{d}}\cdot r_{{c}{p}}$, we get an expected priority value. So we get a more robust best available choice than bare $r_{{c}{p}}$ value.\\
+%Another improvement point is to sort the customer by their assignments, 
+
+\subsubsection{Mathematical Model for assignable number for each campaign} \label{s:problem-math-lp}
 
 In this section, we present a linear programming model for the campaign optimization problem described at \S \ref{s:problem-desc}, but this time instead of assigning specific customers to specific campaigns, we will investigate how many customer can be assigned, later that we will improve our greedy heuristic. We first introduce the notation and then present the mathematical model for LP. Note that following model is not considering the rolling horizon.\\
 % General Math Model
@@ -347,9 +352,6 @@ Y_{{c}{d}} \label{mathmodel2_obj}&
 
 The objective function \eqref{mathmodel2_obj} maximizes number of campaign communication. Constraints \eqref{mathmodel2_campaignlimit} ensures that the number of communication for each campaign can not exceeds the number of eligible customers for the campaign regarding the campaign limit. Constraints \eqref{mathmodel2_weeklyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups for the whole period. $q_{{i}{c}}$ stands for if the campaign $c$ is in the $i$ category. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draws a limitation on the number of communications about campaigns that fell in specific groups for a specific day. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensures that the number of communications in total are not exceeded weekly and daily limits respectively; and finally constraint \eqref{mathmodel2_positive} ensures that the variable $Y_{{c}{d}}$ is a positive number.\\
 
-\subsection{Greedy Heuristic improved by LP} \label{s:greedy_heuristic_improved}
-In this section we show the way we improved the greedy heuristic using the LP described at \S \ref{s:problem-math-lp}. The $Y_{{c}{d}}$ values from the \S \ref{s:problem-math-lp} give us a clue how much a campaign can get hit, and by $Y_{{c}{d}}\cdot r_{{c}{p}}$, we get an expected priority value. So we get a more robust best available choice than bare $r_{{c}{p}}$ value.\\
-%Another improvement point is to sort the customer by their assignments, 
 
 \begin{algorithm}[H]
 \KwIn{A set $c\in\mathcal{C}$ of campaigns}
@@ -384,6 +386,43 @@ Order and reindex campaigns $c\in\mathcal{C}$ so that $Y_{{c_{1}}{d}} \cdot r_{c
 \label{algo:change}
 \end{algorithm}\\
 
+\subsection{LP-relaxation Heuristic} \label{s:lp_relaxation_heuristic}
+In this section, we convert the model described at \S \ref{s:problem-math} to a linear programming model by just converting constraint \eqref{mathmodel_integrity} to $&X_{{c}{u}{h}{d}} \in [0,1],&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply the following heuristic algorithm to find a solution.\\
+\begin{algorithm}[H]
+\KwIn{A set $c\in\mathcal{C}$ of campaigns}
+\KwIn{A set $u\in\mathcal{U}$ of customers}
+\KwIn{A set $h\in\mathcal{H}$ of channels}
+\KwIn{A set $d\in\mathcal{D}$ of days}
+\KwOut{A list of $X_{{c}{u}{h}{d}}$, such that equations from \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\\
+$X_{{c}{u}{h}{d}}$ \gets \textbf{Solve LP Model} \eqref{mathmodel_obj} to \eqref{mathmodel_integrity}
+\\
+\For{$d \gets 1$ \textbf{to} $D$}{
+\\
+Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p}$
+\\
+    \For{$c \gets 1$ \textbf{to} $C$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 \If{$X_{cuhd}>0$ and $X_{cuhd}<1$}{
+                $X_{cuhd} \gets 1$\;
+\\
+                $EQ$ \gets \text{EquationsContaining}($X_{cuhd}$)
+\\
+                 \If{not $EQ$ satisfied} {
+                    $X_{cuhd} \gets 0$\;
+                 }
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{LP-Relaxation With Greedy Approach for Campaign Optimization}
+\label{algo:change}
+\end{algorithm}\\
+
+
 \section{Computational Study} \label{num-analysis}
 
 In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test cases in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{test_evaluation}.
@@ -406,7 +445,7 @@ For exact solution provided by cplex MIP solver the duration is exponentially in
 
 We executed test case with rolling horizon perspective as well, table-\ref{table:tbl_test_obj_diff_with_rh_ph2} and figure-\ref{fig:fig_value_diff_with_rh} shows the objective values of basis greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_with_rh_ph2} and figure-\ref{fig:fig_durations_with_rh} show how fast they executes. Both performance figures and objective value differences are compatible with the ones with no rolling horizon values.\\
 
-We executed test cases to test our greedy heuristic described at \S \ref{s:greedy_heuristic_improved}, table-\ref{table:tbl_test_obj_diff_bett_no_rh} and figure-\ref{fig:fig_value_diff_bett_no_rh} shows the objective values of improved greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_bett_no_rh} and figure-\ref{fig:fig_durations_bett_no_rh} show how fast they executes. Improved seems to be worked as difference at case-12 dropped from around \%16 to \%5.
+We executed test cases to test our greedy heuristic described at \S \ref{s:greedy_heuristic_improved}, table-\ref{table:tbl_test_obj_diff_bett_no_rh} and figure-\ref{fig:fig_value_diff_bett_no_rh} shows the objective values of improved greedy, and LP-relaxation heuristics are differ from the exact solutions objective value, and table-\ref{table:tbl_test_durations_bett_no_rh} and figure-\ref{fig:fig_durations_bett_no_rh} show how fast they executes. Improved seems to be worked as difference at case-12 dropped from around \%16 to \%5, and case-10 dropped from around \%4 to \%.2.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -498,13 +537,8 @@ We executed test cases to test our greedy heuristic described at \S \ref{s:greed
 \newpage
 
 \section{Conclusion} \label{s:conclusion}
-
-%In this study, we focus on planning post-disaster infrastructure repair operations by considering interdependencies among different infrastructure networks. Since the functionality of a network component may affect the functionality of other components in the same or different networks, it is important to prioritize repairing critical damaged network components whose functionality may have significant effects on recovery times. We define a new post-disaster network recovery problem, which addresses coordinated routing of repair teams that visit the sites with damaged network components in multiple infrastructures to minimize total recovery times. We present a mathematical model and a practical simulated annealing heuristic to determine the order of repairs for each team. To test the proposed methods, we present a computational study by focusing on a setting with two interdependent infrastructure networks, such as power and gas. 
-
-
-%{\color{blue} This study contributes to the literature in three main ways. First, we introduce a new coordinated post-disaster repair routing problem that incorporates functional interdependencies among multiple lifeline infrastructures. We show that ignoring such interdependencies can cause significant delays in infrastructure recovery times, which may affect survival and well-being of affected people. Secondly, we develop a novel mathematical model, which supports effective prioritization of repairing damaged network components by simultaneously considering infrastructure interdependencies, network travel times, component repair times, as well as the importance of components, which may represent the number of people that can be served once a node starts functioning or the criticality of services provided (e.g., providing electricity to the hospitals). Finally, given the limitations of the mathematical model to solve large size problem instances, we present an efficient simulated annealing metaheuristic that can find high quality solutions for realistic size instances in reasonable times. We design and test intensification and diversification strategies to improve the solution performance of the proposed algorithm.  Our computational results suggest that our metaheuristic, which incorporates an optimization model to address complexities brought by the interdependency structure in our problem, can solve a variety of instances with different characteristics effectively and support making coordinated repair planning after a disaster. In summary, our study makes a theoretical contribution to both disaster management and synchronized vehicle routing literature by defining a new coordinated routing problem that addresses interdependencies among infrastructure networks and a methodological contribution by formulating and solving a difficult optimization problem effectively. Our findings can also facilitate the coordination of post-disaster infrastructure repair efforts in practice.}
-
-%Future research can focus on developing alternative solution methods for the proposed coordinated repair routing problem. Moreover, while the proposed problem assumes identical repair teams, in reality, the size and capabilities of repair teams may be different. Future research can extend the proposed problem by incorporating decisions related to developing repair plans in a setting where repair times of damaged components are affected by the size and capabilities of the repair teams.
+In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
+Future research can focus on developing alternative solution methods for the proposed campaign optimization problem. Moreover, proposed problem does not offer a target audience optimization considering the network effect between people. Future research can extend the proposed problem by adding more constraint to cover whole customer network to utilize the communication between people.
 
 \newpage
 
