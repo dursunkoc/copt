@@ -29,7 +29,7 @@ class GreedySolution(Solution):
             for d in range(D)]
             , dtype='int')
         camp_prio = (camp_order) * PMS.rp_c
-        for c in tqdm(np.lexsort((-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
+        for c in tqdm(np.lexsort((-camp_prio.sum(axis=0),-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
             for d in range(D):
                 Ur = X_cuhd.sum(axis=(0,2,3)).argsort()
                 for u in Ur[::-1]:
@@ -55,9 +55,11 @@ if __name__ == '__main__':
 #            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
-#            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
+            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
             Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),#13
-            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})#14
+            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3}),#14
+            Case({"C":30,"U":50000,"H":3, "D":7, "I":3, "P":3}),#16
+            Case({"C":30,"U":60000,"H":3, "D":7, "I":3, "P":3}),#17
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution(), False)
@@ -67,6 +69,12 @@ if __name__ == '__main__':
     print("durations:")
 #    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
     print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+
+#values:
+#      12       13       14      15       16
+#10695153 26444633 22234891 7980451 40457511
+#durations:
+#2762.8905 4503.8672 5476.4454 7969.1873 10612.9251
 
 #
 #<case: {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 12180, duration: 0.3595>

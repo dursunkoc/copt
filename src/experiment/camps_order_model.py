@@ -15,33 +15,33 @@ def start_model(C, D, I, PMS):
             for d in range(0,D)}
     mdl.maximize(mdl.sum([Y[(c,d)]
                   for c in range(0,C)
-                  for d in range(0,D)]))
+                  for d in range(0,D)])) #29
     mdl.add_constraints(
             (mdl.sum(Y[(c,d)] for d in range(0,D)) <= L_c[c] )
-            for c in range(0,C))
+            for c in range(0,C))#30
 
     mdl.add_constraints((
             (mdl.sum(Y[(c,d)]* PMS.q_ic[i,c]
                 for d in range(0,D)
                 for c in range(0,C)
                 ) <=  M_i[i])
-            for i in range(0,I)))
+            for i in range(0,I)))#31
 
     mdl.add_constraints((
                 (mdl.sum(Y[(c,d)]*PMS.q_ic[i,c]
                     for c in range(0,C)) <=  N_i[i])
                 for d in range(0,D)
-                for i in range(0,I)))
+                for i in range(0,I)))#32
 
     mdl.add_constraint(
             (mdl.sum(Y[(c,d)]
                 for c in range(0,C)
                 for d in range(0,D)) <= E_c.sum() * PMS.b)
-            )
+            )#33
 
     mdl.add_constraints(
             (mdl.sum(Y[(c,d)] for c in range(0,C)) <= E_c.sum() * PMS.k )
-            for d in range(0,D))
+            for d in range(0,D))#34
 
 
     return mdl, Y

@@ -61,4 +61,16 @@ select * from SMSREP.VW_DM_SMS_MMS_WAPPUSH_OPT
                         |
                     kullanici
     - rolling horizon konusu bakalim.
-        - burada bir onceki planlama ile yapilan gonderilem bir c-u-d matrisi alinir, haftalik kota hesaplanirken X + c-u-d toplamina bakmak lazim burada c-u-d matrisi window mantiginda olmali
+        - burada bir onceki planlama ile yapilan gonderilem bir c-u-d matrisi alinir, haftalik kota hesaplanirken X + c-u-d toplamina bakmak lazim burada c-u-d matrisi window mantiginda olmali.
+=============================
+Whats new:
+- rolling horizon - reformulation
+    idea behind rolling horizon
+- exact solution with MIP Solver
+    implemented in cplex solver.
+- greedy approach
+    - basis
+    - lp enabled
+- lp relaxation
+
+- network effect to workon
