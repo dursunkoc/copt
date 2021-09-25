@@ -62,3 +62,10 @@ select * from SMSREP.VW_DM_SMS_MMS_WAPPUSH_OPT
                     kullanici
     - rolling horizon konusu bakalim.
         - burada bir onceki planlama ile yapilan gonderilem bir c-u-d matrisi alinir, haftalik kota hesaplanirken X + c-u-d toplamina bakmak lazim burada c-u-d matrisi window mantiginda olmali
+=============================
+
+case 9 lp vs greedy time cons.
+
+network u modeline icine dahil etmek.
+    - networkun tamamini kapsadigimizdan emin olacak sekilde kisitlarimizi guncelleyelim.
+    - greedy yanina bir tane daha method koyalim.
