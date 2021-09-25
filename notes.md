@@ -69,3 +69,16 @@ case 9 lp vs greedy time cons.
 network u modeline icine dahil etmek.
     - networkun tamamini kapsadigimizdan emin olacak sekilde kisitlarimizi guncelleyelim.
     - greedy yanina bir tane daha method koyalim.
+        - burada bir onceki planlama ile yapilan gonderilem bir c-u-d matrisi alinir, haftalik kota hesaplanirken X + c-u-d toplamina bakmak lazim burada c-u-d matrisi window mantiginda olmali.
+=============================
+Whats new:
+- rolling horizon - reformulation
+    idea behind rolling horizon
+- exact solution with MIP Solver
+    implemented in cplex solver.
+- greedy approach
+    - basis
+    - lp enabled
+- lp relaxation
+
+- network effect to workon
