@@ -14,7 +14,7 @@ class MipSolution(Solution, MipCore):
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
-        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, network=True)
         mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
 
         result = mdl.solve(log_output=False)
@@ -77,7 +77,8 @@ class MipSolution(Solution, MipCore):
 
 if __name__ == '__main__':
     cases = [
-            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
+#        ##Case({"C":1,"U":10,"H":2, "D":2, "I":3, "P":3}),#0
+#            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
 #            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
 #            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
 #            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4

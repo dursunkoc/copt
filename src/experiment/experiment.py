@@ -4,6 +4,7 @@ from tqdm import trange
 from tqdm import tqdm
 from functools import reduce
 from operator import mul
+from network_generator import gen_network
 
 class Case:
     def __init__(self, arguments:Dict[str, int]):
@@ -16,7 +17,7 @@ class Case:
         return reduce(mul, self.arguments.values())
 
 class Parameters:
-    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd):
+    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd, N_u1u2):
         self.s_cuhd = s_cuhd
         self.e_cu = e_cu
         self.e_cu_X = e_cu_X
@@ -31,6 +32,7 @@ class Parameters:
         self.n_i_X = n_i_X
         self.t_hd = t_hd
         self.cuhd = cuhd
+        self.N_u1u2 = N_u1u2
 
 class SolutionResult:
     def __init__(self, case: Case, value: float, duration:int):
@@ -64,13 +66,6 @@ class Solution:
     def __init__(self, name: str):
         self.name = name
 
-#    def runPh(self, case:Case, Xp_cuhd=None)->SolutionResult:
-#        parameters = self.generate_parameters(case, Xp_cuhd)
-##        print(parameters)
-#        duration = 10
-#        value = 2.1
-#        return SolutionResult(case, value, duration)
-
     def run(self, case:Case, ph)->SolutionResult:
         (Xp_cuhd1, sr1)=self.runPh(case,None)
         if ph:
@@ -85,7 +80,7 @@ class Solution:
             return (sr1, sr2)
         return (sr1,sr1)
 
-    def generate_parameters(self, case: Case, Xp_cuhd=None) -> Parameters:
+    def generate_parameters(self, case: Case, Xp_cuhd=None, network=False) -> Parameters:
         import numpy as np
         np.random.seed(23)
         C = case.arguments["C"] # number of campaigns
@@ -121,7 +116,11 @@ class Solution:
         e_cu_X = None#np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = None#np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = None#np.stack([n_i for _ in range(U)], axis=1)
-        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D))
+        if network:
+            N_u1u2 = gen_network(.04, U)
+        else:
+            N_u1u2 = None
+        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D), N_u1u2)
 
 #Single Constraint Functions
     def eligibility(self, e_cu, X, c, u, h, d):

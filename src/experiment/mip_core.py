@@ -84,30 +84,61 @@ class MipCore:
             for h in range(0,H)
             for d in range(0,D)))
 
+    def mip_network_coverage(self, mdl, Y_cuhd, X_cuhd, N_u1u2, C, U, H, D):
+        return mdl.add_constraints(
+            Y_cuhd[(c,u1,h,d)] >= (X_cuhd[(c,u1,h,d)]/2) + 
+            (mdl.sum(X_cuhd[(c,u2,h,d)] * N_u1u2[u1,u2] for u2 in range(0,U)) / (1+sum(N_u1u2[u1,u2] for u2 in range(0,U))))
+            for c in range(0,C)
+            for u1 in range(0,U) 
+            for h in range(0,H) 
+            for d in range(0,D)
+        )
+
+
+
     def start_model(self, binary:bool, PMS, C, U, H, D, I, V_cuhd=None):
         mdl = Model(name='Campaign Optimization')
+        N_u1u2 = PMS.N_u1u2
         #variables
         if binary:
             X = {(c,u,h,d): mdl.binary_var(f"X_c:{c}_u:{u}_h:{h}_d:{d}")
                 for c in range(0,C)
-                for u in range(0,U) 
+                for u in range(0,U)
                 for h in range(0,H)
                 for d in range(0,D)}
+            if N_u1u2 is not None:
+                Y = {(c,u,h,d): mdl.binary_var(f"Y_c:{c}_u:{u}_h:{h}_d:{d}")
+                    for c in range(0,C)
+                    for u in range(0,U)
+                    for h in range(0,H)
+                    for d in range(0,D)}
         else:
             X = {(c,u,h,d): mdl.continuous_var(lb=0, ub=1, name=f"X_c:{c}_u:{u}_h:{h}_d:{d}")
             for c in range(0,C)
             for u in range(0,U) 
             for h in range(0,H)
             for d in range(0,D)}
+            if N_u1u2 is not None:
+                Y = {(c,u,h,d): mdl.continuous_var(lb=0, ub=1, name=f"Y_c:{c}_u:{u}_h:{h}_d:{d}")
+                for c in range(0,C)
+                for u in range(0,U) 
+                for h in range(0,H)
+                for d in range(0,D)}
         #objectivefunction
-        maximize = mdl.maximize(mdl.sum([X[(c,u,h,d)] * PMS.rp_c[c]
-                  for c in range(0,C)
-                  for u in range(0,U) 
-                  for h in range(0,H) 
-                  for d in range(0,D)]))
+        if N_u1u2 is None:
+            maximize = mdl.maximize(mdl.sum([X[(c,u,h,d)] * PMS.rp_c[c]
+                    for c in range(0,C)
+                    for u in range(0,U) 
+                    for h in range(0,H) 
+                    for d in range(0,D)]))
+        else:
+            maximize = mdl.maximize(mdl.sum([Y[(c,u,h,d)] * PMS.rp_c[c]
+                    for c in range(0,C)
+                    for u in range(0,U) 
+                    for h in range(0,H) 
+                    for d in range(0,D)]))
         #constraints
         eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
-        
         if PMS.s_cuhd is not None:
             weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
             campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
@@ -116,13 +147,11 @@ class MipCore:
             weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
             campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
             weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
-
         daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
-
         daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
-
         channel_capacity = self.mip_channel_capacity(mdl, X, PMS, C, U, H, D)
-
+        if N_u1u2 is not None:
+            network_coverage = self.mip_network_coverage(mdl, Y, X, N_u1u2, C, U, H, D)
         if V_cuhd is not None:
             for c in range(C):
                 for d in range(D):
