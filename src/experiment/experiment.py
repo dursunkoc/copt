@@ -17,7 +17,7 @@ class Case:
         return reduce(mul, self.arguments.values())
 
 class Parameters:
-    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd, N_u1u2):
+    def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd, a_uv):
         self.s_cuhd = s_cuhd
         self.e_cu = e_cu
         self.e_cu_X = e_cu_X
@@ -32,7 +32,16 @@ class Parameters:
         self.n_i_X = n_i_X
         self.t_hd = t_hd
         self.cuhd = cuhd
-        self.N_u1u2 = N_u1u2
+        self.a_uv = a_uv
+
+class TrivialParameters:
+    def __init__(self, e_cu, rp_c, t_hd, cuhd, a_uv):
+        self.e_cu = e_cu
+        self.rp_c = rp_c
+        self.t_hd = t_hd
+        self.cuhd = cuhd
+        self.a_uv = a_uv
+
 
 class SolutionResult:
     def __init__(self, case: Case, value: float, duration:int):
@@ -80,6 +89,24 @@ class Solution:
             return (sr1, sr2)
         return (sr1,sr1)
 
+    def prepare_trivial(self, case: Case, network=False) -> TrivialParameters:
+        C = case.arguments["C"] # number of campaigns
+        U = case.arguments["U"]  # number of customers.
+        H = case.arguments["H"]  # number of channels.
+        D = case.arguments["D"]  # number of planning days.
+        P = case.arguments["P"]  # number of priority categories.
+        ##eligibility
+        e_cu = np.ones((C, U)) #e_cu = np.ones((C, U), dtype='int8')
+        ##priority categories
+        r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
+        rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
+        t_hd = np.random.choice([U*.3, U*.2, U*.1], (H, D))
+        if network:
+            a_uv = gen_network(.04, U)
+        else:
+            a_uv = None
+        return TrivialParameters(e_cu, rp_c, t_hd, (C,U,H,D), a_uv)
+
     def generate_parameters(self, case: Case, Xp_cuhd=None, network=False) -> Parameters:
         import numpy as np
         np.random.seed(23)
@@ -90,7 +117,7 @@ class Solution:
         I = case.arguments["I"]  # number of quota categories.
         P = case.arguments["P"]  # number of priority categories.
         ##previous weeks assignments
-#        s_cuhd = np.random.choice(2, (C,U,H,D))
+        #s_cuhd = np.random.choice(2, (C,U,H,D))
         if Xp_cuhd is not None:
             s_cuhd = Xp_cuhd
         else:
@@ -117,10 +144,10 @@ class Solution:
         m_i_X = None#np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = None#np.stack([n_i for _ in range(U)], axis=1)
         if network:
-            N_u1u2 = gen_network(.04, U)
+            a_uv = gen_network(.04, U)
         else:
-            N_u1u2 = None
-        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D), N_u1u2)
+            a_uv = None
+        return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D), a_uv)
 
 #Single Constraint Functions
     def eligibility(self, e_cu, X, c, u, h, d):

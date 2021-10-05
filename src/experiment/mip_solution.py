@@ -26,8 +26,8 @@ class MipSolution(Solution, MipCore):
 
         end_time = time()
         duration = end_time - start_time
-#        self.validate(result, PMS, C, D, H, U)
-#        self.anti_validate(result, PMS,  C, D, H, U)
+        #self.validate(result, PMS, C, D, H, U)
+        #self.anti_validate(result, PMS,  C, D, H, U)
         resp = (self.create_var_for_greedy(result, C, D, H, U), SolutionResult(case, value, round(duration,4)))
         del mdl
         del result
@@ -48,7 +48,6 @@ class MipSolution(Solution, MipCore):
                     for u in range(U):
                         print(f"X_c:{c}_u:{u}_h:{h}_d:{d}={X_cuhd2[c,u,h,d]}")
                         print(f"s_c:{c}_u:{u}_h:{h}_d:{d}={PMS.s_cuhd[c,u,h,d]}")
-
 
     def validate(self, solution, PMS, C, D, H, U):
         X_cuhd2 = self.create_var_for_greedy(solution, C, D, H, U)
