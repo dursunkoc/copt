@@ -16,6 +16,7 @@ class Case:
     def size(self):
         return reduce(mul, self.arguments.values())
 
+
 class Parameters:
     def __init__(self, s_cuhd, e_cu, e_cu_X, q_ic, rp_c, b, k, l_c, m_i, n_i, m_i_X, n_i_X, t_hd, cuhd, a_uv):
         self.s_cuhd = s_cuhd
@@ -33,6 +34,7 @@ class Parameters:
         self.t_hd = t_hd
         self.cuhd = cuhd
         self.a_uv = a_uv
+
 
 class TrivialParameters:
     def __init__(self, e_cu, rp_c, t_hd, cuhd, a_uv):
@@ -67,6 +69,7 @@ class Experiment:
     def run_cases_with(self, solution, ph=True) -> List[Tuple[Case, SolutionResult]]:
         return [solution.run(case, ph) for case in tqdm(self.cases, f"Case ->")]
 
+
 class Solution:
     c_i = 0
     u_i = 1
@@ -89,7 +92,7 @@ class Solution:
             return (sr1, sr2)
         return (sr1,sr1)
 
-    def prepare_trivial(self, case: Case, network=False) -> TrivialParameters:
+    def prepare_trivial(self, case: Case, a_uv=None) -> TrivialParameters:
         C = case.arguments["C"] # number of campaigns
         U = case.arguments["U"]  # number of customers.
         H = case.arguments["H"]  # number of channels.
@@ -101,13 +104,9 @@ class Solution:
         r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
         rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
         t_hd = np.random.choice([U*.3, U*.2, U*.1], (H, D))
-        if network:
-            a_uv = gen_network(.04, U)
-        else:
-            a_uv = None
         return TrivialParameters(e_cu, rp_c, t_hd, (C,U,H,D), a_uv)
 
-    def generate_parameters(self, case: Case, Xp_cuhd=None, network=False) -> Parameters:
+    def generate_parameters(self, case: Case, Xp_cuhd=None, a_uv=None) -> Parameters:
         import numpy as np
         np.random.seed(23)
         C = case.arguments["C"] # number of campaigns
@@ -143,11 +142,8 @@ class Solution:
         e_cu_X = None#np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = None#np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = None#np.stack([n_i for _ in range(U)], axis=1)
-        if network:
-            a_uv = gen_network(.04, U)
-        else:
-            a_uv = None
         return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D), a_uv)
+
 
 #Single Constraint Functions
     def eligibility(self, e_cu, X, c, u, h, d):
