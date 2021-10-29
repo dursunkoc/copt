@@ -207,6 +207,12 @@ class Solution:
     def objective_fn(self, rp_c, X):
         return np.matmul(rp_c, X.sum(axis=(1,2,3)))
 
+    def objective_fn(self, rp_c, X, a_uv):
+        X_cu = X.sum(axis=(2,3))
+        Y_cu = (np.matmul(X_cu, a_uv )+X_cu > 0).astype(int)
+        return np.matmul(rp_c, Y_cu.sum(axis=1))
+
+
 #Bulk Constraint Functions
     def X_eligibility (self, e_cu_X, X):
         return (X <= e_cu_X).all()
