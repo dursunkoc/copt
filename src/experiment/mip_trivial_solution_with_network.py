@@ -21,7 +21,7 @@ class MipTrivialSolution(Solution, MipCore):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         a_uv, _ = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
-        PMS:TrivialParameters = super().prepare_trivial(case, a_uv=a_uv)
+        PMS:TrivialParameters = super().prepare_trivial(case, a_uv=a_uv, seed=142)
         mdl, _ = super().start_trivial_model(True, PMS, C, U, H, D, I)
 
         result = mdl.solve(log_output=False)
@@ -43,6 +43,7 @@ class MipTrivialSolution(Solution, MipCore):
         for c in mdl.iter_constraints():
             print(f"\t{c}")
         print("========")
+        print("obj:", value)
         self.print_solution(result)
         print("========")
         del mdl

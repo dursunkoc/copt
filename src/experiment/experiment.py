@@ -92,13 +92,15 @@ class Solution:
             return (sr1, sr2)
         return (sr1,sr1)
 
-    def prepare_trivial(self, case: Case, a_uv=None) -> TrivialParameters:
+    def prepare_trivial(self, case: Case, a_uv=None, seed=None) -> TrivialParameters:
         C = case.arguments["C"] # number of campaigns
         U = case.arguments["U"]  # number of customers.
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         P = case.arguments["P"]  # number of priority categories.
         ##eligibility
+        if seed is not None:
+            np.random.seed(seed)
         e_cu = np.ones((C, U)) #e_cu = np.ones((C, U), dtype='int8')
         ##priority categories
         r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
@@ -167,6 +169,13 @@ class Solution:
     def channel_capacity(self, t_hd, X, h, d):
         return X[:,:,h,d].sum() <= t_hd[h,d]
 
+    def check_trivial(self, X, PMS, indicies):
+        if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
+            return False
+        if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
+            return False
+        return True        
+
     def check(self, X, PMS, indicies):
         if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
             return False
@@ -207,9 +216,12 @@ class Solution:
     def objective_fn(self, rp_c, X):
         return np.matmul(rp_c, X.sum(axis=(1,2,3)))
 
-    def objective_fn(self, rp_c, X, a_uv):
+    def interaction_matrix(self, X, a_uv):
         X_cu = X.sum(axis=(2,3))
-        Y_cu = (np.matmul(X_cu, a_uv )+X_cu > 0).astype(int)
+        return (np.matmul(X_cu, a_uv )+X_cu > 0).astype(int)
+
+    def objective_fn(self, rp_c, X, a_uv):
+        Y_cu = self.interaction_matrix(X, a_uv)
         return np.matmul(rp_c, Y_cu.sum(axis=1))
 
 

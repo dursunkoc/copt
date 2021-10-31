@@ -15,6 +15,11 @@ class GreedySolutionWithNet(Solution):
         self.drop_prob = drop_prob
         self.net_type = net_type
 
+    def max_degree(self, grph):
+        nn = max(grph.degree, key=lambda x: x[1])
+        grph.remove_node(nn[0])
+        return nn[0]
+
     def runPh(self, case:Case, Xp_cuhd):
         start_time = time()
         #seed randomization
@@ -26,6 +31,8 @@ class GreedySolutionWithNet(Solution):
         nw_start_time = time()
         print("Building Network", nw_start_time)
         a_uv, grph = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
+#        U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
+        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
@@ -33,8 +40,6 @@ class GreedySolutionWithNet(Solution):
 
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
-        U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
-
 
         for c in np.argsort(-PMS.rp_c): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
             for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
@@ -54,11 +59,11 @@ if __name__ == '__main__':
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
             Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
