@@ -71,9 +71,8 @@ class MipTrivialSolution(Solution, MipCore):
 
 if __name__ == '__main__':
     cases = [
-             Case({"C":1,"U":20,"H":1, "D":1, "I":3, "P":3}),#1
+             Case({"C":1,"U":50,"H":1, "D":1, "I":3, "P":3}),#1
             ]
     expr = Experiment(cases)
 
     expr.run_cases_with(MipTrivialSolution(seed=142, net_type='erdos', m=None, p=.03, drop_prob=None), False)
-

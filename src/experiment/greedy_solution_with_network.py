@@ -49,9 +49,11 @@ class GreedySolutionWithNet(Solution):
                         if not self.check(X_cuhd, PMS, (c, u, h, d)):
                             X_cuhd[c,u,h,d]=0
         end_time = time()
-        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
         duration = end_time - start_time
-        return (X_cuhd, SolutionResult(case, value, round(duration,4)))
+        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
+        direct_msg = X_cuhd.sum()
+        total_edges = a_uv.sum()
+        return (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
 
 if __name__ == '__main__':
     cases = [
@@ -59,11 +61,11 @@ if __name__ == '__main__':
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
             Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
@@ -74,10 +76,12 @@ if __name__ == '__main__':
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='erdos', m=None, p=.03, drop_prob=None), False)
+    #solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
+    print(solutions)
     print("values:")
-    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
+    print(" ".join([str(v.value) for v in [solution for solution in solutions]]))
     print("durations:")
-    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+    print(" ".join([str(v.duration) for v in [solution for solution in solutions]]))
 
 
 #values:
@@ -89,3 +93,5 @@ if __name__ == '__main__':
 #9546.0 18164.0 57717.0 69000.0 508000.0 1230000.0 1728000.0 1888000.0 2660000.0
 #durations:
 #4.3644 10.7578 32.8997 699.2396 1361.5039 5495.8364 11958.204 21312.3695 33117.8134
+
+#########barabasi#########

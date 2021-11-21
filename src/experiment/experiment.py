@@ -46,20 +46,23 @@ class TrivialParameters:
 
 
 class SolutionResult:
-    def __init__(self, case: Case, value: float, duration:int):
+    def __init__(self, case: Case, value: float, duration:int, info:str=None):
         self.case = case
         self.value = value
         self.duration = duration
+        self.info = info
+
     def set_phase(self, phase):
         self.phase = phase
+
     def __str__(self):
         return self.__repr__()
 
     def __repr__(self):
         if hasattr(self, 'phase'):
-            return f"{{'case': {self.case}, 'phase': {self.phase}, 'value': {self.value}, 'duration': {self.duration}}}\n"
+            return f"{{'case': {self.case}, 'phase': {self.phase}, 'value': {self.value}, 'duration': {self.duration}, 'info': {self.info}}}\n"
         else:
-            return f"{{'case': {self.case}, 'value': {self.value}, 'duration': {self.duration}}}\n"
+            return f"{{'case': {self.case}, 'value': {self.value}, 'duration': {self.duration}, 'info': {self.info}}}\n"
 
 
 class Experiment:
@@ -90,7 +93,7 @@ class Solution:
             sr2.set_phase(2)
         if ph:
             return (sr1, sr2)
-        return (sr1,sr1)
+        return (sr1)
 
     def prepare_trivial(self, case: Case, a_uv=None, seed=None) -> TrivialParameters:
         C = case.arguments["C"] # number of campaigns

@@ -82,3 +82,6 @@ Whats new:
 - lp relaxation
 
 - network effect to workon
+=============================
+- run a 100 node application see which nodes selected.
+- find direct & indirect access
