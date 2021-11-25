@@ -108,7 +108,8 @@ class Solution:
         ##priority categories
         r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
         rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
-        t_hd = np.random.choice([U*.3, U*.2, U*.1], (H, D))
+        t_hd = np.random.choice([U*.3, U*.3, U*.3], (H, D))
+        print(t_hd)
         return TrivialParameters(e_cu, rp_c, t_hd, (C,U,H,D), a_uv)
 
     def generate_parameters(self, case: Case, Xp_cuhd=None, a_uv=None) -> Parameters:

@@ -20,6 +20,27 @@ class GreedySolutionWithNet(Solution):
         grph.remove_node(nn[0])
         return nn[0]
 
+    def max_degree_b(self, grph, seen):
+        max_val = max(grph.degree, key=lambda x: x[1])[1]
+        nns = [n for n in grph.degree if n[1] == max_val]
+        nns_ = [n for n in nns if n[0] not in seen]
+        if len(nns_)>0:
+            nn = nns_[0]
+        else:
+            nn = nns[0]
+        neighbors = grph.neighbors(nn[0])
+        grph.remove_node(nn[0])
+        seen |= set(list(neighbors))
+        return (nn[0], seen)
+
+    def sort_nodes_to_inc_span(self, grph):
+        result=list()
+        seen = set()
+        for _ in range(len(grph.degree)):
+            elem, seen = self.max_degree_b(grph, seen)
+            result.append(elem)
+        return result
+
     def runPh(self, case:Case, Xp_cuhd):
         start_time = time()
         #seed randomization
@@ -28,14 +49,10 @@ class GreedySolutionWithNet(Solution):
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of planning days.
-        nw_start_time = time()
-        print("Building Network", nw_start_time)
         a_uv, grph = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
 #        U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
         U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
-        nw_end_time = time()
-        nw_duration = nw_end_time - nw_start_time
-        print("Built Network", nw_end_time, " duration:", nw_duration)
+#        U_range = self.sort_nodes_to_inc_span(grph)
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
 
         #variables
@@ -51,6 +68,9 @@ class GreedySolutionWithNet(Solution):
         end_time = time()
         duration = end_time - start_time
         value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
+        Y_cu = self.interaction_matrix(X_cuhd, a_uv)
+#        np.savetxt(fname=f'X{C}{U}{H}{D}.csv' ,X=X_cuhd)
+        np.savetxt(fname=f'Y{C}{U}.csv' ,X=Y_cu, fmt='%s')
         direct_msg = X_cuhd.sum()
         total_edges = a_uv.sum()
         return (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
@@ -61,11 +81,11 @@ if __name__ == '__main__':
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
             Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12

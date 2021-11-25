@@ -45,6 +45,7 @@ class MipSolutionWithNetwork(Solution, MipCore):
         resp = (X, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
         del mdl
         del result
+        print(resp)
         return resp
 
     def create_var_for_greedy(self, solution, C, D, H, U):
@@ -175,3 +176,21 @@ if __name__ == '__main__':
 #7881.0 14538.0 43329.0 47046.0 344228.0 806541.0 1215742.0 1294222.0 1847441.0
 #durations:
 #4.1451 10.3508 30.5001 621.121 1244.2232 4823.2282 10895.7916 19242.4799 30243.7569
+
+
+
+#[{'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 7881.0, 'duration': 5.3368, 'info': {'direct_msg': 84, 'total_edges': 122}}
+#, {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 14538.0, 'duration': 11.5459, 'info': {'direct_msg': 188, 'total_edges': 122}}
+#, {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 43329.0, 'duration': 31.9515, 'info': {'direct_msg': 401, 'total_edges': 254}}
+#, {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 47046.0, 'duration': 704.2374, 'info': {'direct_msg': 1919, 'total_edges': 1184}}
+#, {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 344228.0, 'duration': 1438.309, 'info': {'direct_msg': 3802, 'total_edges': 1184}}
+#Case ->: 100%|█████████████████████████████████████████████████████████████████| 4/4 [19:13:13<00:00, 17298.34s/it]
+#[{'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 806541.0, 'duration': 5210.3223, 'info': {'direct_msg': 7227, 'total_edges': 2360}}
+#, {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1215742.0, 'duration': 11644.8602, 'info': {'direct_msg': 11622, 'total_edges': 3630}}
+#, {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1294222.0, 'duration': 20592.2362, 'info': {'direct_msg': 13613, 'total_edges': 4878}}
+#, {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1847441.0, 'duration': 31743.0434, 'info': {'direct_msg': 19333, 'total_edges': 6056}}
+#]
+#values:
+#806541.0 1215742.0 1294222.0 1847441.0
+#durations:
+#5210.3223 11644.8602 20592.2362 31743.0434

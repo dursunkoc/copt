@@ -17,6 +17,27 @@ class GreedyTrivialSolution(Solution):
         grph.remove_node(nn[0])
         return nn[0]
 
+    def max_degree_b(self, grph, seen):
+        max_val = max(grph.degree, key=lambda x: x[1])[1]
+        nns = [n for n in grph.degree if n[1] == max_val]
+        nns_ = [n for n in nns if n[0] not in seen]
+        if len(nns_)>0:
+            nn = nns_[0]
+        else:
+            nn = nns[0]
+        neighbors = grph.neighbors(nn[0])
+        grph.remove_node(nn[0])
+        seen |= set(list(neighbors))
+        return (nn[0], seen)
+
+    def sort_nodes_to_inc_span(self, grph):
+        result=list()
+        seen = set()
+        for _ in range(len(grph.degree)):
+            elem, seen = self.max_degree_b(grph, seen)
+            result.append(elem)
+        return result
+
     def runPh(self, case:Case, _)->SolutionResult:
         start_time = time()
         C = case.arguments["C"] # number of campaigns
@@ -30,13 +51,14 @@ class GreedyTrivialSolution(Solution):
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
-        PMS:TrivialParameters = super().prepare_trivial(case, a_uv=a_uv, seed=142)
+        PMS:TrivialParameters = super().prepare_trivial(case, a_uv=a_uv, seed=self.seed)
 
 
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         #U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
-        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
+#        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
+        U_range = self.sort_nodes_to_inc_span(grph)
         print(U_range)
 
         for c in np.argsort(-PMS.rp_c): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
@@ -67,14 +89,14 @@ class GreedyTrivialSolution(Solution):
 
 if __name__ == '__main__':
     cases = [
-             Case({"C":1,"U":20,"H":1, "D":1, "I":3, "P":3}),#1
+             Case({"C":1,"U":50,"H":1, "D":1, "I":3, "P":3}),#1
             ]
     expr = Experiment(cases)
 
-    solutions = expr.run_cases_with(GreedyTrivialSolution(seed=142, net_type='erdos', m=None, p=.03, drop_prob=None), False)
+    solutions = expr.run_cases_with(GreedyTrivialSolution(seed=1, net_type='barabasi', m=4, p=None, drop_prob=.9), False)
     print("values:")
-    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
+    print(" ".join([str(v.value) for v in [solution for solution in solutions]]))
     print("durations:")
-    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+    print(" ".join([str(v.duration) for v in [solution for solution in solutions]]))
 
 
