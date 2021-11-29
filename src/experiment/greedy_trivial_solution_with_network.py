@@ -2,6 +2,8 @@ from experiment import Solution,  SolutionResult, Case, Experiment, TrivialParam
 import numpy as np
 from time import time
 from network_generator import gen_network
+import networkx.algorithms.centrality as nxac
+
 
 class GreedyTrivialSolution(Solution):
     def __init__(self, seed, net_type, m=1, p=.04, drop_prob=.10):
@@ -22,9 +24,12 @@ class GreedyTrivialSolution(Solution):
         nns = [n for n in grph.degree if n[1] == max_val]
         nns_ = [n for n in nns if n[0] not in seen]
         if len(nns_)>0:
-            nn = nns_[0]
+            ec = nxac.betweenness_centrality(grph)
+            nn = min(nns_, key=lambda x: ec[x[0]])
         else:
-            nn = nns[0]
+            ec = nxac.betweenness_centrality(grph)
+            nn = min(nns, key=lambda x: ec[x[0]])
+        print(nn)
         neighbors = grph.neighbors(nn[0])
         grph.remove_node(nn[0])
         seen |= set(list(neighbors))

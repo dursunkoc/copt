@@ -5,6 +5,8 @@ from tqdm import tqdm
 from time import time
 import numpy as np
 from network_generator import gen_network
+import networkx.algorithms.centrality as nxac
+
 
 class GreedySolutionWithNet(Solution):
     def __init__(self, seed, net_type, m=1, p=.04, drop_prob=.10):
@@ -25,9 +27,11 @@ class GreedySolutionWithNet(Solution):
         nns = [n for n in grph.degree if n[1] == max_val]
         nns_ = [n for n in nns if n[0] not in seen]
         if len(nns_)>0:
-            nn = nns_[0]
+            ec = nxac.betweenness_centrality(grph)
+            nn = min(nns_, key=lambda x: ec[x[0]])
         else:
-            nn = nns[0]
+            ec = nxac.betweenness_centrality(grph)
+            nn = min(nns, key=lambda x: ec[x[0]])
         neighbors = grph.neighbors(nn[0])
         grph.remove_node(nn[0])
         seen |= set(list(neighbors))
@@ -81,11 +85,11 @@ if __name__ == '__main__':
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
             Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
@@ -95,8 +99,8 @@ if __name__ == '__main__':
 #            Case({"C":30,"U":60000,"H":3, "D":7, "I":3, "P":3}),#17
             ]
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='erdos', m=None, p=.03, drop_prob=None), False)
-    #solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
+    #solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='erdos', m=None, p=.03, drop_prob=None), False)
+    solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
     print(solutions)
     print("values:")
     print(" ".join([str(v.value) for v in [solution for solution in solutions]]))
