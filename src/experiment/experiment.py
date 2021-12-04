@@ -104,7 +104,7 @@ class Solution:
         ##eligibility
         if seed is not None:
             np.random.seed(seed)
-        e_cu = np.ones((C, U)) #e_cu = np.ones((C, U), dtype='int8')
+        e_cu = e_cu = np.ones((C, U), dtype='int8') #np.random.choice(2,(C, U)) #
         ##priority categories
         r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
         rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])

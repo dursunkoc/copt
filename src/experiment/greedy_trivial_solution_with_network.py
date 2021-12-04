@@ -3,6 +3,7 @@ import numpy as np
 from time import time
 from network_generator import gen_network
 import networkx.algorithms.centrality as nxac
+import base_network_opt as bno
 
 
 class GreedyTrivialSolution(Solution):
@@ -19,27 +20,25 @@ class GreedyTrivialSolution(Solution):
         grph.remove_node(nn[0])
         return nn[0]
 
-    def max_degree_b(self, grph, seen):
-        max_val = max(grph.degree, key=lambda x: x[1])[1]
-        nns = [n for n in grph.degree if n[1] == max_val]
+    def max_degree_b(self, grph, seen, X_u):
+        dd = {gd[0]:gd[1]*X_u[gd[0]] for gd in grph.degree}
+        max_val = max(dd.items(), key=lambda x: x[1])[1]
+        nns = [n for n in dd.items() if n[1] == max_val]
         nns_ = [n for n in nns if n[0] not in seen]
         if len(nns_)>0:
-            ec = nxac.betweenness_centrality(grph)
-            nn = min(nns_, key=lambda x: ec[x[0]])
+            nn = nns_[0]
         else:
-            ec = nxac.betweenness_centrality(grph)
-            nn = min(nns, key=lambda x: ec[x[0]])
-        print(nn)
+            nn = nns[0]
         neighbors = grph.neighbors(nn[0])
         grph.remove_node(nn[0])
         seen |= set(list(neighbors))
         return (nn[0], seen)
 
-    def sort_nodes_to_inc_span(self, grph):
+    def sort_nodes_to_inc_span(self, grph, X_u):
         result=list()
         seen = set()
         for _ in range(len(grph.degree)):
-            elem, seen = self.max_degree_b(grph, seen)
+            elem, seen = self.max_degree_b(grph, seen, X_u)
             result.append(elem)
         return result
 
@@ -58,12 +57,13 @@ class GreedyTrivialSolution(Solution):
         print("Built Network", nw_end_time, " duration:", nw_duration)
         PMS:TrivialParameters = super().prepare_trivial(case, a_uv=a_uv, seed=self.seed)
 
-
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
+        X_u = bno.solve_network_model(a_uv=a_uv, U=U, e_u=PMS.e_cu[0])
+        print(X_u)
         #U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
 #        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
-        U_range = self.sort_nodes_to_inc_span(grph)
+        U_range = self.sort_nodes_to_inc_span(grph, X_u)
         print(U_range)
 
         for c in np.argsort(-PMS.rp_c): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
