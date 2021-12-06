@@ -21,7 +21,8 @@
 \usepackage{rotating}
 \usepackage{xcolor}
 \usepackage{placeins}
-\usepackage{amssymb,algorithm,algpseudocode}
+\usepackage{amssymb,algorithm}
+\usepackage{algpseudocode}
 \usepackage{natbib}
 \usepackage{setspace} 
 \usepackage{latexsym}
@@ -410,14 +411,14 @@ Order and reindex campaigns $c\in\mathcal{C}$ so that $r_{c_{1}p} \geq r_{c_{2}p
 \end{algorithm}\\
 
 \newpage
-\section{Including Network Effects} \label{net-effect}
+\section{Including Network Effects} \label{s:net-effect}
 In this section, we will try to utilize the network effect to reach a broader audience for our campaigns. As we stated earlier, the sole purpose of a marketer in running campaigns is to make her message reach a wide audience. Our current mathematical model maximizes the direct interactions; however, we know that when we send a message to a certain customer, it may also be heard by some other customers. We will assume that the network we will use, will give us an insight that some customers affect some others to hear about our products and services. If some customer cust-i receives a message; somehow, she will cause some customer cust-j to learn about that message. As a result, we touch two customers by sending only one message.
 
 In our current model, we had some criteria which keep us from touching every eligible customer, so we are to drop some customers from the lists to ensure those criteria, using the network data we will try to drop the customers whose network effect is much lesser than others.
 
 Let say we have customers u1, u2 and u3 are all eligible to our campaign c, and we can send a message to only one customer; if we knew that u2 and u3 are connected in a network, I would retain either u2 or u3. Because if I retain u1, my access point will be one customer; but if I retain either u2 or u3, I can assume my access point to be 2.
 
-\subsection{Modifications in the current model} \label{network-modif-model}
+\subsection{Modifications in the current model} \label{s:network-modif-model}
 In order to keep the network affect, we can add the following constraints to our system. We first introduce the notation and then present the mathematical model.\\
 % Network Modified Math Model
 \\
@@ -458,14 +459,15 @@ In order to keep the network affect, we can add the following constraints to our
 Y_{{c}{u}}  r_{{c}{p}} \label{mathmodel_w/n_obj}&
 \\
 \text{subject to} \notag\\
-&Y_{{c}{u}} \leq \sum\limits_{h\in \mathcal{H}}\sum\limits_{d\in \mathcal{D}}(X_{{c}{u}{h}{d}}+\sum\limits_{v\in\mathcal{U}}X_{{c}{v}{h}{d}}a_{{u}{v}},&\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_w/n_netcoverage}\\
+&Y_{{c}{u}} \leq \sum\limits_{h\in \mathcal{H}}\sum\limits_{d\in \mathcal{D}}(X_{{c}{u}{h}{d}}+\sum\limits_{v\in\mathcal{U}}X_{{c}{v}{h}{d}}a_{{u}{v}}),&\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_w/n_netcoverage}\\
 ...\text{Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} repeated here}\notag
 \end{align}\\
 
-\subsection{Building A Network Using Tariff-change Data and Social Network}
+\subsection{Building A Network Using Tariff-change Data and Social Network}\label{s:micro-world-networks}
 The tariff of a customer describes which products and services she uses, and the tariff-change data keeps the history of changes of tariff of a customer, and we have an existing social network analysis(SNA) data which covers socially connected customers based on the call data. We will build another network using both tariff-change data and SNA. In our new network the nodes will be our customers and edges will be placed when two customers are adjacent in the SNA model, and when their tariff-changes occurs in the same week.\\
 
 Below Figure-\ref{fig:fig_sample_sna} shows a sample of social network graph, and Table-\ref{table:tbl_sample_tariff_change_history} gives a sample of tariff changes of customers in the SNA graph, in a time range of interest. From the tariff change history we can conclude that U1 and U4 should be connected; because customers U1 and U4 are changing tariff in the same period of time and they are connected in the SNA graph, likewise U2, U3 and U2,U5 are also connected because they are connected in the SNA graph and their tariff changes occurs in the same time periods. Even if U1 and U3 are connected in the SNA graph, they will not be connected in our final graph, because their tariff changes did not occur in the same time period.
+
 
 \begin{figure}[htp]
     \centering
@@ -485,8 +487,219 @@ Below Figure-\ref{fig:fig_sample_sna} shows a sample of social network graph, an
     \label{fig:fig_sample_sna_w_tariff}
 \end{figure}
 
+\subsection{Solving Network Based Problems}
+In this section we will discuss heuristics we applied to solve the campaign optimization problem with network effect described at \S \ref{s:net-effect} and modelled at \S \ref{s:network-modif-model}. Later we will try to solve some basic problems, and develop and improve an heuristic algorithm. Finally at \S \ref{s:num-analysis} we will show computational study of the developed heuristic  result.
+
+\subsubsection{Sample micro-world campaign optimization problems and solutions}
+Below we have conducted 6 different simulations, in each simulation the model contains only channel capacity constraint besides the network effect. Solutions provided by MIP Solver validates network effect, and it decided the customers whose degree centrality is greater than others, should receive the campaign messages. For each case we generate different random networks using either Erdos Renyi random network where each node is connected to another one with a probability of ${\mathcal{P}}$ ; or Barabasi Albert random network where each node is connected to ${\mathcal{M}}$ number of nodes. While using Barabasi Albert network we used a drop probability ${\mathcal{D}}$ to drop an edge to resemble that every connection may not carry a campaign message even if two customer are socially connected.\\
+\begin{itemize}
+\item Case 1: Number of Customers: 10, Random Seed: 23, Network Type: barabasi, M:1, Edge Drop Propability: \%40.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_1}
+    \caption{Network for Case 1}
+    \label{fig:fig_micro_world_case_1}
+\end{figure}
+\\
+MIP Solver solution offers customer-0 and customer-6 should receive the message.
+We had 2 message capacity, and selected customer-0 whose degree-centrality measure is the greatest, later, we selected customer-6 which is connected customer-9. By sending 2 messages we can touch 7 customers.
+\\
+\item Case 2: Number of Customers: 10, Random Seed: 45, Network Type: barabasi, M:1, Edge Drop Propability: \%10.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_2}
+    \caption{Network for Case 2}
+    \label{fig:fig_micro_world_case_2}
+\end{figure}
+\\
+MIP Solver solution offers customer-0 and customer-2 should receive the message.
+We had 2 message capacity, and selected customer-2 whose degree-centrality measure is the greatest, later, we selected customer-0 which is connected customer-9 and customer-1. By sending 2 messages we can touch 7 customers.
+\\
+\item Case 3: Number of Customers: 20, Random Seed: 83, Network Type: barabasi, M:2, Edge Drop Propability: \%80.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_3}
+    \caption{Network for Case 3}
+    \label{fig:fig_micro_world_case_3}
+\end{figure}
+\\
+MIP Solver solution offers customer-3 and customer-16 should receive the message.
+We had 2 message capacity, and selected customer-16 whose degree-centrality measure is the one the greatest, later, we selected customer-3 which is connected customer-7 and customer-4. By sending 2 messages we can touch 6 customers.
+\\
+\item Case 4: Number of Customers: 10, Random Seed: 42, Network Type: erdos, p:\%8.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_4}
+    \caption{Network for Case 4}
+    \label{fig:fig_micro_world_case_4}
+\end{figure}
+\\
+MIP Solver solution offers customer-2, customer-3 and customer-9 should receive the message.
+We had 3 message capacity, and selected customer-2 whose degree-centrality measure is the greatest, later, we selected customer-9 which is connected customer-8 and customer-6, and finally selected customer-3. By sending 3 messages we can touch 8 customers.
+\\
+\item Case 5: Number of Customers: 10, Random Seed: 121, Network Type: erdos, p:\%4.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_5}
+    \caption{Network for Case 5}
+    \label{fig:fig_micro_world_case_5}
+\end{figure}
+\\
+MIP Solver solution offers customer-5 should receive the message.
+We had 1 message capacity, and selected customer-5 whose degree-centrality measure is the greatest. By sending 1 messages we can touch 3 customers.
+\\
+\\
+
+\item Case 6: Number of Customers: 20, Random Seed: 142, Network Type: erdos, p: %3
+Network.
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=6cm]{micro_world_case_6}
+    \caption{Network for Case 6}
+    \label{fig:fig_micro_world_case_6}
+\end{figure}
+\\
+MIP Solver solution offers customer-1, customer-2, customer-13 and customer-14 should receive the message.
+We had 4 message capacity, and selected customer-1 whose degree-centrality measure is the greatest, later, we selected customer-2, customer-13 and customer-14 which are connected customers 9, 5 and 6 respectively. By sending 4 messages we can touch 9 customers.
+\end{itemize}
+\subsection{Heuristics to Solve Campaign Optimization Problem With Network \label{s:heu-camp-opt-with-net} Effect}\label{s:micro-world-networks}
+From the cases at \S \ref{s:micro-world-networks}, we have concluded with the following algorithm-\ref{algo:cust-sort-a} which sorts nodes by their degree.
+\begin{algorithm}[H]
+\KwIn{G graph of customer network}
+\KwOut{A Sorted list of customers $SC$}
+\State $SC \gets []$
+
+\For{$u \in U$}{
+  \State $N \gets ArgMax(G.degree)$
+  \State $G.Remove(N)$
+  \State $SC.Append(N)$
+}
+\Return {$SC$}
+\caption{Customer Sorting-A for Greedy Approach for Campaign Optimization}
+\label{algo:cust-sort-a}
+\end{algorithm}
+
+In this algorithm we sort customers by their degree centrality in the social network graph. In order to validate this algorithm we generated the following greater network than the ones at \S \ref{s:micro-world-networks}.
+
+\\
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=12cm]{mini_world_case.png}
+    \caption{Mini Network to Validate Heuristic}
+    \label{fig:fig_mini_world_case}
+\end{figure}
+\\
+The mathmatical modeal and optimal solution for the network is presented at appendix \ref{s:apendix-mini-net-cplex-sol}. The optimal solutions objective value is 348, however the objective value is 324 if we apply the algorithm-\ref{algo:cust-sort-a}.\\
+Our algorithm-\ref{algo:cust-sort-a}, selects a random customer when two customers degree centrality is equal, however selecting the one whose neighbours have not been selected would be much better. So we developed algorithm-\ref{algo:cust-sort-b} which pushes back a customer if that customers neighbour already selected.
+
+\begin{algorithm}[H]
+\KwIn{G graph of customer network}
+\KwOut{A Sorted list of customers $SC$}
+\State $SC \gets []$
+\State $SS \gets []$
+
+\For{$c \in C$}{
+  \State $M \gets Max(G.degree)$
+  \State $Ns \gets [G.degree == M]$
+  \State $NNs \gets Ns.DropSeen(SS)$
+
+  \If{$NNs.notEmpty$}{
+    \State $SS.Append(G.neighbors(NNs[0]))$
+    \State $SC.Append(NNs[0])$
+    \State $G.Remove(NNs[0])$
+  }
+  \Else{
+    \State $SS.Append(G.neighbors(Ns[0]))$
+    \State $SC.Append(Ns[0])$
+    \State $G.Remove(Ns[0])$
+  }
+  \EndIf
+}
+\EndFor
+\Return {$SC$}
+\caption{Customer Sorting-B for Greedy Approach for Campaign Optimization}
+\label{algo:cust-sort-b}
+\end{algorithm}
+
+Using algorithm-\ref{algo:cust-sort-b} we attained an objective value of 336. 
+\\
+Finally we developed algorithm-\ref{algo:cust-sort-c} which uses mathematical model described below;
+Following mathematical modal finds the customers which are sufficient and necessary to cover the whole network.
+\\
+\noindent \textbf{Sets}\\
+
+\noindent ${\mathcal{U}}$: set of customers. \\
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $W_{u}=1$, if customer $u \in \mathcal{U}$ is sufficient and necessary, and 0 otherwise.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{u}=1$, if customer $u \in \mathcal{U}$ is eligible and 0 otherwise.
+($\forall u \in \mathcal{U}$)\\
+
+\noindent $a_{{u}{v}}=1$, if customer $u \in \mathcal{U}$ and customer $v \in \mathcal{U}$ and $u != v$, and 0 otherwise.
+($\forall u \in \mathcal{U}$, $\forall v \in \mathcal{U}$, u != v)\\
+
+\begin{align}
+\text{Minimize} & \displaystyle
+\sum\limits_{u\in \mathcal{U}}
+W_{u} \label{mathmodel_net_cov_obj}&
+\\
+\text{subject to} \notag\\
+&(W_{u}+\sum\limits_{v\in\mathcal{U}}W_{v}a_{{u}{v}}) \geq 1,&\forall u \in \mathcal{U} \label{mathmodel_net_cov_s1}
+\\
+&W_{u} \leq e_{u} ,&\forall u \in \mathcal{U} \label{mathmodel_net_cov_s2}
+\\
+&W_{u} \in \{0,1\},&\forall u \in \mathcal{U} \label{mathmodel_net_cov_integrity}
+\end{align}\\
+
+The objective function \eqref{mathmodel_net_cov_obj} minimizes the number of nodes to be selected. Constraints \eqref{mathmodel_net_cov_s1} ensure that each customers or its level-1 neighbour is touched, constraints \eqref{mathmodel_net_cov_s2} ensure that a customer is touched if it is eligible; and finally constraint \eqref{mathmodel_net_cov_integrity} ensure that the variable $W_{u}$ is either 0 or 1.\\
+
+The preceding mathematical model is used for finding the sufficient and necessary customers to communicate to cover the whole network.
+
+\begin{algorithm}[H]
+\KwIn{G graph of customer network}
+\KwIn{W sufficient and necessary customers}
+\KwOut{A Sorted list of customers $SC$}
+\State $SC \gets []$
+\State $SS \gets []$
+
+\For{$c \in C$}{
+  \State $M \gets Max(G.degree only W)$
+  \State $Ns \gets [G.degree == M]$
+  \State $NNs \gets Ns.DropSeen(SS)$
+
+  \If{$NNs.notEmpty$}{
+    \State $SS.Append(G.neighbors(NNs[0]))$
+    \State $SC.Append(NNs[0])$
+    \State $G.Remove(NNs[0])$
+  }
+  \Else{
+    \State $SS.Append(G.neighbors(Ns[0]))$
+    \State $SC.Append(Ns[0])$
+    \State $G.Remove(Ns[0])$
+  }
+  \EndIf
+}
+\EndFor
+\Return {$SC$}
+\caption{Customer Sorting-C for Greedy Approach for Campaign Optimization}
+\label{algo:cust-sort-c}
+\end{algorithm}
+
+Using algorithm-\ref{algo:cust-sort-c} we attained an objective value of 348 which is equal to the optimal solution. 
+
 \newpage
-\section{Computational Study} \label{num-analysis}
+\section{Computational Study} \label{s:num-analysis}
 
 In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test cases in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{test_evaluation}.
 
@@ -640,7 +853,168 @@ Future research may focus on developing alternative solution methods for the pro
 
 \newpage
 
+\appendix
+\section{Appendices}
+\subsection{Mathmetical Model and Solution for Mini Campaign Optimization Problem with Network Effect}\label{s:apendix-mini-net-cplex-sol}
+========\\
+Model:\\
+========\\
+Max:\\
+        12Y[0,0]+12Y[0,1]+12Y[0,2]+12Y[0,3]+12Y[0,4]+12Y[0,5]+12Y[0,6]+12Y[0,7]+12Y[0,8]+12Y[0,9]+12Y[0,10]+12Y[0,11]+12Y[0,12]+12Y[0,13]+12Y[0,14]+12Y[0,15]+12Y[0,16]+12Y[0,17]+12Y[0,18]+12Y[0,19]+12Y[0,20]+12Y[0,21]+12Y[0,22]+12Y[0,23]+12Y[0,24]+12Y[0,25]+12Y[0,26]+12Y[0,27]+12Y[0,28]+12Y[0,29]+12Y[0,30]+12Y[0,31]+12Y[0,32]+12Y[0,33]+12Y[0,34]+12Y[0,35]+12Y[0,36]+12Y[0,37]+12Y[0,38]+12Y[0,39]+12Y[0,40]+12Y[0,41]+12Y[0,42]+12Y[0,43]+12Y[0,44]+12Y[0,45]+12Y[0,46]+12Y[0,47]+12Y[0,48]+12Y[0,49]\\
+subject to:\\
+        X[0,0,0,0] \leq 1.0\\
+        X[0,1,0,0] \leq 1.0\\
+        X[0,2,0,0] \leq 1.0\\
+        X[0,3,0,0] \leq 1.0\\
+        X[0,4,0,0] \leq 1.0\\
+        X[0,5,0,0] \leq 1.0\\
+        X[0,6,0,0] \leq 1.0\\
+        X[0,7,0,0] \leq 1.0\\
+        X[0,8,0,0] \leq 1.0\\
+        X[0,9,0,0] \leq 1.0\\
+        X[0,10,0,0] \leq 1.0\\
+        X[0,11,0,0] \leq 1.0\\
+        X[0,12,0,0] \leq 1.0\\
+        X[0,13,0,0] \leq 1.0\\
+        X[0,14,0,0] \leq 1.0\\
+        X[0,15,0,0] \leq 1.0\\
+        X[0,16,0,0] \leq 1.0\\
+        X[0,17,0,0] \leq 1.0\\
+        X[0,18,0,0] \leq 1.0\\
+        X[0,19,0,0] \leq 1.0\\
+        X[0,20,0,0] \leq 1.0\\
+        X[0,21,0,0] \leq 1.0\\
+        X[0,22,0,0] \leq 1.0\\
+        X[0,23,0,0] \leq 1.0\\
+        X[0,24,0,0] \leq 1.0\\
+        X[0,25,0,0] \leq 1.0\\
+        X[0,26,0,0] \leq 1.0\\
+        X[0,27,0,0] \leq 1.0\\
+        X[0,28,0,0] \leq 1.0\\
+        X[0,29,0,0] \leq 1.0\\
+        X[0,30,0,0] \leq 1.0\\
+        X[0,31,0,0] \leq 1.0\\
+        X[0,32,0,0] \leq 1.0\\
+        X[0,33,0,0] \leq 1.0\\
+        X[0,34,0,0] \leq 1.0\\
+        X[0,35,0,0] \leq 1.0\\
+        X[0,36,0,0] \leq 1.0\\
+        X[0,37,0,0] \leq 1.0\\
+        X[0,38,0,0] \leq 1.0\\
+        X[0,39,0,0] \leq 1.0\\
+        X[0,40,0,0] \leq 1.0\\
+        X[0,41,0,0] \leq 1.0\\
+        X[0,42,0,0] \leq 1.0\\
+        X[0,43,0,0] \leq 1.0\\
+        X[0,44,0,0] \leq 1.0\\
+        X[0,45,0,0] \leq 1.0\\
+        X[0,46,0,0] \leq 1.0\\
+        X[0,47,0,0] \leq 1.0\\
+        X[0,48,0,0] \leq 1.0\\
+        X[0,49,0,0] \leq 1.0\\
+        X[0,0,0,0]+X[0,1,0,0]+X[0,2,0,0]+X[0,3,0,0]+X[0,4,0,0]+X[0,5,0,0]+X[0,6,0,0]+X[0,7,0,0]+X[0,8,0,0]+X[0,9,0,0]+X[0,10,0,0]+X[0,11,0,0]+X[0,12,0,0]+X[0,13,0,0]+X[0,14,0,0]+X[0,15,0,0]+X[0,16,0,0]+X[0,17,0,0]+X[0,18,0,0]+X[0,19,0,0]+X[0,20,0,0]+X[0,21,0,0]+X[0,22,0,0]+X[0,23,0,0]+X[0,24,0,0]+X[0,25,0,0]+X[0,26,0,0]+X[0,27,0,0]+X[0,28,0,0]+X[0,29,0,0]+X[0,30,0,0]+X[0,31,0,0]+X[0,32,0,0]+X[0,33,0,0]+X[0,34,0,0]+X[0,35,0,0]+X[0,36,0,0]+X[0,37,0,0]+X[0,38,0,0]+X[0,39,0,0]+X[0,40,0,0]+X[0,41,0,0]+X[0,42,0,0]+X[0,43,0,0]+X[0,44,0,0]+X[0,45,0,0]+X[0,46,0,0]+X[0,47,0,0]+X[0,48,0,0]+X[0,49,0,0] \leq 15.0\\
+        Y[0,0] \leq X[0,0,0,0]\\
+        Y[0,1] \leq X[0,1,0,0]\\
+        Y[0,2] \leq X[0,2,0,0]\\
+        Y[0,3] \leq X[0,3,0,0]+X[0,6,0,0]\\
+        Y[0,4] \leq X[0,4,0,0]+X[0,7,0,0]+X[0,28,0,0]\\
+        Y[0,5] \leq X[0,5,0,0]+X[0,8,0,0]\\
+        Y[0,6] \leq X[0,3,0,0]+X[0,6,0,0]+X[0,45,0,0]\\
+        Y[0,7] \leq X[0,4,0,0]+X[0,7,0,0]+X[0,8,0,0]+X[0,22,0,0]\\
+        Y[0,8] \leq X[0,5,0,0]+X[0,7,0,0]+X[0,8,0,0]\\
+        Y[0,9] \leq X[0,9,0,0]+X[0,11,0,0]+X[0,20,0,0]+X[0,43,0,0]\\
+        Y[0,10] \leq X[0,10,0,0]+X[0,29,0,0]+X[0,35,0,0]+X[0,48,0,0]\\
+        Y[0,11] \leq X[0,9,0,0]+X[0,11,0,0]+X[0,19,0,0]\\
+        Y[0,12] \leq X[0,12,0,0]\\
+        Y[0,13] \leq X[0,13,0,0]+X[0,20,0,0]\\
+        Y[0,14] \leq X[0,14,0,0]\\
+        Y[0,15] \leq X[0,15,0,0]+X[0,17,0,0]\\
+        Y[0,16] \leq X[0,16,0,0]\\
+        Y[0,17] \leq X[0,15,0,0]+X[0,17,0,0]\\
+        Y[0,18] \leq X[0,18,0,0]\\
+        Y[0,19] \leq X[0,11,0,0]+X[0,19,0,0]\\
+        Y[0,20] \leq X[0,9,0,0]+X[0,13,0,0]+X[0,20,0,0]\\
+        Y[0,21] \leq X[0,21,0,0]+X[0,28,0,0]\\
+        Y[0,22] \leq X[0,7,0,0]+X[0,22,0,0]+X[0,38,0,0]\\
+        Y[0,23] \leq X[0,23,0,0]\\
+        Y[0,24] \leq X[0,24,0,0]\\
+        Y[0,25] \leq X[0,25,0,0]\\
+        Y[0,26] \leq X[0,26,0,0]\\
+        Y[0,27] \leq X[0,27,0,0]\\
+        Y[0,28] \leq X[0,4,0,0]+X[0,21,0,0]+X[0,28,0,0]\\
+        Y[0,29] \leq X[0,10,0,0]+X[0,29,0,0]\\
+        Y[0,30] \leq X[0,30,0,0]\\
+        Y[0,31] \leq X[0,31,0,0]+X[0,45,0,0]\\
+        Y[0,32] \leq X[0,32,0,0]\\
+        Y[0,33] \leq X[0,33,0,0]\\
+        Y[0,34] \leq X[0,34,0,0]\\
+        Y[0,35] \leq X[0,10,0,0]+X[0,35,0,0]\\
+        Y[0,36] \leq X[0,36,0,0]\\
+        Y[0,37] \leq X[0,37,0,0]\\
+        Y[0,38] \leq X[0,22,0,0]+X[0,38,0,0]\\
+        Y[0,39] \leq X[0,39,0,0]\\
+        Y[0,40] \leq X[0,40,0,0]\\
+        Y[0,41] \leq X[0,41,0,0]\\
+        Y[0,42] \leq X[0,42,0,0]\\
+        Y[0,43] \leq X[0,9,0,0]+X[0,43,0,0]\\
+        Y[0,44] \leq X[0,44,0,0]\\
+        Y[0,45] \leq X[0,6,0,0]+X[0,31,0,0]+X[0,45,0,0]\\
+        Y[0,46] \leq X[0,46,0,0]\\
+        Y[0,47] \leq X[0,47,0,0]\\
+        Y[0,48] \leq X[0,10,0,0]+X[0,48,0,0]\\
+        Y[0,49] \leq X[0,49,0,0]\\
+========\\
+Solution:\\
+obj: 348.0\\
+========\\
+X[0,0,0,0] = 1.0\\
+X[0,1,0,0] = 1.0\\
+X[0,2,0,0] = 1.0\\
+X[0,6,0,0] = 1.0\\
+X[0,8,0,0] = 1.0\\
+X[0,9,0,0] = 1.0\\
+X[0,10,0,0] = 1.0\\
+X[0,11,0,0] = 1.0\\
+X[0,12,0,0] = 1.0\\
+X[0,15,0,0] = 1.0\\
+X[0,20,0,0] = 1.0\\
+X[0,22,0,0] = 1.0\\
+X[0,28,0,0] = 1.0\\
+X[0,34,0,0] = 1.0\\
+X[0,45,0,0] = 1.0\\
+Y[0,0] = 1.0\\
+Y[0,1] = 1.0\\
+Y[0,2] = 1.0\\
+Y[0,3] = 1.0\\
+Y[0,4] = 1.0\\
+Y[0,5] = 1.0\\
+Y[0,6] = 1.0\\
+Y[0,7] = 1.0\\
+Y[0,8] = 1.0\\
+Y[0,9] = 1.0\\
+Y[0,10] = 1.0\\
+Y[0,11] = 1.0\\
+Y[0,12] = 1.0\\
+Y[0,13] = 1.0\\
+Y[0,15] = 1.0\\
+Y[0,17] = 1.0\\
+Y[0,19] = 1.0\\
+Y[0,20] = 1.0\\
+Y[0,21] = 1.0\\
+Y[0,22] = 1.0\\
+Y[0,28] = 1.0\\
+Y[0,29] = 1.0\\
+Y[0,31] = 1.0\\
+Y[0,34] = 1.0\\
+Y[0,35] = 1.0\\
+Y[0,38] = 1.0\\
+Y[0,43] = 1.0\\
+Y[0,45] = 1.0\\
+Y[0,48] = 1.0\\
+\newpage
+
 \bibliographystyle{chicago}
+
 \bibliography{references}
 
 \end{document}
