@@ -5,8 +5,6 @@ import numpy as np
 
 
 def solve_network_model(a_uv, U, e_u):
-    start_time = time()
-    print("Starting Model: ")
     mdl = Model(name='Network Optimization')
     X = {u: mdl.binary_var(f"X_u:{u}")
                 for u in range(0,U)}
@@ -20,14 +18,7 @@ def solve_network_model(a_uv, U, e_u):
     mdl.add_constraints(
             (X[u] <= 0 for u in range(0,U) if e_u[u]==0)
     )
-
-    end_time = time()
-    print("Started Model: "+str(end_time - start_time))
-
-    start_time = time()
-    print("Solving Model: "+str(start_time - end_time))
     result = mdl.solve(log_output=False)
-    end_time = time()
 #    print("Solved Model: "+str(end_time - start_time))
 #    print("========")
 #    print("Model:")

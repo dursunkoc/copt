@@ -1,8 +1,10 @@
+from numpy import random
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from camps_order_model import start_model as camps_order_model
 from tqdm import trange
 from tqdm import tqdm
 from time import time
+import math
 import numpy as np
 from network_generator import gen_network
 import networkx.algorithms.centrality as nxac
@@ -66,23 +68,29 @@ class GreedySolutionWithNet(Solution):
         U_ranges = [ self.solve_and_sort(U, PMS, c) for c in range(C)]
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
-        mdl, Y = camps_order_model(C, D, I, PMS)
-        camps_order_result = mdl.solve()
+#        mdl, Y = camps_order_model(C, D, I, PMS)
+#        camps_order_result = mdl.solve()
 
-        camp_order = np.array(
-            [
-                [(camps_order_result.get_var_value(Y[(c,d)])) for c in range(C)]
-            for d in range(D)]
-            , dtype='int')
-        camp_prio = (camp_order) * PMS.rp_c
-        for c in tqdm(np.lexsort((-camp_prio.sum(axis=0),-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
-#        for c in np.argsort(-PMS.rp_c): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
-            for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
-                for h in range(H):
-                    for u in U_ranges[c]:
-                        X_cuhd[c,u,h,d]=1
-                        if not self.check(X_cuhd, PMS, (c, u, h, d)):
-                            X_cuhd[c,u,h,d]=0
+#        camp_order = np.array(
+#            [
+#                [(camps_order_result.get_var_value(Y[(c,d)])) for c in range(C)]
+#            for d in range(D)]
+#            , dtype='int')
+#        camp_prio = (camp_order) * PMS.rp_c
+        threshold = 0.10
+        ee_cu = (PMS.e_cu.T * PMS.rp_c).T
+#        for c in tqdm(np.lexsort((-camp_prio.sum(axis=0),-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
+        for c in np.argsort(-ee_cu.sum(1)): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
+            for u in U_ranges[c]:
+#        for ee in np.argsort(-ee_cu, axis=None):
+#            c = math.floor(ee / U)
+#            u = ee % U
+                for d in range(D):#trange(D, desc=f"Days Loop for campaign-{c}"):
+                    for h in range(H):
+                        if(ee_cu[c][u]>0):
+                            X_cuhd[c,u,h,d]=1
+                            if not self.check(X_cuhd, PMS, (c, u, h, d)):
+                                X_cuhd[c,u,h,d]=0
         end_time = time()
         duration = end_time - start_time
         value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
@@ -97,11 +105,11 @@ if __name__ == '__main__':
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
             Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
+#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
+#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
+#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
+#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
 #            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
 #            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
 #            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
@@ -145,3 +153,20 @@ if __name__ == '__main__':
 #[[6705]] [[10034]] [[42114]] [[35951]] [[266038]] [[389094]] [[840730]] [[841445]] [[1444498]]
 #durations:
 #1.0522 3.3425 5.0045 37.377 62.678 182.6615 244.2337 488.8882 605.6763
+
+
+#Case ->: 100%|██████████████████████████████████████████████████████████████████████| 9/9 [28:15<00:00, 188.39s/it]
+#[{'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[6705]], 'duration': 1.0198, 'info': {'direct_msg': 228, 'total_edges': 122}}
+#, {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[10954]], 'duration': 3.0613, 'info': {'direct_msg': 283, 'total_edges': 122}}
+#, {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[42924]], 'duration': 4.9607, 'info': {'direct_msg': 1068, 'total_edges': 254}}
+#, {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[35909]], 'duration': 37.2041, 'info': {'direct_msg': 3468, 'total_edges': 1184}}
+#, {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[261350]], 'duration': 60.0487, 'info': {'direct_msg': 6374, 'total_edges': 1184}}
+#, {'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[403323]], 'duration': 201.3544, 'info': {'direct_msg': 8373, 'total_edges': 2360}}
+#, {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[924568]], 'duration': 252.3314, 'info': {'direct_msg': 19820, 'total_edges': 3630}}
+#, {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[1015575]], 'duration': 498.2318, 'info': {'direct_msg': 17183, 'total_edges': 4878}}
+#, {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': [[1433674]], 'duration': 631.5755, 'info': {'direct_msg': 31765, 'total_edges': 6056}}
+#]
+#values:
+#[[6705]] [[10954]] [[42924]] [[35909]] [[261350]] [[403323]] [[924568]] [[1015575]] [[1433674]]
+#durations:
+#1.0198 3.0613 4.9607 37.2041 60.0487 201.3544 252.3314 498.2318 631.5755
