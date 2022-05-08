@@ -28,7 +28,7 @@ class MipSolutionValidation(Solution, MipCore):
                         X_cuhd[c,u,h,d]=1
                         if not self.check(X_cuhd, PMS, (c, u, h, d)):
                             X_cuhd[c,u,h,d]=0
-        value=self.objective_fn(PMS.rp_c, X_cuhd)
+        value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
         print("======================")
         print(f"Starting validation: value:{value}")
 

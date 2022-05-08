@@ -37,15 +37,15 @@ class LpRelSolution(Solution, MipCore):
         print("Starting greedy")
         for ky,_ in result.as_name_dict().items():
             exec(f'X_cuhd2{[int(i.split(":")[1]) for i in ky.split("_")[1:]]} = 1', {}, {'X_cuhd2':X_cuhd2})
-        v_non_opt = self.objective_fn(PMS.rp_c, X_cuhd2)
+        v_non_opt = self.objective_fn_no_net(PMS.rp_c, X_cuhd2)
         print("Starting rounding with greedy")
         self.round_with_greedy(X_non_integral, X_cuhd2, PMS, D, H, U)
         if(v_non_opt!=v_non_integral):
             print(f"Non-optimistic & integral solution: {v_non_opt}")
             print(f"Non-integral solution: {v_non_integral}")
-            print(f"Optimistic solution: {self.objective_fn(PMS.rp_c, X_cuhd2)}")
+            print(f"Optimistic solution: {self.objective_fn_no_net(PMS.rp_c, X_cuhd2)}")
         print("Completed.")
-        value = self.objective_fn(PMS.rp_c, X_cuhd2)
+        value = self.objective_fn_no_net(PMS.rp_c, X_cuhd2)
         end_time = time()
         duration = end_time - start_time
         return (X_cuhd2, SolutionResult(case, value, round(duration,4)))

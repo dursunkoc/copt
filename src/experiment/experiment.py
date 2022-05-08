@@ -145,9 +145,9 @@ class Solution:
         n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
         ##capacity for channel
         t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
-        e_cu_X = None#np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
-        m_i_X = None#np.stack([m_i for _ in range(U)], axis=1)
-        n_i_X = None#np.stack([n_i for _ in range(U)], axis=1)
+        e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
+        m_i_X = np.stack([m_i for _ in range(U)], axis=1)
+        n_i_X = np.stack([n_i for _ in range(U)], axis=1)
         return Parameters(s_cuhd,e_cu,e_cu_X,q_ic,rp_c,b,k,l_c,m_i, n_i, m_i_X, n_i_X, t_hd, (C,U,H,D), a_uv)
 
 
@@ -217,7 +217,7 @@ class Solution:
             return False
         return True
 
-    def objective_fn(self, rp_c, X):
+    def objective_fn_no_net(self, rp_c, X):
         return np.matmul(rp_c, X.sum(axis=(1,2,3)))
 
     def interaction_matrix(self, X, a_uv):

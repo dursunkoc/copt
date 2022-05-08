@@ -38,7 +38,7 @@ class GreedySolution(Solution):
                         if not self.check(X_cuhd, PMS, (c, u, h, d)):
                             X_cuhd[c,u,h,d]=0
         end_time = time()
-        value=self.objective_fn(PMS.rp_c, X_cuhd)
+        value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
         duration = end_time - start_time
         return (X_cuhd, SolutionResult(case, value, round(duration,4)))
 
@@ -47,8 +47,8 @@ if __name__ == '__main__':
             Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
-#            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
 #            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
 #            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
 #            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
@@ -63,12 +63,14 @@ if __name__ == '__main__':
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution(), False)
-    print("values:")
-#    print(" ".join([str(v.value) for v in [c for solution in solutions for c in solution]]))
-    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
-    print("durations:")
-#    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
-    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+    for solution in solutions:
+        print(solution)    
+#    print("values:")
+##    print(" ".join([str(v.value) for v in [c for solution in solutions for c in solution]]))
+#    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
+#    print("durations:")
+##    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
+#    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
 
 #values:
 #      12       13       14      15       16

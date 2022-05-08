@@ -79,8 +79,8 @@ if __name__ == '__main__':
             Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
             Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
             Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
-#            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
+            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
+            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
 #            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
 #            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
 #            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
@@ -93,12 +93,14 @@ if __name__ == '__main__':
             ]
     expr = Experiment(cases)
     solutions = expr.run_cases_with(MipSolution(), False)
-    print("values:")
-#    print(" ".join([str(v.value) for v in [c for solution in solutions for c in solution]]))
-    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
-    print("durations:")
-#    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
-    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
+    for solution in solutions:
+        print(solution)
+#    print("values:")
+##    print(" ".join([str(v.value) for v in [c for solution in solutions for c in solution]]))
+#    print(" ".join([str(v.value) for v in [solution[0] for solution in solutions]]))
+#    print("durations:")
+##    print(" ".join([str(v.duration) for v in [c for solution in solutions for c in solution]]))
+#    print(" ".join([str(v.duration) for v in [solution[0] for solution in solutions]]))
 #
 #<case: {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 12180.0, duration: 1.5269>
 #<case: {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, value: 341667.0, duration: 33.3006>
