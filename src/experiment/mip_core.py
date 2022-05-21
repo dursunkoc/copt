@@ -175,28 +175,28 @@ class MipCore:
                     for u in range(0,U)]))
         #constraints
         eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
-        if PMS.s_cuhd is not None:
-            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-            campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-            weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
-        else:
-            weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
-            campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
-            weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
-        daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
-        daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
-        channel_capacity = self.mip_channel_capacity(mdl, X, PMS, C, U, H, D)
-        if PMS.a_uv is not None:
-            network_coverage = self.mip_network_coverage(mdl, Y, X, PMS.a_uv, C, U, H, D)
-        if V_cuhd is not None:
-            for c in range(C):
-                for d in range(D):
-                    for h in range(H):
-                        for u in range(U):
-                            if V_cuhd[c,u,h,d]==1:
-                                self.fix_variable(mdl, X, c, u, h, d)
-                            else:
-                                self.fix_variable_0(mdl, X, c, u, h, d)
+#        if PMS.s_cuhd is not None:
+#            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+#            campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+#            weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
+#        else:
+#            weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
+#            campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
+#            weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
+#        daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
+#        daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
+#        channel_capacity = self.mip_channel_capacity(mdl, X, PMS, C, U, H, D)
+#        if PMS.a_uv is not None:
+#            network_coverage = self.mip_network_coverage(mdl, Y, X, PMS.a_uv, C, U, H, D)
+#        if V_cuhd is not None:
+#            for c in range(C):
+#                for d in range(D):
+#                    for h in range(H):
+#                        for u in range(U):
+#                            if V_cuhd[c,u,h,d]==1:
+#                                self.fix_variable(mdl, X, c, u, h, d)
+#                            else:
+#                                self.fix_variable_0(mdl, X, c, u, h, d)
         return (mdl, X)
 
     def fix_variable_0(self, mdl, X, c, u, h, d):

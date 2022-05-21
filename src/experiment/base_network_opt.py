@@ -4,7 +4,7 @@ from network_generator import gen_network
 import numpy as np
 
 
-def solve_network_model(a_uv, U, e_u):
+def solve_network_model(a_uv, U, e_u, with_obj=False):
     mdl = Model(name='Network Optimization')
     X = {u: mdl.binary_var(f"X_u:{u}")
                 for u in range(0,U)}
@@ -12,12 +12,12 @@ def solve_network_model(a_uv, U, e_u):
     mdl.minimize(mdl.sum([ X[u] for u in range(0,U) ]))
 
     mdl.add_constraints(
-            1 <= mdl.sum((X[u]) + (mdl.sum(X[v] * a_uv[u,v] for v in range(0,U) if a_uv[u,v]==1)))
-            for u in range(0,U) if e_u[u]!=0
+            e_u[u] <= mdl.sum((X[u]) + (mdl.sum(X[v] * a_uv[u,v] for v in range(0,U) if a_uv[u,v]==1)))
+            for u in range(0,U)
     )
-    mdl.add_constraints(
-            (X[u] <= 0 for u in range(0,U) if e_u[u]==0)
-    )
+#    mdl.add_constraints(
+#            (X[u] <= 0 for u in range(0,U) if e_u[u]==0)
+#    )
     result = mdl.solve(log_output=False)
 #    print("Solved Model: "+str(end_time - start_time))
 #    print("========")
@@ -30,13 +30,15 @@ def solve_network_model(a_uv, U, e_u):
 #        print(f"\t{c}")
 #    print("========")
 #    print("obj:", result.objective_value)
-#    print_solution(result)
+#print_solution(result)
 #    print("========")
 
     X_u = np.zeros(U, dtype='int')
     if result is not None and result.as_name_dict() is not None:
         for ky,_ in result.as_name_dict().items():
             exec(f'X_u{[int(i.split(":")[1]) for i in ky.split("_")[1:]]} = 1', {}, {'X_u':X_u})
+    if with_obj:
+        return (X_u, result.objective_value)
     return X_u
 
 def print_solution(solution):

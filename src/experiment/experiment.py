@@ -5,6 +5,7 @@ from tqdm import tqdm
 from functools import reduce
 from operator import mul
 from network_generator import gen_network
+import co_constraints as cstr
 
 class Case:
     def __init__(self, arguments:Dict[str, int]):
@@ -181,24 +182,7 @@ class Solution:
         return True        
 
     def check(self, X, PMS, indicies):
-        if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
-            return False
-        for f_d in range(1, PMS.cuhd[self.d_i]+1):
-            if not self.weekly_limitation_rh(PMS.b, X, PMS.s_cuhd, indicies[self.u_i], f_d):
-                return False
-        if not self.daily_limitation(PMS.k, X, indicies[self.u_i],indicies[self.d_i]):
-            return False
-        for f_d in range(1, PMS.cuhd[self.d_i]+1):
-            if not self.campaign_limitation_rh(PMS.l_c, X, PMS.s_cuhd, indicies[self.c_i],indicies[self.u_i], f_d):
-                return False
-        for f_d in range(1, PMS.cuhd[self.d_i]+1):
-            if not self.weekly_quota_rh(PMS.m_i, PMS.q_ic, X, PMS.s_cuhd, indicies[self.u_i], f_d):
-                return False
-        if not self.daily_quota(PMS.n_i, PMS.q_ic, X, indicies[self.u_i],indicies[self.d_i]):
-            return False
-        if not self.channel_capacity(PMS.t_hd, X, indicies[self.h_i],indicies[self.d_i]):
-            return False
-        return True
+        return cstr.check_indicies(X,PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd,indicies)
 
     def check_no_rh(self, X, PMS, indicies):
         if not self.eligibility(PMS.e_cu, X, indicies[self.c_i],indicies[self.u_i],indicies[self.h_i],indicies[self.d_i]):
@@ -274,3 +258,4 @@ class Solution:
         if not self.X_channel_capacity(PMS.t_hd, X):
             return False
         return True
+

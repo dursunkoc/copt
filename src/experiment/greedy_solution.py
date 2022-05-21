@@ -4,6 +4,7 @@ from tqdm import trange
 from tqdm import tqdm
 from time import time
 import numpy as np
+import co_constraints as cstr
 
 class GreedySolution(Solution):
     def __init__(self):
@@ -29,38 +30,15 @@ class GreedySolution(Solution):
             for d in range(D)]
             , dtype='int')
         camp_prio = (camp_order) * PMS.rp_c
-        for c in tqdm(np.lexsort((-camp_prio.sum(axis=0),-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
-            for d in range(D):
-                Ur = X_cuhd.sum(axis=(0,2,3)).argsort()
-                for u in Ur[::-1]:
-                    for h in range(H):
-                        X_cuhd[c,u,h,d]=1
-                        if not self.check(X_cuhd, PMS, (c, u, h, d)):
-                            X_cuhd[c,u,h,d]=0
+        sorted_camps = np.lexsort((-camp_prio.sum(0),-PMS.l_c,-PMS.rp_c))
+        cstr.do_greedy_loop(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd)
         end_time = time()
         value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
         duration = end_time - start_time
         return (X_cuhd, SolutionResult(case, value, round(duration,4)))
 
 if __name__ == '__main__':
-    cases = [
-            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
-            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
-            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
-            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
-#            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
-#            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
-#            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),#12
-#            Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),#13
-#            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3}),#14
-#            Case({"C":30,"U":50000,"H":3, "D":7, "I":3, "P":3}),#16
-#            Case({"C":30,"U":60000,"H":3, "D":7, "I":3, "P":3}),#17
-            ]
+    from cases import cases
     expr = Experiment(cases)
     solutions = expr.run_cases_with(GreedySolution(), False)
     for solution in solutions:
