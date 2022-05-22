@@ -176,3 +176,10 @@ if __name__ == '__main__':
 #{'case': {'C': 20, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 4941547, 'duration': 5342.363, 'info': None}
 #
 #{'case': {'C': 20, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 10256858, 'duration': 10116.4649, 'info': None}
+
+
+#{'case': {'C': 1, 'U': 10, 'H': 1, 'D': 1, 'I': 1, 'P': 1}, 'value': 450, 'duration': 35.7095, 'info': None}
+#{'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 9114, 'duration': 20.3929, 'info': None}
+#{'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 6480, 'duration': 51.4376, 'info': None}
+#{'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 21582, 'duration': 106.0899, 'info': None}
+#{'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 60762, 'duration': 710.3769, 'info': None}

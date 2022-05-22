@@ -3,6 +3,19 @@ from time import time
 from network_generator import gen_network
 import numpy as np
 
+def solve_network_model_definite(a_uv, U, e_u, X_val):
+    mdl = Model(name='Network Optimization')
+    X = {u: mdl.binary_var(f"X_u:{u}") for u in range(0,U)}
+    mdl.minimize(mdl.sum([ X[u] for u in range(0,U) ]))
+    mdl.add_constraints(
+            e_u[u] <= mdl.sum((X[u]) + (mdl.sum(X[v] * a_uv[u,v] for v in range(0,U) if a_uv[u,v]==1))) for u in range(0,U)
+    )
+    mdl.add_constraints(
+        X_val[u] == X[u] for u in range(0,U)
+    )
+
+    result = mdl.solve(log_output=False)
+    return result
 
 def solve_network_model(a_uv, U, e_u, with_obj=False):
     mdl = Model(name='Network Optimization')

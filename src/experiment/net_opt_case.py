@@ -16,12 +16,12 @@ def case_gen(indiv_size):
 
 cases = [
          Case(10),
-         Case(20),
-         Case(50),
+#         Case(20),
+#         Case(50),
 #         Case(100),
 #         Case(200),
 #         Case(500),
-#         Case(1000),
+         Case(1000),
 #         Case(5000),
 #         Case(10000),
         ]

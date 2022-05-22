@@ -65,7 +65,7 @@ def crossover(parents: np.ndarray, indiv_flat_size: int, number_of_crossover_sec
 
 def mutation(generation, indiv_size, indiv_flat_size, pop_size, mutation_prob, mutation_amount):
     mutation_indicies = np.random.random_sample(
-        size=(pop_size-2)) < mutation_prob
+        size=(pop_size)) < mutation_prob
     mutants = generation[mutation_indicies]
     mutants = mutants.reshape((mutants.shape[0], indiv_flat_size))
     mutation_positions = np.random.randint(low=0, high=mutants.shape[1],
@@ -97,10 +97,11 @@ def genetic_iteration(fn_fitness: Callable, indiv_size: Tuple, indiv_flat_size: 
     pop_size = len(population)
 
     fitness_results = fn_fitness(population)
-
+ 
     population_with_fitness: List[Tuple[int, np.ndarray]] = sorted(
         fitness_results, key=lambda tup: tup[0], reverse=True)
-
+#    for pwf in population_with_fitness:
+#        print(pwf)
     fitness_history.append(population_with_fitness[0][0])
     elit1 = population_with_fitness[0][1]
     elit2 = population_with_fitness[1][1]
@@ -110,10 +111,12 @@ def genetic_iteration(fn_fitness: Callable, indiv_size: Tuple, indiv_flat_size: 
 
     next_generation = crossover(parents, indiv_flat_size, number_of_crossover_section).reshape(
         ((pop_size-2,) + indiv_size))
-
+#    print("Crossover:")
+#    print(next_generation)
     next_generation = mutation(next_generation, indiv_size,
-                               indiv_flat_size, pop_size, mutation_prob, mutation_amount)
-
+                               indiv_flat_size, pop_size-2, mutation_prob, mutation_amount)
+ #   print("Mutation:")
+ #   print(next_generation)
     next_generation = np.append(next_generation, elit1)
     next_generation = np.append(next_generation, elit2)
     return next_generation.reshape(((pop_size,) + indiv_size))
