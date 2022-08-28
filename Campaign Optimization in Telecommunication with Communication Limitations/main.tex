@@ -1,0 +1,559 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{url}
+\usepackage{breakurl}
+\usepackage[breaklinks]{hyperref}
+\usepackage[super]{nth}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{rotating}
+\usepackage{xcolor}
+\usepackage{placeins}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+%\usepackage{algpseudocode}
+\usepackage{natbib}
+\usepackage{setspace} 
+\usepackage{latexsym}
+\usepackage{subfig}
+\allowdisplaybreaks
+\usepackage{array}
+%\usepackage{subcaption}
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+\usepackage{pdfpages}
+\usepackage{diagbox}
+\usepackage{graphicx}
+\usepackage{soul}
+
+\usepackage{capt-of}% or \usepackage{caption}
+\usepackage{varwidth}
+\newsavebox\tmpbox
+
+\usepackage{csvsimple,booktabs}
+\usepackage{filecontents}
+
+\usepackage{afterpage}
+\graphicspath{{Images/}}
+
+
+\usepackage{geometry}
+\geometry{
+	a4paper,
+	total={160mm,220mm},
+	left=16mm,
+	top=22mm,
+	bottom=30mm,
+}
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e, algorithmic}
+
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
+\title{Campaign Optimization in Telecommunication with Communication Limitations\\}
+\author{Dursun Koc $^{a}$ \\ 
+	dursun.koc@turkcell.com.tr, \\\\
+	Dilek Gunnec $^{a}$ $^{\ast}$\\ 
+	dilek.gunnec@ozyegin.edu.tr, ORCID ID: 0000-0002-0749-2584 \\\\
+$^{a}$ Ozyegin University, Department of Industrial Engineering, Istanbul, Turkey \\ 
+$^{\ast}$ Corresponding author \\ }
+	
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+For marketers, the main objective is to introduce their companies products or services to their customers or potential customers. Most of the studies, prior to this study, were on how to find the right audience for a marketing campaign. However, after finding the right target audience for a campaign, planing the communication to the target audience is also an important task. Such a plan should be fine-tuned not to irritate customers by sending too many messages, considering the communication channels' capacities, and it should also be compliant with the governments' regulations on marketing activities as well. In this study we propose a mathematical model which considers various communication limitations, and communication channels' capacities. In order to solve such a problem we propose a basic greedy heuristic, and a linear programming relaxation heuristic; later, we improved the greedy heuristic by implementing a small-scale linear programming model for finding a rough estimation for the expected number of communication for each campaign.\end{abstract}\hspace{10pt}
+
+\keywords{Campaign Optimization, Telecommunication Networks, Greedy Heuristic.}
+
+\newpage
+
+\section{Introduction}
+
+There are two main strategies marketers use to introduce their products or services to existing or potential customers; inbound and outbound marketing strategies. In outbound marketing (also called targeted advertising), a target audience (e.g., people of ages between 20 and 30, and living in New York City) is selected and contacted via direct channels such as SMS, call-center or IVR calls. On the other hand, in inbound marketing the communication is started by an arbitrary customer, and if the customer fulfill a set of rules determined by marketers, offers for the customer are presented at the first opportunity during the communication. In inbound marketing, the marketer has no option to optimize the communication; as she does not start the communication. In outbound campaigns, after the correct audience is found, the reach of this audience should be optimized. When a customer visits any of the inbound channels, e.g., a web-page, and the customer fulfills the rules, the message is given to the customer, so inbound marketing is also considered as content marketing. The marketer creates content and tries to gain customer interest using social media. On the other hand, outbound marketing strategy depends on mass media tools to push the message about a product or a service. Outbound marketing is mostly seen as interruptive and the target audience can easily find a way to dismiss the message. From a companies’ perspective it can be very inefficient; because sending a message to a customer who is unlikely to respond has a cost; moreover, not sending the message to a customer who is more likely to respond is a loss from revenue \citep{sarkar}. Deciding who should receive a specific offer is one of the essential questions of outbound marketing. Marketers have to wisely identify the right target audience because the key to a good relationship with customers is keeping your offers relevant to the customers’ need \citep{malthouse}. An irrelevant communication with a customer can cause irritation, and they can block the communication channel, so the company will lose its chance to make a relevant or profitable communication opportunity in the future. In outbound campaigns the marketer tries to reach customers on her own initiative without customers' direct request; however in inbound campaigns a customer has a request and the marketer tries to direct that demand in line with her own goals. At this point, outbound campaigns are difficult to work with, but they can be effective for demand generation. Finding the right target audience will not make outbound marketing communication perfect, the most appropriate communication channel and the right time should also be found, and any opportunity to connect to the customers in the future should not be lost.\\
+
+Large amount of customer data is needed, for effective outbound marketing. Therefore companies collect more information about their customers, which causes information asymmetry \citep{waerdt}. As the governments are responsible for protecting their citizens’ rights, they make laws and regulations on this information asymmetry. (e.g., The General Data Protection Regulation (GDPR) law in EU). According to such regulations, a customer can request the company to stop processing its data.\\
+
+To avoid such customer response, companies need to apply some limitation on outbound communication to their customers. Outbound marketing campaigns need to be well planned with regard to time, target audience, channel and content. In this study, we optimize outbound campaigns regarding time and channel while keeping communication under certain limitations. Such limitations can either be a result of legislation or a result of marketing strategy not to irritate customers.\\
+
+The remaining of this paper is structured as follows. In \S \ref{s:literature-review}, we review the related literature. In \S \ref{s:problem-model}, we describe the problem in detail and present our mathematical model for the problem. In \S \ref{s:solution-method}, we explain our proposed solution methods. In \S \ref{s:num-analysis}, we present our computational results. Finally, we conclude in \S \ref{s:conclusion}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Literature Review}  \label{s:literature-review}
+
+In the industry, outbound campaigns are mostly designed regarding the target audience. Machine learning methods, statistics and business rules and regulations are used to find the right target audience, and the message about the product is sent to customers; moreover database marketing community also tries to estimate the expected value of an offer to a specific customer from a specific channel \citep{cohen_exp, oliveira_hypr}. In direct marketing, marketers select a portion of the customer group with the highest probability of expecting the offer, and then add them to their target audience for the marketing campaign \citep{owczarczuk}. However, even if the offer addresses the customer’s need, most of the time customer can dismiss the message because of the wrong channel or because of the wrong time. Having the right channel and the right time with the right audience is the most desired case, but it is not free. The cost of some channels can be high while some others are cheaper. Further, with social network effects some of the targeting can become unnecessary and costly.\\
+
+In today’s world, marketers have multiple channels to introduce their product or services, and many studies have shown the importance of omni-channel sales strategies \citep{shankar, park}. In the essence customers want to interact with the company via multiple channels, companies’ challenge is to provide a nearly identical environment for each channel \citep{bell}. Customer can get information about a product or service from one channel, but the purchase can be from another channel \citep{park}. Even the information about the product or service can be solidified by a series of messages from different channels. At this point it is crucial to employ additional constraints regarding multiple channels when optimizing the campaign.\\
+
+Most of the studies about campaign optimization focus on obtaining the right target audience for the campaign \citep{goul}; however, they usually ignore campaign channels, or optimize the online campaigns. They are finding the best matched campaign for a given online search only, or web-page banner optimization \citep{liu}, and the success criteria or the objective function for such models is often the click through rate or the action rate. Such objective functions do not truly represent the advertisers’ benefit and rather focus on the publishers’ benefit \citep{altshuler}. Our model will be directly related to the advertisers’ benefit.\\
+
+Different studies work on different industries and various business constraints; but the mathematical models mostly seems similar, and can be counted as assignment problem, or more specifically multi-dimensional knapsack problem \citep{cohen_exp, oliveira_hypr}. For solving ILP (Integer Linear Programming), MIP(Mixed Integer Programming) models, numerous methods and tools have been introduced\citep{fallah_bb, chu_mip}, however due to the complexity of the problem, handling big models remains a technical difficulty. Although the branch and bound (B\&B) algorithm has been presented as the definitive and deterministic solution, when the number of variables and the number of constraints get larger, the B\&B algorithm does not provide a solution in reasonable time \citep{herrera_pbb, sato}. Because of that reason some work on parallel B\&B algorithm\citep{fallah_bb, sato}; but computational resources required to run the algorithm increases.\\ \citeauthor{cohen_exp} applied a greedy approach to a similar problem \citep{cohen_exp}. Multidimensional knapsack problems having multiple resource constraints with binary decision variables, which is similar to our model have been dealt with greedy-like heuristic methods \citep{akcay_mdkp}.
+
+Although studies related to campaign management are common in marketing, there is increasing interest to this area from operations research and computer science areas, as the abundant data require complex data analysis skills. In my thesis, after such data analysis, we plan to introduce optimization methods which are not yet commonly used to tackle such problems. Specifically, one of our main contributions will be utilizing from network optimization tools to produce high quality solutions.\\
+
+In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations. In the second place, we also try to increase the number of interaction to the most influential customers. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data from Turkcell.
+
+\section{Problem Definition and Mathematical Model}  \label{s:problem-model}
+
+In this section, we describe the proposed mathematical model to maximize the number of interactions to customers by adhering the communication limitations. In \S \ref{s:problem-desc}, we detail the limitations to customer communication and in \S \ref{s:problem-math}, we present our mathematical model.
+
+\subsection{Problem Description} \label{s:problem-desc}
+
+Turkcell, a telecommunication company in Turkey, provides different tariffs, services and products to its customers. In order to introduce these services and products to its existing and potential customers, the marketing team launches daily and weekly campaigns. A campaign can be seen as a marketing activity to introduce a product or a service to a predefined customer group through a set of communication channels within a specific period of time. Most of the time the product or the service can be offered with some advantages, like free usage or price advantages. But despite these benefits, customers may find campaign messages annoying. Before launching these campaigns, they analyze customer data to find the right target group. Then, they apply a set of business rules to optimize their communication with them. During this optimization process, several filters are used to keep the communication in certain frequency so that the customers are not disturbed frequently and with information unrelated to their needs. The first filter assures that no customers is informed about the same campaign from different channels. The second, limits the number of total interactions to a customer in one day. Campaigns are categorized in two dimensions; the first dimension is quota categories which describes filters for a campaign and the second one is priority categories which describes the importance of a campaign. Each campaign belongs to a quota category and each quota category has a limitation on the number of messages sent to a customer, both in a daily, and a weekly basis; moreover each campaign has a limitation unique to its own; and finally, each communication channel has a capacity that should not be exceeded for each day. Each campaign is bound to a priority category.\\
+
+Turkcell launches about 70 campaigns on average for around 60-70 million customers through 3 channels each day, and these campaigns are planned in a weekly basis. Number of quota categories is fixed to 3, but priority categories can be variable around 10.\\
+
+We study Turkcell’s outbound campaign management, and use an initial model to maximize the number of campaigns while abiding the rules for reaching to customers.
+
+\subsection{Mathematical Model} \label{s:problem-math}
+
+In this section, we present an integer programming model for the campaign optimization problem described at \S \ref{s:problem-desc}. We first introduce the notation and then present the model.\\
+
+% General Math Model
+\noindent \textbf{Sets}\\
+
+\noindent ${\mathcal{C}}$: Set of campaigns \\
+\noindent ${\mathcal{U}}$: Set of customers \\
+\noindent ${\mathcal{H}}$: Set of channels \\
+\noindent ${\mathcal{D}}$: Set of planning days \\
+\noindent ${\mathcal{I}}$: Set of quota categories \\
+\noindent ${\mathcal{P}}$: Set of priority categories \\
+
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $X_{{c}{u}{h}{d}}=1$, if message on campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ on day $d \in \mathcal{D}$, and 0 otherwise.\\
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{{c}{u}}=1$, if customer $u \in \mathcal{U}$ is eligible for campaign $c \in \mathcal{C}$, and 0 otherwise.\\
+
+\noindent $s_{{c}{u}{h}{d}}=1$, if customer $u \in \mathcal{U}$ is reached about campaign $c \in \mathcal{C}$, through channel $h \in \mathcal{H}$, on day $d \in \mathcal{D}$ the previous week and 0 otherwise.\\
+
+\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in quota category $i \in \mathcal{I}$, and 0 otherwise.\\
+
+\noindent $r_{{c}{p}}$ priority value of campaign $c \in \mathcal{C}$ regarding priority type $p \in \mathcal{P}$.\\
+
+\noindent $b$ communication limit per customer for the planning horizon.\\
+
+\noindent $k$ communication limit per customer for each day.\\
+
+\noindent $l_{c}$ communication limit per customer for campaign $c \in \mathcal{C}$.\\
+
+\noindent $m_{i}$ maximum number of times a customer can be contacted for quota category $i \in \mathcal{I}$ for the planning horizon.\\
+
+\noindent $n_{i}$ maximum number of times a customer can be contacted for quota category $i \in \mathcal{I}$ on each day.\\
+
+\noindent $t_{{h}{d}}$ capacity for channel $h \in \mathcal{H}$ on day $d \in \mathcal{D}$.\\
+
+\noindent The formulation for the campaign optimization is presented next.
+
+\begin{align}
+\text{IP: }\text{Maximize} & \displaystyle
+\sum\limits_{p\in \mathcal{P}}
+\sum\limits_{c\in \mathcal{C}}
+\sum\limits_{u\in \mathcal{U}}
+\sum\limits_{h\in \mathcal{H}}
+\sum\limits_{d\in \mathcal{D}}
+X_{{c}{u}{h}{d}}  r_{{c}{p}} \label{mathmodel_obj}&
+\\
+\text{subject to} \notag\\
+&X_{{c}{u}{h}{d}} \leq e_{{c}{u}}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_eligibility}&\\
+&\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq 1 &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \label{mathmodel_singlechannel}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u}{h}{d}} \leq b &\forall u \in \mathcal{U}, \label{mathmodel_percustomercommlimit}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq b &\forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercommlimit_rh}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq k &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \label{mathmodel_percustomercommlimit_day}&\\
+&\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq l_{c} &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \label{mathmodel_percustomercamplimit}&\\
+&\sum\limits_{h\in\mathcal{H}}\left( \sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq l_{c} &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercamplimit_rh}&\\
+&\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}}  q_{{i}{c}} \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \label{mathmodel_weeklyquotalimit}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}q_{{i}{c}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \forall w \in [1,6], \label{mathmodel_weeklyquotalimit_rh}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}}  q_{{i}{c}} \leq n_{i} &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \forall i \in \mathcal{I}, \label{mathmodel_dailyquotalimit}&\\
+&\sum\limits_{u\in\mathcal{U}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq t_{{h}{d}} &\forall d \in \mathcal{D}, \forall h \in \mathcal{H}, \label{mathmodel_channellimit}&\\
+&X_{{c}{u}{h}{d}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_integrity}
+\end{align}\\
+
+The objective function \eqref{mathmodel_obj} maximizes the prioritized campaign communication. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed only when the customer is eligible for that campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} define an upper-bound on the total number of communication to each customer for the whole period; and constraints \eqref{mathmodel_percustomercommlimit_rh} extend the upper-bound on the total number of communication to each customer regarding the rolling horizons. Constraints \eqref{mathmodel_percustomercommlimit_day} define an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} define an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints \eqref{mathmodel_percustomercamplimit_rh} extend the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are grouped by their marketing purpose, and for each of these groups we have combined limitations. Constraints \eqref{mathmodel_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ equals to 1 if the campaign $c$ is in category  $i$. Likewise, constraints \eqref{mathmodel_weeklyquotalimit_rh} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that the variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
+
+Due to its complexity, large instances of the campaign optimization problem may not be solved quickly by using exact methods. To support time to market objectives of marketing teams, we developed a heuristic approach that can attain high-quality solutions within a reasonable duration.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Solution Methods}  \label{s:solution-method}
+
+In this section, we describe three heuristics, first two are based on greedy approach, and the last is based on a linear programming relaxation. In \S \ref{s:greedy_heuristic_basic} we implement a basic greedy heuristic which considers only the campaign priority, and in \S \ref{s:greedy_heuristic_improved} we improve the greedy heuristic to consider the number of assignable slot beside campaign priority, and finally at \S \ref{s:lp_relaxation_heuristic} we solve the mathematical model by LP-Relaxation by defining $X_{{c}{u}{h}{d}}$ as a real number between 0 and 1.
+
+\subsection{Basic Greedy Heuristic} \label{s:greedy_heuristic_basic}
+
+We use the following greedy algorithm to solve the campaign optimization problem described in \ref{s:problem-desc}. Algorithm - 1 assigns the most important campaign first. We do not apply any specific ranking for days, channels and customers, but for campaigns. When we are checking the feasibility, we are not checking whole system, we are checking the constraints in which the $X_{{c}{u}{h}{d}}$ being modified is contained.
+\\
+\\
+Algorithm-1 starts by sorting campaigns by their $r_{cp}$ values, and starting from the most important campaign it tries to set $X_{cuhd}$ variable to be 1, and checks the feasibility using the $CheckFeasibility$ function.
+\\
+\\
+The $CheckFeasibility$ function takes the indices of the variable $X_cuhd$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_cuhd$ variable, and checks their value per modification.
+\\
+\\
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $IPFeasibilityFunctions$ (constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity})}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ such that constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+  \SetKwFunction{FSortCampaigns}{SortCampaigns}
+  \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
+
+  \SetKwProg{Fn}{Funtion}{:}{}
+  \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+        FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+        satisfied = FunctionsToCheck(X)\;
+        \KwRet satisfied\;
+  }\;
+SortCampaigns(C) \tcp*{such that($r_{c_{1}p} \geq r_{c_{2}p}$)}
+\For{$c \gets 1$ \textbf{to} $C$}{
+    \For{$d \gets 1$ \textbf{to} $D$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 $X_{cuhd}$ = 1\;
+                 \If {\textbf{not} CheckFeasibility(X,c,u,h,d)} {
+                    $X_{cuhd}$ = 0\;
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{Basic Greedy Heuristic}
+\label{algo:greedy_impl1}
+\end{algorithm}
+
+\subsection{Improved Greedy Heuristic} \label{s:greedy_heuristic_improved}
+In this section, we improve the greedy heuristic using the LP described at \S \ref{s:problem-math-lp}. In order to find better solution, we improved our understanding of prior campaigns by implementing a linear programming model of the problem. In this model we try to find the number of person for each campaign for each day with in limitations.
+
+\subsubsection{Linear Programming Model for finding assignable number for each campaign} \label{s:problem-math-lp}
+
+In this section, we present a linear programming model for the campaign optimization problem described at \S \ref{s:problem-desc}, but this time instead of assigning specific customers to specific campaigns. Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and expected to be sent to 1 customer, and campaign-2 has a priority of 50 and expected to be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
+\\
+We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not considering the rolling horizon.\\
+
+\noindent \textbf{Sets}\\
+
+\noindent ${\mathcal{C}}$: Set of campaigns \\
+\noindent ${\mathcal{D}}$: Set of planning days \\
+\noindent ${\mathcal{I}}$: Set of quota categories \\
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $Y_{{c}{d}}$, total number of customers that will receive a message about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
+($\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ )\\
+\\
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{c}$, number of customers eligible for campaign $c \in \mathcal{C}$.
+($\forall c \in \mathcal{C}$)\\
+
+\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in $i \in \mathcal{I}$ quota category, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent The formulation for the campaign optimization is presented next.
+
+\begin{align}
+\text{LP: }\text{Maximize} & \displaystyle
+\sum\limits_{c\in \mathcal{C}}
+\sum\limits_{d\in \mathcal{D}}
+Y_{{c}{d}} \label{mathmodel2_obj}&
+\\
+\text{subject to} \notag\\
+&\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq l_{c}  e_{c} &&&\forall c \in \mathcal{C}, \label{mathmodel2_campaignlimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}} q_{{i}{c}} Y_{{c}{d}}\leq \sum\limits_{c\in\mathcal{C}}q_{{i}{c}} e_{c}  m_{i} &&&\forall i \in \mathcal{I}, \label{mathmodel2_weeklyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}q_{{i}{c}} Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}q_{{i}{c}} e_{c} n_{i} &&&\forall d \in \mathcal{D}, \forall i \in \mathcal{I}, \label{mathmodel2_dailyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c}  b, \label{mathmodel2_weeklylimit}&\\
+&\sum\limits_{c\in\mathcal{C}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c} k &&&\forall d \in \mathcal{D},\label{mathmodel2_dailylimit}&\\
+&Y_{{c}{d}} \geq 0&&&\forall c \in \mathcal{C}, \forall d \in \mathcal{D}, \label{mathmodel2_positive}
+\end{align}\\
+
+The objective function \eqref{mathmodel2_obj} maximizes the number of campaign communication. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total are not exceeded weekly and daily limits respectively; and finally constraint \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.\\
+
+The preceding mathematical model is used for finding a rough estimation for the expected number of communication for each campaign. In Algorithm \ref{algo:greedy2} (\textit{Improved Greedy Heuristic}) expected number of communication for each campaign $Y_{{c}{d}}$ is used to sort campaigns in addition to campaign priority $r_{{c}{p}}$.
+\\
+\\
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $IPFeasibilityFunctions$ (constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity})}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ such that constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\SetKwFunction{FSortCampaigns}{SortCampaigns}
+\SetKwFunction{FCheckFeasibility}{CheckFeasibility}
+  \SetKwProg{Fn}{Funtion}{:}{}
+  \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+        FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+        satisfied = FunctionsToCheck(X)\;
+        \KwRet satisfied\;
+  }\;
+
+$Y_{{c}{d}}$ = Solve LP Model \eqref{mathmodel2_obj} to \eqref{mathmodel2_positive}
+
+\For{$d \gets 1$ \textbf{to} $D$}{
+SortCampaigns(C) \tcp*{such that($Y_{{c_{1}}{d}}  r_{c_{1}p} \geq Y_{{c_{2}}{d}}  r_{c_{2}p}$)}
+    \For{$c \gets 1$ \textbf{to} $C$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+%        Order and reindex customers $u\in\mathcal{U}$ so that $\sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{1}}{h}{d}} \leq \sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{2}}{h}{d}}$
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 $X_{cuhd}$ = 1\;
+                 \If {\textbf{not} CheckFeasibility(X,c,u,h,d)} {
+                    $X_{cuhd}$ = 0\;
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}
+\caption{Greedy Heuristic improved by LP}
+\label{algo:greedy2}
+\end{algorithm}
+
+\subsection{LP-relaxation Heuristic} \label{s:lp_relaxation_heuristic}
+In this section, we relax the model described at \S \ref{s:problem-math} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with Greedy Approach}) to find a solution.\\
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $IPFeasibilityFunctions$ (constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity})}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ such that constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+  \SetKwFunction{FSortCampaigns}{SortCampaigns}
+  \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
+
+  \SetKwProg{Fn}{Funtion}{:}{}
+  \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+        FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+        satisfied = FunctionsToCheck(X)\;
+        \KwRet satisfied\;
+  }\;
+$X_{{c}{u}{h}{d}}$ = Solve LP Model \eqref{mathmodel_obj} to\eqref{mathmodel_integrity}
+
+\For{$d \gets 1$ \textbf{to} $D$}{
+SortCampaigns(C) \tcp*{such that $r_{c_{1}p} \geq r_{c_{2}p}$}
+    \For{$c \gets 1$ \textbf{to} $C$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 \If{$X_{cuhd}>0$ and $X_{cuhd}<1$}{
+                 $X_{cuhd}$ = 1\;
+                 \If {\textbf{not} CheckFeasibility(X,c,u,h,d)} {
+                    $X_{cuhd}$ = 0\;
+                 }
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{LP-Relaxation With Greedy Approach for Campaign Optimization}
+\label{algo:lprelax}
+\end{algorithm}
+
+\newpage
+\section{Computational Study} \label{s:num-analysis}
+
+In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{test_evaluation}.
+
+All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Greedy heuristic algorithm is also coded in Python using Numpy library for fast mathematical operations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Test Instances} \label{test_cases}
+Table \ref{table:tbl_test_instances} shows the instances we tested our algorithms described at \S \ref{s:solution-method}. Instances from 1 to 4 can be regarded as low profile problems, instances from 5 to 9 can be seen as medium profile problems, instances from 10 to 14 can be seen as high profile problems, and instances 15 and 16 can be regarded as very high profile problem. A real world scenario can be 2 or 3 times bigger than the instance 16. In our test machine, problems greater than instance 14 cannot be executed using CPLEX solver.\\
+ 
+\begin{table}[htb]
+    \centering
+    \caption[Short Caption for LoT]{Test instances for campaign optimization problem}\label{table:tbl_test_instances}
+\csvautobooktabular{test_instances.csv}
+\end{table}
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{{c}{u}}$ is randomly generated $\mathcal{C} \times \mathcal{U}$ matrix having values 0 or 1,\\
+\noindent $a_{{u}{v}}$ is randomly generated $\mathcal{U} \times \mathcal{U}$ matrix having values 0 or 1, representing a barabasi or erdos random network,\\
+\noindent $q_{{i}{c}}$ is randomly generated $\mathcal{I} \times \mathcal{C}$ matrix having values 0 or 1,\\
+\noindent $r_{{p}{c}}$ is randomly generated $\mathcal{P} \times \mathcal{C}$ matrix having values 0 to 100,\\
+\noindent $b$ is set to 7,\\
+\noindent $k$ is set to 3,\\
+\noindent $l_c$ is randomly generated $\mathcal{C}$ length list having values 2, 3 or 4,\\
+\noindent $m_i$ is randomly generated $\mathcal{I}$ length list having values 3, 4 or 5,\\
+\noindent $n_i$ is randomly generated $\mathcal{I}$ length list having values 1, 2 or 3,\\
+\noindent $t_{{h}{d}}$ is randomly generated $\mathcal{H} \times \mathcal{D}$ matrix having values $\mathcal{U}.5$, $\mathcal{U}.6$ or $\mathcal{U}.7$.\\
+
+First, we executed instances from 1 to 14 using CPLEX MIP solver discarding the rolling horizon constraints (\ref{mathmodel_percustomercommlimit_rh}, \ref{mathmodel_percustomercamplimit_rh},  and \ref{mathmodel_weeklyquotalimit_rh}) in the model in order to find the exact solution to the problem, later we solved the model including the rolling horizon constraints for instances from 1 to 11. Instances from 12 to 14 could not been solved with rolling horizon constraints; because for instances greater than 11 cannot be executed in our environment because of memory capacity.\\
+Later we executed same instance using CLPEX LP solver in order to find the result for the lp-relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}.\\
+In order to find the results for the basis greedy heuristic described at \S \ref{s:greedy_heuristic_basic} we executed instances from 1 to 16; and later for the same instances tested our improved greedy heuristic described at \S \ref{s:greedy_heuristic_improved} .
+
+\subsection{Results: Performance of the Greedy Heuristic and LP Relaxation Heuristic} \label{s:test_evaluation}
+Table-\ref{table:tbl_test_durations_no_rh} and Figure-\ref{fig:fig_durations_no_rh} show duration in seconds for each method, and test instances, and Table-\ref{table:tbl_test_obj_diff_no_rh} and Figure-\ref{fig:fig_value_diff_no_rh} show  objective value of basic greedy, and LP-relaxation heuristics are differ from the exact solution's objective value. The differences are calculated using the formulation described at \equationautorefname \eqref{exact_distance_formulation}.\\
+
+For exact solution provided by CPLEX MIP solver the duration is exponentially increase as the problem size increases, and that increase become evident after instance-12. Objective value difference for LP-relaxation heuristic is almost invisible; however the objective value difference for basis greedy heuristic has more variations.\\
+
+We executed test instance with rolling horizon constraints as well, Table-\ref{table:tbl_test_durations_with_rh_ph2} and Figure-\ref{fig:fig_durations_with_rh} show duration in seconds for each method and test instances, Table-\ref{table:tbl_test_obj_diff_with_rh_ph2} and Figure-\ref{fig:fig_value_diff_with_rh} shows the objective values of basis greedy, and LP-relaxation heuristics are differ from the exact solutions objective value respectively. Both performance figures and objective value differences are compatible with the ones with no rolling horizon values.\\
+
+We executed test instances to test improved our greedy heuristic described at \S \ref{s:greedy_heuristic_improved}, Table-\ref{table:tbl_test_durations_bett_no_rh} and Figure-\ref{fig:fig_durations_bett_no_rh} show duration in seconds for each method and test instances, Table-\ref{table:tbl_test_obj_diff_bett_no_rh} and Figure-\ref{fig:fig_value_diff_bett_no_rh} shows the objective values of improved greedy, and LP-relaxation heuristics are differ from the exact solutions objective value respectively. Improved greedy heuristic seems to be worked as difference at instance-12 dropped from around \%16 to \%5, and instance-10 dropped from around \%4 to \%.2. We executed test instances 15 and 16 to see further performance of imporved greedy heuristic in durations, and it seems that the duration increased linearly.\\
+
+
+In order to assess the solutions provided by heuristics against the exact solution, we calculate their distance to the exact solution using the formulation described at \equationautorefname \eqref{exact_distance_formulation}, and calculated objective value gaps are presented at table-\ref{table:tbl_test_obj_diff_no_rh}, table-\ref{table:tbl_test_obj_diff_with_rh_ph2}, and table-\ref{table:tbl_test_obj_diff_bett_no_rh}.\\
+
+\noindent $V_{e}$: Exact objective value found by CPLEX-MIP solver. \\
+\noindent $V_{h}$: Objective value found by heuristic. \\
+\noindent $D_{h}$: Delta of heuristic result regarding exact solution. \\
+\begin{align}
+&D_{h} = 100 \frac{V_{e} - V_{h}}{V_{e}}, \label{exact_distance_formulation}&
+\end{align}\\
+
+
+During the execution of the model in CPLEX-MIP solution, and CPLEX-LP relaxation heuristics, the memory used increases more than 10GB with a cpu usage of around \%90, while the memory usage were limited to 300MB with a cpu usage around \%20 in both Basis Greedy heuristics, and the LP improved Greedy heuristics.\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\afterpage{%
+    \clearpage% Flush earlier floats (otherwise order might not be correct)
+    \thispagestyle{empty}% empty page style (?)
+    \begin{landscape}% Landscape page
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{Execution time in secs - Discarding Rolling Horizon Constraints}\label{table:tbl_test_durations_no_rh}
+            \csvautobooktabular{test_results_durations_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{durations_no_rh}
+            \caption{Execution time in secs - Discarding Rolling Horizon Constraints}
+            \label{fig:fig_durations_no_rh}
+        \end{figure}
+
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{\% Objective Value Gap - Discarding Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_no_rh}
+            \csvautobooktabular{test_results_objective_diff_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{value_diff_no_rh}
+            \caption{\% Objective Value Gap - Discarding Rolling Horizon Constraints}
+            \label{fig:fig_value_diff_no_rh}
+        \end{figure}
+    \end{landscape}
+\newpage
+    \clearpage% Flush earlier floats (otherwise order might not be correct)
+    \thispagestyle{empty}% empty page style (?)
+    \begin{landscape}% Landscape page
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{Execution time in secs - Considering Rolling Horizon Constraints}\label{table:tbl_test_durations_with_rh_ph2}
+            \csvautobooktabular{test_results_durations_with_rh_ph2.csv}
+        \end{table}
+        
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=20cm]{durations_with_rh}
+            \caption{Execution time in secs - Considering Rolling Horizon Constraints}
+            \label{fig:fig_durations_with_rh}
+        \end{figure}
+        
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{\% Objective Value Gap - Considering Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_with_rh_ph2}
+            \csvautobooktabular{test_results_objective_diff_with_rh_ph2.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=20cm]{value_diff_with_rh}
+            \caption{\% Objective Value Gap - Considering Rolling Horizon Constraints}
+            \label{fig:fig_value_diff_with_rh}
+        \end{figure}
+    \end{landscape}
+\newpage
+    \clearpage% Flush earlier floats (otherwise order might not be correct)
+    \thispagestyle{empty}% empty page style (?)
+    \begin{landscape}% Landscape page
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{Execution time in secs applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}\label{table:tbl_test_durations_bett_no_rh}
+            \csvautobooktabular{test_results_durations_bett_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{durations_bett_no_rh}
+            \caption{Execution time in secs applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}
+            \label{fig:fig_durations_bett_no_rh}
+        \end{figure}
+
+        \begin{table}[htb]
+                \centering
+                \caption[Short Caption for LoT]{\% Objective Gap applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_bett_no_rh}
+            \csvautobooktabular{test_results_objective_diff_bett_no_rh.csv}
+        \end{table}
+        \begin{figure}[htp]
+            \centering
+            \includegraphics[width=12cm]{value_diff_bett_no_rh}
+            \caption{\% Objective Gap applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}
+            \label{fig:fig_value_diff_bett_no_rh}
+        \end{figure}
+    \end{landscape}
+    \clearpage% Flush page
+}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\section{Conclusion} \label{s:conclusion}
+In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
+Future research may focus on developing alternative solution methods for the proposed campaign optimization problem. In case of network effect current heuristic can be improved to decrease the gap to the optimal solution. Moreover, new methodologies can be offered to measure the effectiveness of the network.
+\newpage
+
+\bibliographystyle{chicago}
+
+\bibliography{references}
+
+\end{document}
