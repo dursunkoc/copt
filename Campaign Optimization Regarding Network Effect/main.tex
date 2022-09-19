@@ -133,11 +133,11 @@ Industries earn money as they sell more products and services. In order for prod
 When it comes to optimizing the number of interaction, network optimization has been a good tool\citep{webster}. When scholars study network optimization in tel-co marketing campaigns the CDR's (call detail records) seen to be the best source of data to build a social network between users \citep{altshuler}. CDR's are the logs of phone calls between individuals contain information about people’s calling behaviour and have been used to build social networks, and such social networks can be utilized for the prediction of other social events related to the company \citep{calzada}. Besides, from the early days of network science, social network analysis has been applied to many case studies such as finding the most influential politician in a country, identification of the most popular employees in a company; social network analysis is based on the idea that there is an identifiable structure to the way people get to know each other, directly or indirectly \citep{maharani}. While studying a social network we can measure how each individual affect others and identify their relationship; so the in order to build successful marketing operation is mostly depend on the ability to identify and measure such relations and influences \citep{houjia, maharani}. In e-commerce platforms when marketers are embarking on a marketing campaign, they know that some users will response their message and join it, and some others will not even look at the message; on the other hand the users who join the campaign will also be a key user and expand it to others in their social network \citep{xiao}. 
 \\
 
-When scholars build CDR based social networks, mostly users or the subscribers are positioned as the nodes and the social relations extracted from CDR positioned as the links \citep{verbeke, oskarsdottir}. Nonetheless, using a social network barely depending on CDR is not accepted to be adequate \citep{backiel}. For example in churn prediction, CDR based social networks are used along side with the data about customers demographics, financials, and usage behaviour \citep{kusuma, backiel, oskarsdottir}.
+When scholars build CDR based social networks, mostly users or the subscribers are positioned as the nodes and the social relations extracted from CDR positioned as the links \citep{verbeke, oskarsdottir}. Nonetheless, using a social network barely depending on CDR is not accepted to be adequate \citep{backiel}. For example in churn prediction, CDR based social networks are used along side with the data about customers demographics, financials, and usage behaviour \citep{kusuma, backiel, oskarsdottir}. When using social networks we should assure that the links building it, should be aligned with the reason we are using it, otherwise the inferences or the predictions we made through the information from the social network would be misleading. The network that will be used in decisioning process should be built from the pattern of interactions that we are interested in \citep{huberman}.
 \\
 
 
-In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations. In the second place, we also try to increase the number of interaction to the most influential customers. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data from Turkcell.
+In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns that is decided by marketing team, by increase the number of interaction to the most influential customers, while not exceeding the communication limitations. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data from Turkcell.
 
 \section{Problem Definition and Mathematical Model}  \label{s:problem-model}
 
@@ -306,10 +306,59 @@ We iterate through the connected (\mathcal{u,v}) pairs of \mathcal{G}. For every
 , and \mathcal{v}, and if the difference exceeds the days threshold \mathcal{T} we increase the co-occurance counter (\mathcal{uvSalesCooccurance}) by 1. After covering the whole product set, we compare (\mathcal{uvSalesCooccurance}) with the threshold for number of co-occurances \mathcal{C}, and if (\mathcal{uvSalesCooccurance}) exceeds \mathcal{C}, we build an edge between customers \mathcal{u}, and \mathcal{v}.
 
 \subsection{Solution Approach}
-In this section first we modify our greedy heuristic algorithm at section-\ref{s:greedy_heuristic_improved} to solve the campaign optimization problem with network effect described at \S \ref{s:net-effect} and modelled at \S \ref{s:network-modif-model}. Later we will focus on how to sort customers in greedy approach, and we will try to solve some basic problems, and develop a heuristic algorithm. Finally at \S \ref{s:num-analysis} we will show computational study of the developed heuristic  result.
+In this section first we present our greedy heuristic algorithm to solve the campaign optimization problem with network effect described at \S \ref{s:net-effect} and modelled at \S \ref{s:network-modif-model}. Later we will focus on how to sort customers in greedy approach, and we will try to solve some basic problems, and develop a heuristic algorithm. Finally at \S \ref{s:num-analysis} we will show computational study of the developed heuristic  result.
 
-\subsubsection{Modified Greedy Algorithm}
-The greedy algorithm described in \S \ref{s:greedy_heuristic_improved} assign customers in their index precedence; however when the network effect is to be considered we should assign the customers whose network precedence is greater, first.
+\subsubsection{Linear Programming Model for finding assignable number for each campaign} \label{s:problem-math-lp}
+
+In this section, we present a linear programming model for the campaign optimization problem described at \S \ref{s:problem-desc}, but this time instead of assigning specific customers to specific campaigns. Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and expected to be sent to 1 customer, and campaign-2 has a priority of 50 and expected to be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
+\\
+We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not considering the rolling horizon.\\
+
+\noindent \textbf{Sets}\\
+
+\noindent ${\mathcal{C}}$: Set of campaigns \\
+\noindent ${\mathcal{D}}$: Set of planning days \\
+\noindent ${\mathcal{I}}$: Set of quota categories \\
+
+\noindent \textbf{Decision Variables}\\
+
+\noindent $Y_{{c}{d}}$, total number of customers that will receive a message about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
+($\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ )\\
+\\
+
+\noindent \textbf{Parameters}\\
+
+\noindent $e_{c}$, number of customers eligible for campaign $c \in \mathcal{C}$.
+($\forall c \in \mathcal{C}$)\\
+
+\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in $i \in \mathcal{I}$ quota category, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall i \in \mathcal{I}$)\\
+
+\noindent The formulation for the campaign optimization is presented next.
+
+\begin{align}
+\text{LP: }\text{Maximize} & \displaystyle
+\sum\limits_{c\in \mathcal{C}}
+\sum\limits_{d\in \mathcal{D}}
+Y_{{c}{d}} \label{mathmodel2_obj}&
+\\
+\text{subject to} \notag\\
+&\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq l_{c}  e_{c} &&&\forall c \in \mathcal{C}, \label{mathmodel2_campaignlimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}} q_{{i}{c}} Y_{{c}{d}}\leq \sum\limits_{c\in\mathcal{C}}q_{{i}{c}} e_{c}  m_{i} &&&\forall i \in \mathcal{I}, \label{mathmodel2_weeklyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}q_{{i}{c}} Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}q_{{i}{c}} e_{c} n_{i} &&&\forall d \in \mathcal{D}, \forall i \in \mathcal{I}, \label{mathmodel2_dailyquotalimit}&\\
+&\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c}  b, \label{mathmodel2_weeklylimit}&\\
+&\sum\limits_{c\in\mathcal{C}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c} k &&&\forall d \in \mathcal{D},\label{mathmodel2_dailylimit}&\\
+&Y_{{c}{d}} \geq 0&&&\forall c \in \mathcal{C}, \forall d \in \mathcal{D}, \label{mathmodel2_positive}
+\end{align}\\
+
+The objective function \eqref{mathmodel2_obj} maximizes the number of campaign communication. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total are not exceeded weekly and daily limits respectively; and finally constraint \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.\\
+
+
+\subsubsection{Greedy Heuristic to Solve the Optimization Problem}\label{s:greedy-heuristic}
+The greedy algorithm without the network effect, assign customers in their index precedence; however when the network effect is to be considered we should assign the customers whose network precedence is greater, first.
+
+The preceding mathematical model is used for finding a rough estimation for the expected number of communication for each campaign. In Algorithm \ref{algo:lprelax-net} (\textit{Greedy Heuristic improved by LP With Network Effect}) expected number of communication for each campaign $Y_{{c}{d}}$ is used to sort campaigns in addition to campaign priority $r_{{c}{p}}$.
+
 \\
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -485,7 +534,7 @@ The preceding mathematical model is used for finding the minimum  customers to c
 \newpage
 \section{Computational Study} \label{s:num-analysis}
 
-In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{test_evaluation}.
+In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{greedy-heuristic}.
 
 All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Greedy heuristic algorithm is also coded in Python using Numpy library for fast mathematical operations.
 
