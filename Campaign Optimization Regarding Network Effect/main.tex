@@ -534,13 +534,13 @@ The preceding mathematical model is used for finding the minimum  customers to c
 \newpage
 \section{Computational Study} \label{s:num-analysis}
 
-In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{greedy-heuristic}.
+In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{s:test_evaluation_net_effect}.
 
 All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Greedy heuristic algorithm is also coded in Python using Numpy library for fast mathematical operations.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Test Instances} \label{test_cases}
-Table \ref{table:tbl_test_instances} shows the instances we tested our algorithms described at \S \ref{s:solution-method}. Instances from 1 to 4 can be regarded as low profile problems, instances from 5 to 9 can be seen as medium profile problems, instances from 10 to 14 can be seen as high profile problems, and instances 15 and 16 can be regarded as very high profile problem. A real world scenario can be 2 or 3 times bigger than the instance 16. In our test machine, problems greater than instance 14 cannot be executed using CPLEX solver.\\
+Table \ref{table:tbl_test_instances} shows the instances we tested our algorithms described at \S \ref{s:net-effect}. Instances from 1 to 4 can be regarded as low profile problems, instances from 5 to 9 can be seen as medium profile problems, instances from 10 to 14 can be seen as high profile problems, and instances 15 and 16 can be regarded as very high profile problem. A real world scenario can be 2 or 3 times bigger than the instance 16. In our test machine, problems greater than instance 14 cannot be executed using CPLEX solver.\\
  
 \begin{table}[htb]
     \centering
@@ -563,8 +563,7 @@ Table \ref{table:tbl_test_instances} shows the instances we tested our algorithm
 
 First, we executed instances from 1 to 14 using CPLEX MIP solver discarding the rolling horizon constraints (\ref{mathmodel_percustomercommlimit_rh}, \ref{mathmodel_percustomercamplimit_rh},  and \ref{mathmodel_weeklyquotalimit_rh}) and network effect described in \S \ref{s:net-effect} in the model in order to find the exact solution to the problem, later we solved the model including the rolling horizon constraints for instances from 1 to 11. Instances from 12 to 14 could not been solved with rolling horizon constraints; because for instances greater than 11 cannot be executed in our environment because of memory capacity.\\
 Later we executed same instance using CLPEX LP solver in order to find the result for the lp-relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}.\\
-In order to find the results for the basis greedy heuristic described at \S \ref{s:greedy_heuristic_basic} we executed instances from 1 to 16; and later for the same instances tested our improved greedy heuristic described at \S \ref{s:greedy_heuristic_improved} .
-Finally we included the network effect to the problem using both barabasi and erdos random networks described at \S \ref{s:net-effect}, and run test instances from 1 to 10.
+In order to find the results for the basis greedy heuristic described at \S \ref{s:greedy-heuristic} we included the network effect to the problem using both barabasi and erdos random networks described at \S \ref{s:net-effect}, and run test instances from 1 to 10.
 
 \subsubsection*{Preliminary Numerical Studies for Campaign Optimization with Network Effects}
 We have conducted 6 different simulations, in each simulation the model contains only channel capacity constraint besides the network effect. Solutions provided by MIP Solver validates network effect, and it decided the customers whose degree centrality is greater than others, should receive the campaign messages. For each test instances we generate different random networks using either Erdos Renyi random network where each node is connected to another one with a probability of ${\mathcal{P}}$; or Barabasi Albert random network where each node is connected to ${\mathcal{M}}$ number of nodes. While using Barabasi Albert network we used a drop probability ${\mathcal{D}}$ to drop an edge to resemble that every connection may not carry a campaign message even if two customer are socially connected.\\
@@ -645,120 +644,6 @@ MIP Solver solution offers customer-1, customer-2, customer-13 and customer-14 s
 We had 4 message capacity, and selected customer-1 whose degree-centrality measure is the greatest, later, we selected customer-2, customer-13 and customer-14 which are connected customers 9, 5 and 6 respectively. By sending 4 messages we can touch 9 customers.
 \end{itemize}
 
-\subsection{Results: Performance of the Greedy Heuristic and LP Relaxation Heuristic} \label{s:test_evaluation}
-Table-\ref{table:tbl_test_durations_no_rh} and Figure-\ref{fig:fig_durations_no_rh} show duration in seconds for each method, and test instances, and Table-\ref{table:tbl_test_obj_diff_no_rh} and Figure-\ref{fig:fig_value_diff_no_rh} show  objective value of basic greedy, and LP-relaxation heuristics are differ from the exact solution's objective value. The differences are calculated using the formulation described at \S \ref{s:objective_value_assesment}.\\
-
-For exact solution provided by CPLEX MIP solver the duration is exponentially increase as the problem size increases, and that increase become evident after instance-12. Objective value difference for LP-relaxation heuristic is almost invisible; however the objective value difference for basis greedy heuristic has more variations.\\
-
-We executed test instance with rolling horizon constraints as well, Table-\ref{table:tbl_test_durations_with_rh_ph2} and Figure-\ref{fig:fig_durations_with_rh} show duration in seconds for each method and test instances, Table-\ref{table:tbl_test_obj_diff_with_rh_ph2} and Figure-\ref{fig:fig_value_diff_with_rh} shows the objective values of basis greedy, and LP-relaxation heuristics are differ from the exact solutions objective value respectively. Both performance figures and objective value differences are compatible with the ones with no rolling horizon values.\\
-
-We executed test instances to test improved our greedy heuristic described at \S \ref{s:greedy_heuristic_improved}, Table-\ref{table:tbl_test_durations_bett_no_rh} and Figure-\ref{fig:fig_durations_bett_no_rh} show duration in seconds for each method and test instances, Table-\ref{table:tbl_test_obj_diff_bett_no_rh} and Figure-\ref{fig:fig_value_diff_bett_no_rh} shows the objective values of improved greedy, and LP-relaxation heuristics are differ from the exact solutions objective value respectively. Improved greedy heuristic seems to be worked as difference at instance-12 dropped from around \%16 to \%5, and instance-10 dropped from around \%4 to \%.2. We executed test instances 15 and 16 to see further performance of imporved greedy heuristic in durations, and it seems that the duration increased linearly.\\
-
-In order to assess the solutions provided by heuristics against the exact solution, we calculate their distance to the exact solution using the formulation described at \equationautorefname \eqref{exact_distance_formulation}, and calculated objective value gaps are presented at table-\ref{table:tbl_test_obj_diff_no_rh}, table-\ref{table:tbl_test_obj_diff_with_rh_ph2}, and table-\ref{table:tbl_test_obj_diff_bett_no_rh}.\\
-
-\noindent $V_{e}$: Exact objective value found by CPLEX-MIP solver. \\
-\noindent $V_{h}$: Objective value found by heuristic. \\
-\noindent $D_{h}$: Delta of heuristic result regarding exact solution. \\
-\begin{align}
-&D_{h} = 100 \frac{V_{e} - V_{h}}{V_{e}}, \label{exact_distance_formulation}&
-\end{align}\\
-
-
-During the execution of the model in CPLEX-MIP solution, and CPLEX-LP relaxation heuristics, the memory used increases more than 10GB with a cpu usage of around \%90, while the memory usage were limited to 300MB with a cpu usage around \%20 in both Basis Greedy heuristics, and the LP improved Greedy heuristics.\\
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\afterpage{%
-    \clearpage% Flush earlier floats (otherwise order might not be correct)
-    \thispagestyle{empty}% empty page style (?)
-    \begin{landscape}% Landscape page
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{Execution time in secs - Discarding Rolling Horizon Constraints}\label{table:tbl_test_durations_no_rh}
-            \csvautobooktabular{test_results_durations_no_rh.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{durations_no_rh}
-            \caption{Execution time in secs - Discarding Rolling Horizon Constraints}
-            \label{fig:fig_durations_no_rh}
-        \end{figure}
-
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Value Gap - Discarding Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_no_rh}
-            \csvautobooktabular{test_results_objective_diff_no_rh.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{value_diff_no_rh}
-            \caption{\% Objective Value Gap - Discarding Rolling Horizon Constraints}
-            \label{fig:fig_value_diff_no_rh}
-        \end{figure}
-    \end{landscape}
-\newpage
-    \clearpage% Flush earlier floats (otherwise order might not be correct)
-    \thispagestyle{empty}% empty page style (?)
-    \begin{landscape}% Landscape page
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{Execution time in secs - Considering Rolling Horizon Constraints}\label{table:tbl_test_durations_with_rh_ph2}
-            \csvautobooktabular{test_results_durations_with_rh_ph2.csv}
-        \end{table}
-        
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=20cm]{durations_with_rh}
-            \caption{Execution time in secs - Considering Rolling Horizon Constraints}
-            \label{fig:fig_durations_with_rh}
-        \end{figure}
-        
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Value Gap - Considering Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_with_rh_ph2}
-            \csvautobooktabular{test_results_objective_diff_with_rh_ph2.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=20cm]{value_diff_with_rh}
-            \caption{\% Objective Value Gap - Considering Rolling Horizon Constraints}
-            \label{fig:fig_value_diff_with_rh}
-        \end{figure}
-    \end{landscape}
-\newpage
-    \clearpage% Flush earlier floats (otherwise order might not be correct)
-    \thispagestyle{empty}% empty page style (?)
-    \begin{landscape}% Landscape page
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{Execution time in secs applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}\label{table:tbl_test_durations_bett_no_rh}
-            \csvautobooktabular{test_results_durations_bett_no_rh.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{durations_bett_no_rh}
-            \caption{Execution time in secs applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}
-            \label{fig:fig_durations_bett_no_rh}
-        \end{figure}
-
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Gap applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}\label{table:tbl_test_obj_diff_bett_no_rh}
-            \csvautobooktabular{test_results_objective_diff_bett_no_rh.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{value_diff_bett_no_rh}
-            \caption{\% Objective Gap applying \ref{s:greedy_heuristic_improved} \textit{Greedy Heuristic improved by LP} - Discarding Rolling Horizon Constraints}
-            \label{fig:fig_value_diff_bett_no_rh}
-        \end{figure}
-    \end{landscape}
-    \clearpage% Flush page
-}
-
-\newpage
-
 \subsection{Results: Performance of the Greedy Heuristic When Network Effect Applied} \label{s:test_evaluation_net_effect}
 We have generated random networks for following instances and present the solutions below. In basic Greedy approach we will be setting X values and using X values and ‘a’ value (adj. matrix) we will come up with Y values with the following formulation;
 
@@ -796,7 +681,7 @@ Objective value gap when applying random network shown in table-\ref{table:tbl_t
 \newpage
 
 \section{Conclusion} \label{s:conclusion}
-In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
+In this study, we discussed a campaign optimization problem regarding the network effect, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR, and increasing our campaigns expansion in the social network. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:greedy-heuristic} offered a greedy approach that starts with a small LP-model described at \S \ref{s:problem-math-lp} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
 Future research may focus on developing alternative solution methods for the proposed campaign optimization problem. In case of network effect current heuristic can be improved to decrease the gap to the optimal solution. Moreover, new methodologies can be offered to measure the effectiveness of the network.
 
 \newpage
