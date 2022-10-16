@@ -1,7 +1,9 @@
+from typing import Tuple
 import numpy as np
-from numba import njit, prange, objmode
+from numba import njit, prange
 import logging
-import time
+
+from src.experiment.mip_core import MipCore
 
 logger = logging.getLogger("CONSTRAINTS-LOGGER")
 logger.setLevel(logging.INFO)
@@ -96,22 +98,22 @@ def greedy_on(X, rp_c, b, cuhd,e_cu,k,l_c,m_i,n_i,q_ic,s_cuhd,t_hd):
                     if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
                         X[c,u,h,d]=0
 
-@njit
-def do_greedy_loop(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd):
-    index=0
+def do_greedy_loop(X, PMS, sorted_camps, C, D, H, U, I):
+    #start model
+    mip = MipCore()
+    mdl, X_cuhd = mip.start_model(binary=True, PMS=PMS, C=C, U=U, H=H, D=D, I=I, V_cuhd=None)
     for c in sorted_camps:
         for d in range(D):
             Ur = X.sum(0).sum(1).sum(1).argsort()
-            overall= sorted_camps.size*D*Ur.size*H
             for u in Ur[::-1]:
                 for h in range(H):
-                    index=index+1
-                    if index % 100000 == 0:
-                        with objmode():
-                            print(f"{index}/{overall}@{time.time()}")
-                    X[c,u,h,d]=1
-                    if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
-                        X[c,u,h,d]=0
+                    #add constraint
+                    ctname=f"fix({c},{u},{h},{d})"
+                    mdl.add_constraint((X_cuhd[(c,u,h,d)] == 1),ctname=ctname)
+                    #if solved continue
+                    result = mdl.solve(log_output=False)
+                    if result is None:
+                        mdl.remove_constraint(ctname)
 
 
 @njit(parallel=True)

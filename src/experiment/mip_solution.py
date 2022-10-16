@@ -1,3 +1,4 @@
+from datetime import datetime
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from mip_core import MipCore
 import numpy as np
@@ -16,6 +17,7 @@ class MipSolution(Solution, MipCore):
         I = case.arguments["I"]  # number of quota categories.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
+        mdl.set_time_limit(3600)
 
         result = mdl.solve(log_output=False)
 
@@ -31,6 +33,8 @@ class MipSolution(Solution, MipCore):
         resp = (self.create_var_for_greedy(result, C, D, H, U), SolutionResult(case, value, round(duration,4)))
         del mdl
         del result
+        with open(f'result_mip_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
+            f.write(repr(resp[1]))
         return resp
 
     def create_var_for_greedy(self, solution, C, D, H, U):

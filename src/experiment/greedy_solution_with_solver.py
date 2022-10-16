@@ -1,11 +1,10 @@
-from datetime import datetime
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from camps_order_model import start_model as camps_order_model
 from tqdm import trange
 from tqdm import tqdm
 from time import time
 import numpy as np
-import co_constraints as cstr
+import co_constraints_with_solver as cstr
 
 class GreedySolution(Solution):
     def __init__(self):
@@ -32,14 +31,11 @@ class GreedySolution(Solution):
             , dtype='int')
         camp_prio = (camp_order) * PMS.rp_c
         sorted_camps = np.lexsort((-camp_prio.sum(0),-PMS.l_c,-PMS.rp_c))
-        cstr.do_greedy_loop(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd)
+        cstr.do_greedy_loop(X_cuhd, PMS, sorted_camps, C, D, H, U, I)
         end_time = time()
         value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
         duration = end_time - start_time
-        result = (X_cuhd, SolutionResult(case, value, round(duration,4)))
-        with open(f'result{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
-            f.write(repr(result[1]))
-        return result
+        return (X_cuhd, SolutionResult(case, value, round(duration,4)))
 
 if __name__ == '__main__':
     from cases import cases
