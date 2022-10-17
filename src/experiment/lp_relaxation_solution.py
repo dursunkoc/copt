@@ -1,3 +1,4 @@
+from datetime import datetime
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from mip_core import MipCore
 import numpy as np
@@ -31,7 +32,10 @@ class LpRelSolution(Solution, MipCore):
         mdl, _ = super().start_model(False, PMS, C, U, H, D, I)
         print("Solving Model")
         result = mdl.solve(log_output=False)
-        v_non_integral = result.objective_value
+        if hasattr(result, 'objective_value'):
+            v_non_integral = result.objective_value
+        else:
+            v_non_integral = 0
         X_non_integral = [tuple(int(i.split(":")[1]) for i in ky.split("_")[1:]) for ky,val in result.as_name_dict().items() if val!=1]
         X_cuhd2 = np.zeros((C,U,H,D), dtype='int')
         print("Starting greedy")
@@ -48,27 +52,15 @@ class LpRelSolution(Solution, MipCore):
         value = self.objective_fn_no_net(PMS.rp_c, X_cuhd2)
         end_time = time()
         duration = end_time - start_time
-        return (X_cuhd2, SolutionResult(case, value, round(duration,4)))
+        result = (X_cuhd2, SolutionResult(case, value, round(duration,4)))
+        with open(f'result_lpx_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
+            f.write(repr(result[1]))
+        return result
 
 if __name__ == '__main__':
-    cases = [
-#            Case({"C":2,"U":100,"H":3, "D":7, "I":3, "P":3}),#1
-#            Case({"C":5,"U":100,"H":3, "D":7, "I":3, "P":3}),#2
-#            Case({"C":5,"U":200,"H":3, "D":7, "I":3, "P":3}),#3
-#            Case({"C":5,"U":1000,"H":3, "D":7, "I":3, "P":3}),#4
-#            Case({"C":10,"U":1000,"H":3, "D":7, "I":3, "P":3}),#5
-#            Case({"C":10,"U":2000,"H":3, "D":7, "I":3, "P":3}),#6
-#            Case({"C":10,"U":3000,"H":3, "D":7, "I":3, "P":3}),#7
-#            Case({"C":10,"U":4000,"H":3, "D":7, "I":3, "P":3}),#8
-#            Case({"C":10,"U":5000,"H":3, "D":7, "I":3, "P":3}),#9
-#            Case({"C":20,"U":10000,"H":3, "D":7, "I":3, "P":3}),#10
-            Case({"C":20,"U":20000,"H":3, "D":7, "I":3, "P":3}),#11
-#            Case({"C":20,"U":30000,"H":3, "D":7, "I":3, "P":3}),
-#            Case({"C":20,"U":40000,"H":3, "D":7, "I":3, "P":3}),
-#            Case({"C":20,"U":50000,"H":3, "D":7, "I":3, "P":3})
-            ]
+    from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(LpRelSolution())
+    solutions = expr.run_cases_with(LpRelSolution(), False)
     for solution in solutions:
         print(solution)
 

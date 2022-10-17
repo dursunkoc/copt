@@ -1,0 +1,18 @@
+{'case': {'C': 1, 'U': 10, 'H': 1, 'D': 1, 'I': 1, 'P': 1}, 'phase': 1, 'value': 450, 'duration': 0.0924, 'info': None}
+{'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 13083, 'duration': 0.9616, 'info': None}
+{'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 12180, 'duration': 2.1473, 'info': None}
+{'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 63096, 'duration': 3.6731, 'info': None}
+{'case': {'C': 5, 'U': 500, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 69978, 'duration': 11.0544, 'info': None}
+{'case': {'C': 5, 'U': 700, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 215581, 'duration': 15.7233, 'info': None}
+{'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 74664, 'duration': 21.5894, 'info': None}
+{'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 341667, 'duration': 38.4433, 'info': None}
+{'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 704460, 'duration': 105.7522, 'info': None}
+{'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 1672762, 'duration': 145.2198, 'info': None}
+{'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 1160295, 'duration': 205.0715, 'info': None}
+{'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 1978269, 'duration': 246.7723, 'info': None}
+{'case': {'C': 10, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 4244663, 'duration': 450.0856, 'info': None}
+{'case': {'C': 10, 'U': 15000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 6373050, 'duration': 727.7695, 'info': None}
+{'case': {'C': 10, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 4565882, 'duration': 1143.1613, 'info': None}
+{'case': {'C': 10, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 11077403, 'duration': 1389.0031, 'info': None}
+{'case': {'C': 10, 'U': 35000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 14255256, 'duration': 1601.0646, 'info': None}
+{'case': {'C': 10, 'U': 40000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 18100711, 'duration': 3343.6501, 'info': None}

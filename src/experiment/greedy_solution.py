@@ -1,4 +1,5 @@
 from datetime import datetime
+from pickle import FALSE
 from experiment import Solution,  SolutionResult, Case, Experiment, Parameters
 from camps_order_model import start_model as camps_order_model
 from tqdm import trange
@@ -8,8 +9,9 @@ import numpy as np
 import co_constraints as cstr
 
 class GreedySolution(Solution):
-    def __init__(self):
+    def __init__(self, use_campaign_expectation=False):
         super().__init__("Greedy")
+        self.use_campaign_expectation=use_campaign_expectation
 
     def runPh(self, case:Case, Xp_cuhd):
         start_time = time()
@@ -22,16 +24,19 @@ class GreedySolution(Solution):
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
-        mdl, Y = camps_order_model(C, D, I, PMS)
-        camps_order_result = mdl.solve()
-
-        camp_order = np.array(
-            [
-                [(camps_order_result.get_var_value(Y[(c,d)])) for c in range(C)]
-            for d in range(D)]
-            , dtype='int')
-        camp_prio = (camp_order) * PMS.rp_c
-        sorted_camps = np.lexsort((-camp_prio.sum(0),-PMS.l_c,-PMS.rp_c))
+        if self.use_campaign_expectation:
+            mdl, Y = camps_order_model(C, D, I, PMS)
+            camps_order_result = mdl.solve()
+            camp_order = np.array(
+                [
+                    [(camps_order_result.get_var_value(Y[(c,d)])) for c in range(C)]
+                for d in range(D)]
+                , dtype='int')
+            camp_prio = (camp_order) * PMS.rp_c
+            sorted_camps = np.lexsort((-camp_prio.sum(0),-PMS.l_c,-PMS.rp_c))
+        else:
+            sorted_camps = np.array([c for c in range(C)])
+        print(sorted_camps)
         cstr.do_greedy_loop(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd)
         end_time = time()
         value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
@@ -41,10 +46,11 @@ class GreedySolution(Solution):
             f.write(repr(result[1]))
         return result
 
+
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(GreedySolution(), False)
+    solutions = expr.run_cases_with(GreedySolution(False), False)
     for solution in solutions:
         print(solution)    
 #    print("values:")

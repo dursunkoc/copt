@@ -1,37 +1,22 @@
 {'case': {'C': 1, 'U': 10, 'H': 1, 'D': 1, 'I': 1, 'P': 1}, 'phase': 1, 'value': 450.0, 'duration': 0.0784, 'info': None}
-
 {'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 13083.0, 'duration': 1.0838, 'info': None}
-
 {'case': {'C': 5, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 12180.0, 'duration': 2.3426, 'info': None}
-
 {'case': {'C': 5, 'U': 200, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 63096.0, 'duration': 4.0104, 'info': None}
-
 {'case': {'C': 5, 'U': 500, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 69978.0, 'duration': 10.4082, 'info': None}
-
 {'case': {'C': 5, 'U': 700, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 215581.0, 'duration': 18.2394, 'info': None}
-
 {'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 74664.0, 'duration': 23.1335, 'info': None}
-
 {'case': {'C': 10, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 341667.0, 'duration': 44.6718, 'info': None}
-
 {'case': {'C': 10, 'U': 2000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 705516.0, 'duration': 94.8004, 'info': None}
-
 {'case': {'C': 10, 'U': 3000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1672862.0, 'duration': 128.7009, 'info': None}
-
 {'case': {'C': 10, 'U': 4000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1161046.0, 'duration': 223.1553, 'info': None}
-
 {'case': {'C': 10, 'U': 5000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 1982340.0, 'duration': 244.3445, 'info': None}
-
 {'case': {'C': 10, 'U': 10000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 4244663.0, 'duration': 465.3142, 'info': None}
-
 {'case': {'C': 10, 'U': 15000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 6378160.0, 'duration': 1721.6879, 'info': None}
-
 {'case': {'C': 10, 'U': 20000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 4565882.0, 'duration': 1033.876, 'info': None}
-
 {'case': {'C': 10, 'U': 25000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 14814516.0, 'duration': 1348.65, 'info': None}
-
 {'case': {'C': 10, 'U': 30000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 11077403.0, 'duration': 1728.4681, 'info': None}
-
 {'case': {'C': 10, 'U': 35000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 0, 'duration': 3023.9256, 'info': None}
-
 {'case': {'C': 10, 'U': 40000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'phase': 1, 'value': 0.0, 'duration': 5745.8979, 'info': None}
+{'case': {'C': 10, 'U': 45000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 0, 'duration': 2212.4186, 'info': None}
+{'case': {'C': 10, 'U': 50000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 0, 'duration': 3164.5387, 'info': None}
+{'case': {'C': 10, 'U': 55000, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 0, 'duration': 3648.1932, 'info': None}
