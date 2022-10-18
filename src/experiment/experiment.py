@@ -47,7 +47,7 @@ class TrivialParameters:
 
 
 class SolutionResult:
-    def __init__(self, case: Case, value: float, duration:int, info:str=None):
+    def __init__(self, case: Case, value: float, duration:float, info:str=None):
         self.case = case
         self.value = value
         self.duration = duration

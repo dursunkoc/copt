@@ -26,11 +26,13 @@ class GreedySolution(Solution):
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         mdl, Y = camps_order_model(C, D, I, PMS)
         camps_order_result = mdl.solve()
-        print(camps_order_result.objective_value)
-        value = camps_order_result.objective_value
-        result = (X_cuhd, SolutionResult(case, value, 0))
-        with open(f'result{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
-            f.write(repr(result[1]))
+
+        Y_cd = np.zeros((C,D), dtype='int')
+        for ky,v in camps_order_result.as_name_dict().items():
+            exec(f'Y_cd{[int(i.split(":")[1]) for i in ky.split("_")[1:]]} = v', {}, {'Y_cd':Y_cd,'v':v})
+        expected_max = (np.minimum(Y_cd.sum(1), PMS.e_cu.sum(1)*D) * PMS.rp_c).sum()
+        
+        result = (X_cuhd, SolutionResult(case, expected_max, 0))
         return result
 
 
