@@ -7,6 +7,7 @@ from numba.typed import Dict
 from numba.core import types
 from tqdm import trange, tqdm
 from base_network_opt import solve_network_model_definite
+import math
 
 import logging
 import net_opt_case as noc
@@ -53,6 +54,16 @@ def fn_fitness_fixing(a_uv: np.ndarray, e_u: np.ndarray) -> Callable:
 #    return njit(fn_fitness0_fixing)
     return fn_fitness0_fixing
 
+
+
+def fn_fitness_fixing_ls(a_uv: np.ndarray, e_u: np.ndarray, search_size: int, search_ext: int) -> Callable:
+    def fn_fitness0_fixing_ls(population: np.ndarray) -> List[Tuple[int, np.ndarray]]:
+        return [(fn_fitness_indiv_fixing_with_ls(indiv, a_uv, e_u, search_size, search_ext), indiv) for indiv in population]
+#    return njit(fn_fitness0_fixing)
+    return fn_fitness0_fixing_ls
+
+
+
 #@njit()
 def max_fit(shape):
     acc = 1
@@ -87,6 +98,23 @@ def fn_fitness_indiv_fixing(indiv: np.ndarray, a_uv: np.ndarray, e_u: np.ndarray
             return 0
     increase_fitness(indiv, a_uv, e_u)
     return mf-np.sum(indiv)
+
+def fn_fitness_indiv_fixing_with_ls(indiv: np.ndarray, a_uv: np.ndarray, e_u: np.ndarray, search_size: int, search_ext: int) -> int:
+    mf = max_fit(indiv.shape)
+    r_indiv = indiv
+    r_val = fn_fitness_indiv_fixing(indiv, a_uv, e_u)
+    for _ in range(search_size):
+        if np.where([indiv==0])[1].size > 0:
+            ext_loc = np.unique(np.random.choice(np.where([indiv==1])[1], size=search_ext))
+            if ext_loc.size > 0:
+                l_indiv = indiv.copy()
+                l_indiv.put(ext_loc, 0)
+                l_val = fn_fitness_indiv_fixing(l_indiv, a_uv, e_u)
+                if l_val > r_val:
+                    r_val = l_val
+                    r_indiv = l_indiv
+    indiv[True] = r_indiv
+    return r_val
 
 #@njit()
 def fn_fitness_indiv(indiv: np.ndarray, a_uv: np.ndarray, e_u: np.ndarray) -> int:
@@ -162,9 +190,12 @@ if __name__ == '__main__':
     import sys
     np.set_printoptions(threshold=sys.maxsize)
     for case in noc.cases:
+        population_size = get_population_size(case.indiv_size)
+
         fn_fitness0 = fn_fitness(case.a_uv, case.e_u)
         fn_fitness1 = fn_fitness_fixing(case.a_uv, case.e_u)
-        population_size = get_population_size(case.indiv_size)
+        fn_fitness2 = fn_fitness_fixing_ls(case.a_uv, case.e_u, search_size=math.ceil(population_size/10), search_ext=math.ceil(case.indiv_size//20))
+
 #        next_generation = random_initial_population(indiv_size, population_size)   
         next_generation = hard_initial_population((case.indiv_size,), population_size, case.e_u)
 
@@ -176,6 +207,9 @@ if __name__ == '__main__':
              indiv_size=(case.indiv_size,), generation_size=2000, population_size=population_size, check_back=40,
              number_of_crossover_section=max(5, case.indiv_size//5), mutation_prob=1, mutation_amount=min(10, max(5,case.indiv_size/10)))
 
+        main(fn_fitness0=fn_fitness2, flat_indiv_size=case.indiv_size, next_generation=next_generation,
+             indiv_size=(case.indiv_size,), generation_size=2000, population_size=population_size, check_back=40,
+             number_of_crossover_section=max(5, case.indiv_size//5), mutation_prob=1, mutation_amount=min(10, max(5,case.indiv_size/10)))
 
 #❯ workon copt
 #❯ python src/experiment/mip_net_opt.py
