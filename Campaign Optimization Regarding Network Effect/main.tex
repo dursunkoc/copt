@@ -48,6 +48,7 @@
     showtabs=false,                  
     tabsize=2
 }
+\linespread{1.3}
 
 \lstset{style=mystyle}
 %\usepackage{algpseudocode}
@@ -122,7 +123,7 @@ Most of the time the marketer does not need to send a direct message to the targ
 
 In this study we focus on solving a campaign optimization problem which we studied earlier. The campaign optimization problem is to maximize the effect of campaign in the target audience by touching directly or indirectly each customers, without violating any communication limitations have been put by customer experience experts and the legal regulations. In order to increase our campaigns expansion in the target audience, we will build and use a network using tariff change history and an existing social network built by using CDR (call data records).\\
 
-The remaining of this paper is structured as follows. In \S \ref{s:literature-review}, we review the related literature. In \S \ref{s:problem-model}, we describe the problem in detail and present our mathematical model for the problem. In \S \ref{s:solution-method}, we explain our proposed solution methods. In \S \ref{s:net-effect}, we introduce network effects to the problem. In \S \ref{s:num-analysis}, we present our computational results. Finally, we conclude in \S \ref{s:conclusion}.
+The remaining of this paper is structured as follows. In \S \ref{s:literature-review}, we review the related literature. In \S \ref{s:problem-model}, we describe the problem in detail and present our mathematical model for the problem. In \S \ref{s:net-building-solution-method}, we describe the how we build the network, and we will explain our proposed solution methods. In \S \ref{s:num-analysis}, we present our computational results. Finally, we conclude in \S \ref{s:conclusion}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,14 +148,12 @@ In this section, we describe the proposed mathematical model to maximize the num
 
 Turkcell, a telecommunication company in Turkey, provides different tariffs, services and products to its customers. In order to introduce these services and products to its existing and potential customers, the marketing team launches daily and weekly campaigns. A campaign can be seen as a marketing activity to introduce a product or a service to a predefined customer group through a set of communication channels within a specific period of time. Most of the time the product or the service can be offered with some advantages, like free usage or price advantages. But despite these benefits, customers may find campaign messages annoying. Before launching these campaigns, they analyze customer data to find the right target group. Then, they apply a set of business rules to optimize their communication with them. During this optimization process, several filters are used to keep the communication in certain frequency so that the customers are not disturbed frequently and with information unrelated to their needs. The first filter assures that no customers is informed about the same campaign from different channels. The second, limits the number of total interactions to a customer in one day. Campaigns are categorized in two dimensions; the first dimension is quota categories which describes filters for a campaign and the second one is priority categories which describes the importance of a campaign. Each campaign belongs to a quota category and each quota category has a limitation on the number of messages sent to a customer, both in a daily, and a weekly basis; moreover each campaign has a limitation unique to its own; and finally, each communication channel has a capacity that should not be exceeded for each day. Each campaign is bound to a priority category.\\
 
-Turkcell launches about 70 campaigns on average for around 60-70 million customers through 3 channels each day, and these campaigns are planned in a weekly basis. Number of quota categories is fixed to 3, but priority categories can be variable around 10.\\
-
 We study Turkcell’s outbound campaign management, and use an initial model to maximize the number of campaigns while abiding the rules for reaching to customers.
 
 \subsection{Mathematical Model} \label{s:problem-math}
 
 In this section, we present an integer programming model for the campaign optimization problem described at \S \ref{s:problem-desc}. We first introduce the notation and then present the model.\\
-
+\begin{singlespace}
 % General Math Model
 \noindent \textbf{Sets}\\
 
@@ -168,9 +167,16 @@ In this section, we present an integer programming model for the campaign optimi
 
 \noindent \textbf{Decision Variables}\\
 
-\noindent $X_{{c}{u}{h}{d}}=1$, if message on campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ on day $d \in \mathcal{D}$, and 0 otherwise.\\
+\noindent $X_{{c}{u}{h}{d}}=1$, if campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
+
+\noindent $Z_{{c}{u}}=1$, if campaign $c \in \mathcal{C}$ will be received by customer $u \in \mathcal{U}$ either directly from the marketer or indirectly through another customer, and 0 otherwise.
+($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
 
 \noindent \textbf{Parameters}\\
+
+\noindent $a_{{u}{v}}=1$, if customers \textit{u} and \textit{v} are adjacent, and 0 otherwise.
+($\forall u, v \in \mathcal{U}$)\\
 
 \noindent $e_{{c}{u}}=1$, if customer $u \in \mathcal{U}$ is eligible for campaign $c \in \mathcal{C}$, and 0 otherwise.\\
 
@@ -191,19 +197,16 @@ In this section, we present an integer programming model for the campaign optimi
 \noindent $n_{i}$ maximum number of times a customer can be contacted for quota category $i \in \mathcal{I}$ on each day.\\
 
 \noindent $t_{{h}{d}}$ capacity for channel $h \in \mathcal{H}$ on day $d \in \mathcal{D}$.\\
+\end{singlespace}
 
 \noindent The formulation for the campaign optimization is presented next.
 
 \begin{align}
 \text{IP: }\text{Maximize} & \displaystyle
-\sum\limits_{p\in \mathcal{P}}
-\sum\limits_{c\in \mathcal{C}}
-\sum\limits_{u\in \mathcal{U}}
-\sum\limits_{h\in \mathcal{H}}
-\sum\limits_{d\in \mathcal{D}}
-X_{{c}{u}{h}{d}}  r_{{c}{p}} \label{mathmodel_obj}&
+\sum\limits_{p\in \mathcal{P}}\sum\limits_{c\in \mathcal{C}}\sum\limits_{u\in \mathcal{U}}Z_{{c}{u}} r_{{c}{p}} \label{mathmodel_w/n_obj}&
 \\
 \text{subject to} \notag\\
+&Z_{{c}{u}} \leq \sum\limits_{h\in \mathcal{H}}\sum\limits_{d\in \mathcal{D}}(X_{{c}{u}{h}{d}}+\sum\limits_{v\in\mathcal{U}}X_{{c}{v}{h}{d}}a_{{u}{v}}) &\forall c \in \mathcal{C}, \forall u \in \mathcal{U},\label{mathmodel_w/n_netcoverage}&\\
 &X_{{c}{u}{h}{d}} \leq e_{{c}{u}}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_eligibility}&\\
 &\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq 1 &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \label{mathmodel_singlechannel}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u}{h}{d}} \leq b &\forall u \in \mathcal{U}, \label{mathmodel_percustomercommlimit}&\\
@@ -215,51 +218,24 @@ X_{{c}{u}{h}{d}}  r_{{c}{p}} \label{mathmodel_obj}&
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}q_{{i}{c}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \forall w \in [1,6], \label{mathmodel_weeklyquotalimit_rh}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}}  q_{{i}{c}} \leq n_{i} &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \forall i \in \mathcal{I}, \label{mathmodel_dailyquotalimit}&\\
 &\sum\limits_{u\in\mathcal{U}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq t_{{h}{d}} &\forall d \in \mathcal{D}, \forall h \in \mathcal{H}, \label{mathmodel_channellimit}&\\
-&X_{{c}{u}{h}{d}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_integrity}
+&X_{{c}{u}{h}{d}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_integrity}&\\
+&Z_{{c}{u}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U} \label{mathmodel_integrity_Z}
 \end{align}\\
 
-The objective function \eqref{mathmodel_obj} maximizes the prioritized campaign communication. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed only when the customer is eligible for that campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} define an upper-bound on the total number of communication to each customer for the whole period; and constraints \eqref{mathmodel_percustomercommlimit_rh} extend the upper-bound on the total number of communication to each customer regarding the rolling horizons. Constraints \eqref{mathmodel_percustomercommlimit_day} define an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} define an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints \eqref{mathmodel_percustomercamplimit_rh} extend the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are grouped by their marketing purpose, and for each of these groups we have combined limitations. Constraints \eqref{mathmodel_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ equals to 1 if the campaign $c$ is in category  $i$. Likewise, constraints \eqref{mathmodel_weeklyquotalimit_rh} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that the variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
+The objective function \eqref{mathmodel_w/n_obj} maximizes the prioritized campaign communication through either direct or indirect messaging. Constraint \eqref{mathmodel_w/n_netcoverage} ensures that a customer will only be considered as she received a message about a campaign if she receive the message directly or indirectly through the network. Constraints \eqref{mathmodel_eligibility} ensure that the communication will be placed only when the customer is eligible for that campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels. Constraints \eqref{mathmodel_percustomercommlimit} define an upper-bound on the total number of communication to each customer for the whole period; and constraints \eqref{mathmodel_percustomercommlimit_rh} extend the upper-bound on the total number of communication to each customer regarding the rolling horizons. Constraints \eqref{mathmodel_percustomercommlimit_day} define an upper-bound for total number of communication to each customer for a single day. Constraints \eqref{mathmodel_percustomercamplimit} define an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints \eqref{mathmodel_percustomercamplimit_rh} extend the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are grouped by their marketing purpose, and for each of these groups we have combined limitations. Constraints \eqref{mathmodel_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ equals to 1 if the campaign $c$ is in category  $i$. Likewise, constraints \eqref{mathmodel_weeklyquotalimit_rh} limits the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensures that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraints \eqref{mathmodel_integrity} and \eqref{mathmodel_integrity_Z} respectively ensures that the variables $X_{{c}{u}{h}{d}}$ and $Z_{{c}{u}}$ is either 0 or 1.\\
 
 Due to its complexity, large instances of the campaign optimization problem may not be solved quickly by using exact methods. To support time to market objectives of marketing teams, we developed a heuristic approach that can attain high-quality solutions within a reasonable duration.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Including the Network Effects and Solution Method} \label{s:net-effect}
+\section{Network Building and Solution Method} \label{s:net-building-solution-method}
 In this section, we will take into account the network effect to reach a broader audience for our campaigns. As we stated earlier, the purpose of a marketer in running campaigns is to make her message reach a wide audience. Our current mathematical model maximizes the number of direct messages to customers regarding the campaign priority; however, we know that when we send a message to a certain customer, it may also be heard by other customers. We will assume that the network we will use, will give us an insight that some customers influence others to learn about our products and services. If customer \textit{i} receives a message; she may cause another customer \textit{j} to learn about that message. As a result, we touch two customers by sending only one message.
 
 In our current model, we have some criteria which keep us from touching every eligible customer, so we are to drop some customers from the lists to ensure those criteria, using the network data we will try to drop the customers whose network effect is much lesser than others. In order to make it clear, let's consider we have customers 1, 2 and 3 are all eligible to campaign c, and we can send a message to only one customer; if we knew that 2 and 3 are connected in a network, we can retain either 2 or 3. Because if customer 1 is retained, only a single customer will be reached; however if either customers 2 or 3 is retained, two people will be reached because they will influence each other.
 
-\subsection{Mathematical Model with Network Effects} \label{s:network-modif-model}
-In order to include network effects, we revise out model as follows. We first introduce the new notation and then present the new mathematical model.
 \\
 % Network Modified Math Model
-
-\noindent \textbf{Decision Variables}\\
-
-\noindent $X_{{c}{u}{h}{d}}=1$, if campaign $c \in \mathcal{C}$ will be sent to customer $u \in \mathcal{U}$ through channel $h \in \mathcal{H}$ at day $d \in \mathcal{D}$, and 0 otherwise.
-($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
-
-\noindent $Z_{{c}{u}}=1$, if campaign $c \in \mathcal{C}$ will be received by customer $u \in \mathcal{U}$ either directly from the marketer or indirectly through another customer, and 0 otherwise.
-($\forall c \in \mathcal{C}$, $\forall u \in \mathcal{U}$, $\forall h \in \mathcal{H}$, $\forall d \in \mathcal{D}$ )\\
-
-\noindent \textbf{Parameters}\\
-
-\noindent $a_{{u}{v}}=1$, if customers \textit{u} and \textit{v} are adjacent, and 0 otherwise.
-($\forall u, v \in \mathcal{U}$)\\
-
-
-\noindent The formulation for the campaign optimization considering network effect is presented next.
-
-\begin{align}
-\text{Maximize} & \displaystyle
-\sum\limits_{p\in \mathcal{P}}\sum\limits_{c\in \mathcal{C}}\sum\limits_{u\in \mathcal{U}}Z_{{c}{u}} r_{{c}{p}} \label{mathmodel_w/n_obj}&
-\\
-\text{subject to} \notag\\
-&Z_{{c}{u}} \leq \sum\limits_{h\in \mathcal{H}}\sum\limits_{d\in \mathcal{D}}(X_{{c}{u}{h}{d}}+\sum\limits_{v\in\mathcal{U}}X_{{c}{v}{h}{d}}a_{{u}{v}}) &&&\forall c \in \mathcal{C}, \forall u \in \mathcal{U},\label{mathmodel_w/n_netcoverage}
-\\
-&\text{Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} }\notag
-\end{align}\\
 
 \subsection{Building A Social Network Using Tariff-Change Data Network}\label{s:micro-world-networks}
 Call data records (CDR) are commonly used to represent a social network of an individual. They could include both very close friends and also acquaintances who have not met in person, but talked over the phone. In our study, we need to represent closer relationships where one can inform their neighbour about a campaign-related message they received from a company. To reach such close contacts, we use tariff-change histories in addition to CDR data. In this way, we seek for people who have switch their tariff around the same time, and assume that they are close friends, who talk to each other about new mobile plans, etc. More specifically, we will build another network using both tariff-change data and SNA. In our new network nodes will be the customers and the edges will be placed when two customers are adjacent in the CDR network, and when their tariff-changes occurs in the same time (i.e., within 7 days). The tariff of a customer describes which products and services she uses, and the tariff-change data keeps the history of changes of tariff of a customer.
@@ -306,7 +282,7 @@ We iterate through the connected (\mathcal{u,v}) pairs of \mathcal{G}. For every
 , and \mathcal{v}, and if the difference exceeds the days threshold \mathcal{T} we increase the co-occurance counter (\mathcal{uvSalesCooccurance}) by 1. After covering the whole product set, we compare (\mathcal{uvSalesCooccurance}) with the threshold for number of co-occurances \mathcal{C}, and if (\mathcal{uvSalesCooccurance}) exceeds \mathcal{C}, we build an edge between customers \mathcal{u}, and \mathcal{v}.
 
 \subsection{Solution Approach}
-In this section first we present our greedy heuristic algorithm to solve the campaign optimization problem with network effect described at \S \ref{s:net-effect} and modelled at \S \ref{s:network-modif-model}. Later we will focus on how to sort customers in greedy approach, and we will try to solve some basic problems, and develop a heuristic algorithm. Finally at \S \ref{s:num-analysis} we will show computational study of the developed heuristic  result.
+In this section first we present our greedy heuristic algorithm to solve the campaign optimization problem  described at \S \ref{s:problem-desc} and modelled at \S \ref{s:problem-math}. Later we will focus on how to sort customers in greedy approach, and we will try to solve some basic problems, and develop a heuristic algorithm. Finally at \S \ref{s:num-analysis} we will show computational study of the developed heuristic  result.
 
 \subsubsection{Linear Programming Model for finding assignable number for each campaign} \label{s:problem-math-lp}
 
@@ -391,7 +367,8 @@ SortCampaigns(C) \tcp*{such that($Y_{{c_{1}}{d}}  r_{c_{1}p} \geq Y_{{c_{2}}{d}}
 \Return{$X$}\;
 \caption{Greedy Heuristic improved by LP With Network Effect}
 \label{algo:lprelax-net}
-\end{algorithm}
+\end{algorithm}.
+\\
 \\
  At \S \ref{s:heu-camp-opt-with-net} we will focus on the implementation of \textit{SortCustomersByNetworkPrecedence} function at line 10 of algorithm-\ref{algo:lprelax-net}.\\
 \subsubsection{Heuristics to Sort Customers By Network Precedence \label{s:heu-camp-opt-with-net}}
