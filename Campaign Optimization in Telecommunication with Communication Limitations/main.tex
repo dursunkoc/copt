@@ -24,6 +24,10 @@
 \usepackage{amssymb}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+\usepackage{booktabs,csvsimple}
+\usepackage[font=scriptsize]{caption} 
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -150,7 +154,7 @@ Different studies work on different industries and various business constraints;
 
 Although studies related to campaign management are common in marketing, there is increasing interest to this area from operations research and computer science areas, as the abundant data require complex data analysis skills. In my thesis, after such data analysis, we plan to introduce optimization methods which are not yet commonly used to tackle such problems. Specifically, one of our main contributions will be utilizing from network optimization tools to produce high quality solutions.\\
 
-In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations. In the second place, we also try to increase the number of interaction to the most influential customers. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data from Turkcell.
+In this study, we plan to develop a model which tries to maximize the number of interactions for the campaigns decided by marketing team, while not exceeding the communication limitations. In the second place, we also try to increase the number of interaction to the most influential customers. We believe that influential customers can spread our message to a broader audience. In order to find the influential customer we will use customers' call and product purchase data.
 
 \section{Campaign Optimization Problem}  \label{s:problem-model}
 
@@ -234,14 +238,14 @@ X_{{c}{u}{h}{d}}  r_{{c}{p}} \label{mathmodel_obj}&
 &X_{{c}{u}{h}{d}} \leq e_{{c}{u}}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_eligibility}&\\
 &\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq 1 &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \label{mathmodel_singlechannel}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u}{h}{d}} \leq b &\forall u \in \mathcal{U}, \label{mathmodel_percustomercommlimit}&\\
-&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq b &\forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercommlimit_rh}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq k &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \label{mathmodel_percustomercommlimit_day}&\\
 &\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}X_{{c}{u}{h}{d}} \leq l_{c} &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \label{mathmodel_percustomercamplimit}&\\
-&\sum\limits_{h\in\mathcal{H}}\left( \sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq l_{c} &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercamplimit_rh}&\\
 &\sum\limits_{d\in\mathcal{D}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}}  q_{{i}{c}} \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \label{mathmodel_weeklyquotalimit}&\\
-&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}q_{{i}{c}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \forall w \in [1,6], \label{mathmodel_weeklyquotalimit_rh}&\\
 &\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}}  q_{{i}{c}} \leq n_{i} &\forall u \in \mathcal{U}, \forall d \in \mathcal{D}, \forall i \in \mathcal{I}, \label{mathmodel_dailyquotalimit}&\\
 &\sum\limits_{u\in\mathcal{U}}\sum\limits_{c\in\mathcal{C}}X_{{c}{u}{h}{d}} \leq t_{{h}{d}} &\forall d \in \mathcal{D}, \forall h \in \mathcal{H}, \label{mathmodel_channellimit}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}q_{{i}{c}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq m_{i} &\forall u \in \mathcal{U}, \forall i \in \mathcal{I}, \forall w \in [1,6], \label{mathmodel_weeklyquotalimit_rh}&\\
+&\sum\limits_{h\in\mathcal{H}}\sum\limits_{c\in\mathcal{C}}\left(\sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq b &\forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercommlimit_rh}&\\
+&\sum\limits_{h\in\mathcal{H}}\left( \sum_{d=1}^{w}X_{{c}{u}{h}{d}} + \sum_{d=w+1}^{7}s_{{c}{u}{h}{d}}\right) \leq l_{c} &\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall w \in [1,6], \label{mathmodel_percustomercamplimit_rh}&\\
 &X_{{c}{u}{h}{d}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_integrity}
 \end{align}\\
 
@@ -300,29 +304,20 @@ In this section, we improve the basic greedy heuristic using a new linear progra
 % \subsubsection{The New LP model} \label{s:problem-math-lp}
 %Prioritizing campaigns with respect to In this model, instead of assigning specific customers to specific campaigns, we . 
 %BURDA KALDIM
-Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and expected to be sent to 1 customer, and campaign-2 has a priority of 50 and expected to be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
+Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and can be sent to 1 customer, and campaign-2 has a priority of 50 and can be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
 \\
-We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not considering the rolling horizon.\\
+We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not consider the individual limitations introduced in the problem definition described at section \s\ref{s:problem-model}, unlikely the model below is finding the maximum number of messages that can be sent by not caring how many messages an individual receives.\\
 
-\noindent \textbf{Sets}\\
 
-\noindent ${\mathcal{C}}$: Set of campaigns \\
-\noindent ${\mathcal{D}}$: Set of planning days \\
-\noindent ${\mathcal{I}}$: Set of quota categories \\
+\noindent \textbf{New Decision Variable}\\
 
-\noindent \textbf{Decision Variables}\\
-
-\noindent $Y_{{c}{d}}$, total number of customers that will receive a message about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
+\noindent $Y_{{c}{d}}$, total number of messages sent about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
 ($\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ )\\
 \\
 
-\noindent \textbf{Parameters}\\
+\noindent \textbf{New Parameter}\\
 
-\noindent $e_{c}$, number of customers eligible for campaign $c \in \mathcal{C}$.
-($\forall c \in \mathcal{C}$)\\
-
-\noindent $q_{{i}{c}}=1$, if campaign $c \in \mathcal{C}$ is in $i \in \mathcal{I}$ quota category, and 0 otherwise.
-($\forall c \in \mathcal{C}$, $\forall i \in \mathcal{I}$)\\
+\noindent $e_{c}$, number of customers eligible, can be calculated as $\sum\limits_{u\in\mathcal{U}}e_{{c}{u}}$ for campaign $c \in \mathcal{C}$\\
 
 \noindent The formulation for the campaign optimization is presented next.
 
@@ -341,7 +336,7 @@ Y_{{c}{d}} \label{mathmodel2_obj}&
 &Y_{{c}{d}} \geq 0&&&\forall c \in \mathcal{C}, \forall d \in \mathcal{D}, \label{mathmodel2_positive}
 \end{align}\\
 
-The objective function \eqref{mathmodel2_obj} maximizes the number of campaign communication. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total are not exceeded weekly and daily limits respectively; and finally constraint \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.\\
+The objective function \eqref{mathmodel2_obj} maximizes the total number of people reached over total time. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit, just like the constraints \eqref{mathmodel_percustomercamplimit} in the IP model. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period, like the constraints \eqref{mathmodel_weeklyquotalimit} in the IP model. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day which maps to \eqref{mathmodel_dailyquotalimit}. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total are not exceeded weekly and daily limits both of which are shadows of the constraints \eqref{mathmodel_percustomercommlimit}, and \eqref{mathmodel_percustomercommlimit_day} respectively in the IP model; and finally constraint \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.\\
 
 The preceding mathematical model is used for finding a rough estimation for the expected number of communication for each campaign. In Algorithm \ref{algo:greedy2} (\textit{Improved Greedy Heuristic}) expected number of communication for each campaign $Y_{{c}{d}}$ is used to sort campaigns in addition to campaign priority $r_{{c}{p}}$.
 \\
@@ -380,7 +375,7 @@ SortCampaigns(C) \tcp*{such that($Y_{{c_{1}}{d}}  r_{c_{1}p} \geq Y_{{c_{2}}{d}}
 \label{algo:greedy2}
 \end{algorithm}
 
-\subsection{LP-relaxation Heuristic} \label{s:lp_relaxation_heuristic}
+\subsection{LP-relaxation} \label{s:lp_relaxation_heuristic}
 In this section, we relax the model described at \S \ref{s:problem-model} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with Greedy Approach}) to find a solution.\\
 \begin{algorithm}[H]
 \DontPrintSemicolon
@@ -420,54 +415,55 @@ SortCampaigns(C) \tcp*{such that $r_{c_{1}p} \geq r_{c_{2}p}$}
 \newpage
 \section{Computational Study} \label{s:num-analysis}
 
-In this section, we present the results of our computational study conducted to evaluate the performance of our greedy heuristic algorithms. We describe our test instances in \S \ref{test_cases}. We evaluate the performance of the greedy heuristics in \S \ref{s:test_evaluation}.
+In this section, we present the results of our computational study proposed. We first describe our test instances and then evaluate the performance of our proposed heuristics. All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Heuristic algorithms are also coded in Python.
 
-All computations were performed on a computer with 64-bit Windows 10 operating system with Intel(R) Core(TM) i7-3630QM CPU 16 GB RAM, and CPLEX 20.1 was used in Python to solve campaign optimization for exact results. Greedy heuristic algorithm is also coded in Python using Numpy library for fast mathematical operations.
-
-Campaigns are planned in a weekly basis. The company launches on average about 70 campaigns for around 60-70 million customers through 3 channels each day. Number of quota categories is fixed to 3, but priority categories can be variable around 10.
+Campaigns are planned in a weekly basis. The company launches on average about 10 campaigns for around 500.000 customers through 3 channels each day. Number of quota categories is fixed to 3, but priority categories can be variable around 10.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Test Instances} \label{test_cases}
-Table \ref{table:tbl_test_instances} shows the instances we tested our algorithms described at \S \ref{s:solution-method}. Instances from 1 to 12 can be regarded as low profile problems, instances from 13 to 30 can be seen as medium profile problems, instances from 30 to 38 can be seen as high profile problems. A real world scenario can be very much like to instances 36 to 38. In our test machine, problems greater than instance 17 cannot be executed using CPLEX solver, because it requires more than 32GB of RAM whereas our test machine can provide up to 32GB RAM.\\
- 
-\begin{table}[htb]
+Table \ref{table:tbl_test_instances} gives a summary of the test instances we used to test our algorithms described in \S \ref{s:solution-method}. Instances from 1 to 12 can be regarded as small-sized problems, instances from 13 to 30 can be seen as medium-sized problems, instances from 30 to 38 can be seen as large-sized problems. The major player in increasing the difficulty of the problem is the customer size. A real world scenario can be similar to instances 36 to 38.\\
+
+\begin{table}[htb!]
+\resizebox{0.65\textwidth}{!}{\begin{minipage}{\textwidth}
     \centering
     \caption[Short Caption for LoT]{Test instances for campaign optimization problem}\label{table:tbl_test_instances}
 \csvautobooktabular{test_instances.csv}
+\end{minipage} }
 \end{table}
+\clearpage
 
-\noindent \textbf{Parameters}\\
+\subsection{Heuristic Performances} \label{s:test_evaluation}
+First, we executed instances from 1 to 17 using CPLEX MIP solver for exact solution, later we solved the problem with basic greedy heuristic described at \S \ref{s:greedy_heuristic_basic}, with improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved}, and finally with LP relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}.\\
 
-\noindent $e_{{c}{u}}$ is randomly generated $\mathcal{C} \times \mathcal{U}$ matrix having values 0 or 1,\\
-\noindent $q_{{i}{c}}$ is randomly generated $\mathcal{I} \times \mathcal{C}$ matrix having values 0 or 1,\\
-\noindent $r_{{p}{c}}$ is randomly generated $\mathcal{P} \times \mathcal{C}$ matrix having values 0 to 100,\\
-\noindent $b$ is set to 7,\\
-\noindent $k$ is set to 3,\\
-\noindent $l_c$ is randomly generated $\mathcal{C}$ length list having values 2, 3 or 4,\\
-\noindent $m_i$ is randomly generated $\mathcal{I}$ length list having values 3, 4 or 5,\\
-\noindent $n_i$ is randomly generated $\mathcal{I}$ length list having values 1, 2 or 3,\\
-\noindent $t_{{h}{d}}$ is randomly generated $\mathcal{H} \times \mathcal{D}$ matrix having values $\mathcal{U}.5$, $\mathcal{U}.6$ or $\mathcal{U}.7$.\\
+Table-\ref{table:tbl_17_results} shows each algorithms objective value gap to the exact solutions beside with the execution times in seconds. Figure-\ref{fig:fig_durations17} show duration in seconds for each methods, and test instances, and Figure-\ref{fig:fig_value_gap17} shows objective value of basic greedy, improved greedy and LP-relaxation heuristics are differ from the exact solution's objective value. The differences are calculated using the formulation described at \equationautorefname \eqref{exact_distance_formulation}.\\
 
-First, we executed instances from 1 to 17 using CPLEX MIP solver for exact solution, later we solved the problem with basic greedy heuristic described at \S \ref{s:greedy_heuristic_basic}, with improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved}, and finally with LP relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}. As we stated earlier, we could not executed test instances from 18 to 38 using CPLEX Solver; however we can find solutions to these instances (18-38) using the improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved}. In order to measure the quality of results found for test instances from 18 to 38 using the improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved} we made rough estimations for upper-bound for the problems using the Algorithm \ref{algo:upperBoundEstimation} (\textit{Upper-bound Estimation for Expected Maximum Value for Campaign Optimization}).\\
-\\
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\KwIn{$c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $r_{{p}{c}}$, $e_{{c}{u}}$}
-\KwOut{$E_u$ Upper-Bound estimation}
+        \begin{table}[htb!]
+        \caption{Objective Value Gap\% and Execution Time in seconds.}\label{table:tbl_17_results}
+        \begin{adjustbox}{max width=1\textwidth}
+        \csvautobooktabular[table head={\toprule  
+           &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Execution Time in seconds} \\
+        \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_all_17.csv}
+        \end{adjustbox}
+        \label{tab:test}
+        \end{table}
 
-$Y_{{c}{d}}$ = Solve LP Model \eqref{mathmodel2_obj} to \eqref{mathmodel2_positive}\;
-$E_u$ = minimum(\sum\limits_{d \in \mathcal{D}}$Y_{{c}{d}}$, D*\sum\limits_{u \in \mathcal{U}}$e_{{c}{u}}$ ) * $r_{{p}{c}}$\;
-\Return{$E_u$}\;
-\caption{Upper-bound Estimation for Expected Maximum Value for Campaign Optimization}
-\label{algo:upperBoundEstimation}
-\end{algorithm}
-\\
-\subsection{Results: Performance of the Greedy Heuristic and LP Relaxation Heuristic} \label{s:test_evaluation}
-Table-\ref{table:tbl_test_durations17} and Figure-\ref{fig:fig_durations17} show duration in seconds for each methods, and test instances, and Table-\ref{table:tbl_test_performance17} and Figure-\ref{fig:fig_value_gap17} show  objective value of basic greedy, improved greedy and LP-relaxation heuristics are differ from the exact solution's objective value. The differences are calculated using the formulation described at \equationautorefname \eqref{exact_distance_formulation}.\\
-
-For exact solution provided by CPLEX MIP solver the duration is exponentially increase as the problem size increases, and that increase become evident after instance-12. Besides as we stated earlier we could not use CPLEX MIP Solver to get exact solutions for instances from 18 to 38. To check the quality of our results in improved greedy approach for instances from 18 to 38, first we run the Algorithm \ref{algo:upperBoundEstimation} (\textit{Upper-bound Estimation for Expected Maximum Value for Campaign Optimization}) to get an upperbound for each of the 38 test instances and compared them with the exact solution. Table-\ref{table:tbl_exact_against_upperbound} shows both the exact optimum value and expected upper-bound with the gap between them, and table-\ref{table:tbl_imp_greedy_against_upperbound}\\
-
-In order to assess the solutions provided by heuristics against the exact solution, we calculate their distance to the exact solution using the formulation described at \equationautorefname \eqref{exact_distance_formulation}, and calculated objective value gaps are presented at table-\ref{table:tbl_test_performance17}.\\
+        \begin{figure}[htb!]
+        \centering
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{durations17.png}
+            \caption{Execution time in secs}
+            \label{fig:fig_durations17}
+        \end{minipage}%
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{performance17.png}
+            \caption{\% Objective Value Gap to MIP Exact Solution}
+            \label{fig:fig_value_gap17}
+        \end{minipage}
+        \end{figure}
+\newpage
+In order to assess the solutions provided by heuristics against the exact solution, we calculate their distance to the exact solution using the formulation described at \equationautorefname \eqref{exact_distance_formulation}, and calculated objective value gaps are presented at table-\ref{table:tbl_17_results}.\\
 
 \noindent $V_{e}$: Exact objective value found by CPLEX-MIP solver. \\
 \noindent $V_{h}$: Objective value found by heuristic. \\
@@ -479,58 +475,18 @@ In order to assess the solutions provided by heuristics against the exact soluti
 
 During the execution of the model in CPLEX-MIP solution, and CPLEX-LP relaxation heuristics, the memory used increases more than 10GB with a cpu usage of around \%90, while the memory usage were limited to 300MB with a cpu usage around \%20 in both Basis Greedy heuristics, and the LP improved Greedy heuristics.\\
 
-The mean of the gap against upper-bound for exact solution for instances from 1 to 17 is 42\%, and the mean of the gap against upper-bound for improved greedy heuristic for instance from 1 to 17 is again 42\%, for instances from 18 to 38 the mean of the gap is 43\%, so we can say impored-greedy solutions for test instances from 18 to 38 do not deviate much from the exact solution.
+Using first 17 instances we concluded that the Improved Greedy described in \S \ref{s:greedy_heuristic_improved} provides results that are near to exact solution in reasonable execution times, so we tested our next 21 instances (from instace 18 to 38) using only Improved Greedy approach against exact solution. In order find exact solution for instances between 18 and 38, we used parallelization technics. Table-\ref{table:tbl_38_results} presents the objective value gap of Improved Greedy approach for larger test instances.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\afterpage{%
-    \clearpage% Flush earlier floats (otherwise order might not be correct)
-    \thispagestyle{empty}% empty page style (?)
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{Execution time in secs}\label{table:tbl_test_durations17}
-            \csvautobooktabular[respect percent]{n_test_durations17.csv}
+        \begin{table}[htb!]
+        \centering
+        \caption{Objective Value Gap\% for Larger Problems}\label{table:tbl_38_results}
+       \resizebox{0.65\textwidth}{!}{\begin{minipage}{\textwidth}
+        \begin{adjustbox}{max width=1\textwidth}
+        \csvautobooktabular{n_test_results_38.csv}
+        \end{adjustbox}
+        \end{minipage} }
         \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{durations17.png}
-            \caption{Execution time in secs}
-            \label{fig:fig_durations17}
-        \end{figure}
-
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Objective Value Gap to MIP Exact Solution}\label{table:tbl_test_performance17}
-            \csvautobooktabular[respect percent]{n_test_performance17.csv}
-        \end{table}
-        \begin{figure}[htp]
-            \centering
-            \includegraphics[width=12cm]{performance17.png}
-            \caption{\% Objective Value Gap to MIP Exact Solution}
-            \label{fig:fig_value_gap17}
-        \end{figure}
-        
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Gap from Exact Solution  to Upperbound}\label{table:tbl_exact_against_upperbound}
-            \csvautobooktabular[respect percent]{n_test_exact_against_upperbound.csv}
-        \end{table}
-        
-        \begin{table}[htb]
-                \centering
-                \caption[Short Caption for LoT]{\% Gap from Improved Greedy to Upperbound}\label{table:tbl_imp_greedy_against_upperbound}
-            \csvautobooktabular[respect percent, ]{n_test_imp_greedy_against_upperbound.csv}
-        \end{table}
-
-    \clearpage% Flush earlier floats (otherwise order might not be correct)
-\newpage
-}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
+         \newpage
 
 \section{Conclusion} \label{s:conclusion}
 In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
