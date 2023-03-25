@@ -312,7 +312,6 @@ class MipCore:
         manager = multiprocessing.Manager()
         return_dict = manager.dict()
         jobs = []
-        models = []
         semaphore = multiprocessing.Semaphore(8)
         for model_i in tqdm(range(0, number_of_models), f"{range(0, number_of_models)} proc"):
             p = multiprocessing.Process(target=self.start_sub_model, args=(binary, PMS, C, O, H, D, I, model_i, return_dict, semaphore))

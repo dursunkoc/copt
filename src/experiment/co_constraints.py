@@ -1,3 +1,4 @@
+import multiprocessing
 import numpy as np
 from numba import njit, prange, objmode
 import logging
@@ -96,22 +97,49 @@ def greedy_on(X, rp_c, b, cuhd,e_cu,k,l_c,m_i,n_i,q_ic,s_cuhd,t_hd):
                     if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
                         X[c,u,h,d]=0
 
-@njit
+@njit(parallel=True)
 def do_greedy_loop(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd):
-    index=0
-    for c in sorted_camps:
-        for d in range(D):
+    for c_i in prange(sorted_camps.size):
+        c = sorted_camps[c_i]
+        for d in prange(D):
             Ur = X.sum(0).sum(1).sum(1).argsort()
             overall= sorted_camps.size*D*Ur.size*H
             for u in Ur[::-1]:
-                for h in range(H):
-                    index=index+1
+                for h in prange(H):
+                    index = (c+1) * (d+1) * (u+1) * (h+1)
                     if index % 100000 == 0:
                         with objmode():
                             print(f"{index}/{overall}@{time.time()}")
                     X[c,u,h,d]=1
                     if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
                         X[c,u,h,d]=0
+
+def do_greedy_loop_in_parallel(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, sem_count):
+    semaphore = multiprocessing.Semaphore(sem_count)
+    jobs = []
+    number_of_camps = sorted_camps.size
+    for camp in sorted_camps:
+        p = multiprocessing.Process(target=do_greedy_loop_for_camp, args=(X, number_of_camps, camp, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, semaphore))
+        jobs.append(p)
+        p.start()
+    print("\nstarted all!")
+    for proc in jobs:
+        proc.join()
+
+def do_greedy_loop_for_camp(X, number_of_camps, camp, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, semaphore):
+    with semaphore:
+        index=0
+        for d in range(D):
+            Ur = X.sum(0).sum(1).sum(1).argsort()
+            overall= number_of_camps*D*Ur.size*H
+            for u in Ur[::-1]:
+                for h in range(H):
+                    index=index+1
+                    if index % 10000 == 0:
+                        print(f"{index}/{overall}@{time.time()}")
+                    X[camp,u,h,d]=1
+                    if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (camp,u,h,d)):
+                        X[camp,u,h,d]=0
 
 
 @njit(parallel=True)

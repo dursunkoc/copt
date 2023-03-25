@@ -9,9 +9,10 @@ import numpy as np
 import co_constraints as cstr
 
 class GreedySolution(Solution):
-    def __init__(self, use_campaign_expectation=False):
+    def __init__(self, use_campaign_expectation=False, semp_count=1):
         super().__init__("Greedy")
         self.use_campaign_expectation=use_campaign_expectation
+        self.semp_count = semp_count
 
     def runPh(self, case:Case, Xp_cuhd):
         start_time = time()
@@ -37,7 +38,11 @@ class GreedySolution(Solution):
         else:
             sorted_camps = np.array([c for c in range(C)])
         print(sorted_camps)
-        cstr.do_greedy_loop(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd)
+        
+        if self.semp_count > 1:
+            cstr.do_greedy_loop_in_parallel(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd, self.semp_count)
+        else:
+            cstr.do_greedy_loop(X_cuhd, sorted_camps, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd)
         end_time = time()
         value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
         duration = end_time - start_time
@@ -50,7 +55,7 @@ class GreedySolution(Solution):
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(GreedySolution(False), False)
+    solutions = expr.run_cases_with(GreedySolution(False, 1), False)
     for solution in solutions:
         print(solution)    
 #    print("values:")
