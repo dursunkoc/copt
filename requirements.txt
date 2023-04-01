@@ -12,7 +12,7 @@ chardet==3.0.4
 click==7.1.2
 cloudpickle==1.6.0
 colorama==0.4.4
-cplex==20.1.0.0
+#cplex==20.1.0.0
 cycler==0.10.0
 dask==2021.1.1
 data-science-types==0.2.23
@@ -53,9 +53,9 @@ nbconvert==6.0.7
 nbformat==5.0.8
 nest-asyncio==1.4.3
 notebook==6.1.5
-numpy==1.19.4
+numpy==1.24.2
 packaging==20.8
-pandas==1.1.5
+pandas==1.5.3
 pandocfilters==1.4.3
 parso==0.7.1
 partd==1.1.0
@@ -73,7 +73,7 @@ pyparsing==2.4.7
 pyrsistent==0.17.3
 python-dateutil==2.8.1
 pytz==2020.4
-pywin32==300
+pywin32==305
 pywinpty==0.5.7
 PyYAML==5.4.1
 pyzmq==20.0.0
