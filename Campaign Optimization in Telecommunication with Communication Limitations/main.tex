@@ -264,7 +264,7 @@ In this section, we describe three heuristics. The first two are based on a gree
 
 We use the following greedy algorithm (Algorithm 1) to solve the campaign optimization problem described in \ref{s:problem-model}. We assign  the most important campaign (the one with the highest priority) first. We do not apply any specific ranking for days, channels and customers. For feasibility check, we consider only the constraints in which $X_{{c}{u}{h}{d}}$ variables are contained.
 
-More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints (2) to (13) using the $CheckFeasibility$ function, which takes the indices of the variable $X_{cuhd}$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_{cuhd}$ variable, and checks their value per modification.
+More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} using the $CheckFeasibility$ function, which takes the indices of the variable $X_{cuhd}$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_{cuhd}$ variable, and checks their value per modification.
 \\
 
 \begin{algorithm}[H]
@@ -421,7 +421,7 @@ Campaigns are planned in a weekly basis. The company launches on average about 1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Test Instances} \label{test_cases}
-Table \ref{table:tbl_test_instances} gives a summary of the test instances we used to test our algorithms described in \S \ref{s:solution-method}. Instances from 1 to 12 can be regarded as small-sized problems, instances from 13 to 30 can be seen as medium-sized problems, instances from 30 to 38 can be seen as large-sized problems. The major player in increasing the difficulty of the problem is the customer size. A real world scenario can be similar to instances 36 to 38. Parameters for each test instances can be found at appendix-\ref{s:apendix-parameters-in-test-instances}.\\
+Table \ref{table:tbl_test_instances} gives a summary of the test instances we used to test our algorithms described in \S \ref{s:solution-method}. Instances from 1 to 15 can be regarded as small-sized problems, instances from 15 to 30 can be seen as medium-sized problems, instances from 30 to 45 can be seen as large-sized problems. The major player in increasing the difficulty of the problem is the customer size. A real world scenario can be similar to instances 39 to 45. We have conducted two types of tests, first we executed test instances with rich channel capacities, which looses constraint \eqref{mathmodel_channellimit}; later we cut down the channel capacity such that some of the communication possibilities are blocked by it. It should be noted that in a real world scenario, channel capacities are rich, as the company is a Telco. Parameters for each test instances can be found at appendix-\ref{s:apendix-parameters-in-test-instances} for rich channel capacity, and at appendix-\ref{s:apendix-parameters-strict-in-test-instances}.\\
 
 \begin{table}[htb!]
 \resizebox{0.65\textwidth}{!}{\begin{minipage}{\textwidth}
@@ -433,16 +433,20 @@ Table \ref{table:tbl_test_instances} gives a summary of the test instances we us
 \clearpage
 
 \subsection{Heuristic Performances} \label{s:test_evaluation}
-First, we executed instances from 1 to 17 using CPLEX MIP solver for exact solution, later we solved the problem with basic greedy heuristic described at \S \ref{s:greedy_heuristic_basic}, with improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved}, and finally with LP relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}.\\
+First, we executed instances with rich channel capacity. We find exact solutions for instances from 1 to 17 using CPLEX MIP solver, later as the channel capacity is loose, we solved instances from 18 to 45 by solving sub-problems with grouping customers. Later we executed instances with limited channel capacity, again we find exact solutions for instances from 1 to 17 using the solver, but for instances from 18 to 45 solving sub-problems does not provide a solution rather it provides an upper bound for the solutions. Instances larger than 17 could not be solved by the solver on our test computer, so we solve those problems by solving sub problems divided by customer groups to find out an upper bound.
 
-Table-\ref{table:tbl_17_results} shows each algorithms objective value gap to the exact solutions beside with the execution times in seconds. Figure-\ref{fig:fig_durations17} show duration in seconds for each methods, and test instances, and Figure-\ref{fig:fig_value_gap17} shows objective value of basic greedy, improved greedy and LP-relaxation heuristics are differ from the exact solution's objective value. The differences are calculated using the formulation described at \equationautorefname \eqref{exact_distance_formulation}.\\
+For rich channel capacity, we solved problems also with basic greedy heuristic described at \S \ref{s:greedy_heuristic_basic}, with improved greedy heuristic described at\S \ref{s:greedy_heuristic_improved}, and finally with LP relaxation heuristic described at \S \ref{s:lp_relaxation_heuristic}.\\
+
+Table-\ref{table:tbl_exact_rich_results} shows each algorithms objective value gap to the exact solutions beside with the execution times in seconds for the rich channel capacity. Figure-\ref{fig:fig_durations_exact_rich} shows duration in seconds for each methods, and test instances, and Figure-\ref{fig:fig_value_gap_exact_rich} shows objective value of basic greedy, improved greedy and LP-relaxation heuristics are differ from the exact solution's objective value for the rich channel capacity. It can be inferred that the Improved Greedy algorithm can find good enough solutions with better performance in case of rich channel capacity. 
+Table-\ref{table:tbl_exact_limited_results} shows each algorithms objective value gap to the exact solutions beside with the execution times in seconds for the limited channel capacity. Figure-\ref{fig:fig_durations_exact_limited_17} shows duration in seconds for each methods, and test instances, and Figure-\ref{fig:fig_value_gap_exact_limited_17} shows objective value of basic greedy, improved greedy and LP-relaxation heuristics are differ from the exact solution's objective value for the limited channel capacity. Table-\ref{table:tbl_ub_limited_results} shows objective value of basic greedy and improved greedy are differ from the upper-bound for instances from 18 to 45, and their execution time in seconds in case of limited channel capacity. The objective value of improved greedy is significantly better than the objective value of basic greedy while the exection time of both algorithm does not diverges. However the gap on the objective value of limited channel capacity case is not as tight as in the case of rich channel capacity.
+The differences are calculated using the formulation described at \equationautorefname \eqref{exact_distance_formulation}.\\
 
         \begin{table}[htb!]
-        \caption{Objective Value Gap\% and Execution Time in seconds.}\label{table:tbl_17_results}
+        \caption{Objective Value Gap\% and Execution Time in seconds for Rich Channel Capacity.}\label{table:tbl_exact_rich_results}
         \begin{adjustbox}{max width=1\textwidth}
         \csvautobooktabular[table head={\toprule  
            &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Execution Time in seconds} \\
-        \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_all_17.csv}
+        \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_all_exact_rich.csv}
         \end{adjustbox}
         \label{tab:test}
         \end{table}
@@ -451,17 +455,72 @@ Table-\ref{table:tbl_17_results} shows each algorithms objective value gap to th
         \centering
         \begin{minipage}{.6\textwidth}
             \centering
-            \includegraphics[width=.7\linewidth]{durations17.png}
-            \caption{Execution time in secs}
-            \label{fig:fig_durations17}
+            \includegraphics[width=.7\linewidth]{durations_exact_rich.png}
+            \caption{Execution time in secs for Rich Channel Capacity}
+            \label{fig:fig_durations_exact_rich}
         \end{minipage}%
         \begin{minipage}{.6\textwidth}
             \centering
-            \includegraphics[width=.7\linewidth]{performance17.png}
-            \caption{\% Objective Value Gap to MIP Exact Solution}
-            \label{fig:fig_value_gap17}
+            \includegraphics[width=.7\linewidth]{performance_exact_rich.png}
+            \caption{\% Objective Value Gap to MIP Exact Solution for Rich Channel Capacity}
+            \label{fig:fig_value_gap_exact_rich}
         \end{minipage}
         \end{figure}
+        
+        \begin{table}[htb!]
+        \caption{Objective Value Gap\% and Execution Time in seconds for Limited Channel Capacity.}\label{table:tbl_exact_limited_results}
+        \begin{adjustbox}{max width=1\textwidth}
+        \csvautobooktabular[table head={\toprule  
+           &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Execution Time in seconds} \\
+        \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_17_exact_limited.csv}
+        \end{adjustbox}
+        \label{tab:test}
+        \end{table}
+
+        \begin{figure}[htb!]
+        \centering
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{durations_exact_limited_17.png}
+            \caption{Execution time in secs for Limited Channel Capacity}
+            \label{fig:fig_durations_exact_limited_17}
+        \end{minipage}%
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{performance_exact_limited_17.png}
+            \caption{\% Objective Value Gap to MIP Exact Solution for Limited Channel Capacity}
+            \label{fig:fig_value_gap_exact_limited_17}
+        \end{minipage}
+        \end{figure}
+
+
+        \begin{table}[htb!]
+        \caption{Objective Value Gap\% to Upper-Bound and Execution Time in seconds for Limited Channel Capacity.}\label{table:tbl_ub_limited_results}
+        \begin{adjustbox}{max width=1\textwidth}
+        \csvautobooktabular[table head={\toprule  
+           &\multicolumn{2}{c|}{Objective Value Gap} & \multicolumn{2}{c}{Execution Time in seconds} \\
+        \cmidrule{2-3} \cmidrule{4-5} \csvlinetotablerow\\\midrule}]{n_test_results_upper_bound_limited.csv}
+        \end{adjustbox}
+        \label{tab:test}
+        \end{table}
+
+        \begin{figure}[htb!]
+        \centering
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{durations_ub_limited_18_45.png}
+            \caption{Execution time in secs for Limited Channel Capacity}
+            \label{fig:fig_durations_ub_limited_18_45}
+        \end{minipage}%
+        \begin{minipage}{.6\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{performance_ub_limited_18_45.png}
+            \caption{\% Objective Value Gap to Upper-Bound for Limited Channel Capacity}
+            \label{fig:fig_value_gap_ub_limited_18_45}
+        \end{minipage}
+        \end{figure}
+
+        
 \newpage
 In order to assess the solutions provided by heuristics against the exact solution, we calculate their distance to the exact solution using the formulation described at \equationautorefname \eqref{exact_distance_formulation}, and calculated objective value gaps are presented at table-\ref{table:tbl_17_results}.\\
 
@@ -489,7 +548,7 @@ Using first 17 instances we concluded that the Improved Greedy described in \S \
          \newpage
 
 \section{Conclusion} \label{s:conclusion}
-In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-math} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
+In this study, we discussed a campaign optimization problem, prior to this study literature mostly discussed the problems on finding right target audience, and optimization of it, against cost of delivery and return of investment. In this study our approach is to optimize an existing target audience against communication limitations, both not to irritate customer and be compliant with regulations such as GDPR. We mathematically modeled the problem described at \S \ref{s:problem-model} and later at \S \ref{s:solution-method} offered three heuristic to solve it. A greedy approach that starts with a small LP-model described at \S \ref{s:greedy_heuristic_improved} seems to find good solutions with-in reasonable duration with low memory and cpu.\\
 Future research may focus on developing alternative solution methods for the proposed campaign optimization problem. In case of network effect current heuristic can be improved to decrease the gap to the optimal solution. Moreover, new methodologies can be offered to measure the effectiveness of the network.
 \newpage
 
@@ -497,14 +556,14 @@ Future research may focus on developing alternative solution methods for the pro
 
 \appendix
 \section{Appendices}
-\subsection{Parameters and Values Used for Test Instances}\label{s:apendix-parameters-in-test-instances}
+\subsection{Parameters and Values Used for Test Instancesin case of Rich Channel Capacity}\label{s:apendix-parameters-in-test-instances}
 \begin{lstlisting}[language=Python]
-Instance - 1 
+Instance - 1
 =================================
 q_ic:
- [0 1]
+[[0 1]
  [1 1]
- [0 0]
+ [0 0]]
 rp_c: [62 49]
 b: 7
 k: 3
@@ -512,17 +571,19 @@ l_c: [3 3]
 m_i: [4 3 3]
 n_i: [3 2 1]
 t_hd:
- [70. 70. 60. 50. 50. 70. 70.]
+[[70. 70. 60. 50. 50. 70. 70.]
  [70. 60. 70. 60. 50. 60. 70.]
- [50. 60. 60. 50. 50. 60. 50.]
+ [50. 60. 60. 50. 50. 60. 50.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 2
 =================================
 q_ic:
- [0 1 0 1 1]
+[[0 1 0 1 1]
  [1 0 1 1 0]
- [1 1 1 1 1]
+ [1 1 1 1 1]]
 rp_c: [50 36 40 40 40]
 b: 7
 k: 3
@@ -530,17 +591,19 @@ l_c: [2 4 3 4 2]
 m_i: [3 5 3]
 n_i: [2 2 3]
 t_hd:
- [60. 60. 50. 70. 60. 60. 70.]
+[[60. 60. 50. 70. 60. 60. 70.]
  [50. 70. 50. 50. 50. 50. 60.]
- [60. 60. 50. 70. 70. 50. 50.]
+ [60. 60. 50. 70. 70. 50. 50.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 3
 =================================
 q_ic:
- [0 0 0 1 0]
+[[0 0 0 1 0]
  [0 0 0 0 1]
- [0 0 1 0 1]
+ [0 0 1 0 1]]
 rp_c: [45 61 99 45 45]
 b: 7
 k: 3
@@ -548,17 +611,19 @@ l_c: [3 2 2 2 4]
 m_i: [3 5 4]
 n_i: [1 1 1]
 t_hd:
- [120. 120. 120. 140. 120. 120. 100.]
+[[120. 120. 120. 140. 120. 120. 100.]
  [140. 120. 140. 100. 100. 120. 120.]
- [140. 140. 140. 140. 100. 120. 140.]
+ [140. 140. 140. 140. 100. 120. 140.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 4
 =================================
 q_ic:
- [0 0 1 0 1]
+[[0 0 1 0 1]
  [1 1 1 0 1]
- [1 0 0 0 1]
+ [1 0 0 0 1]]
 rp_c: [22 34 34 34 22]
 b: 7
 k: 3
@@ -566,17 +631,19 @@ l_c: [3 3 3 2 4]
 m_i: [3 4 5]
 n_i: [2 2 2]
 t_hd:
- [300. 250. 300. 250. 350. 250. 300.]
+[[300. 250. 300. 250. 350. 250. 300.]
  [250. 250. 350. 250. 300. 300. 250.]
- [250. 250. 300. 300. 300. 300. 300.]
+ [250. 250. 300. 300. 300. 300. 300.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 5
 =================================
 q_ic:
- [1 1 0 0 1]
+[[1 1 0 0 1]
  [1 1 1 1 0]
- [1 1 1 0 1]
+ [1 1 1 0 1]]
 rp_c: [68 68 68 47 97]
 b: 7
 k: 3
@@ -584,17 +651,19 @@ l_c: [3 2 2 2 3]
 m_i: [4 4 4]
 n_i: [2 2 2]
 t_hd:
- [420. 350. 420. 420. 350. 490. 350.]
+[[420. 350. 420. 420. 350. 490. 350.]
  [350. 350. 350. 420. 350. 350. 350.]
- [490. 420. 350. 420. 420. 420. 420.]
+ [490. 420. 350. 420. 420. 420. 420.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 6
 =================================
 q_ic:
- [0 1 1 1 1]
+[[0 1 1 1 1]
  [1 1 0 1 0]
- [0 1 0 1 0]
+ [0 1 0 1 0]]
 rp_c: [ 7 41  7  7  7]
 b: 7
 k: 3
@@ -602,17 +671,19 @@ l_c: [3 3 4 4 4]
 m_i: [3 3 4]
 n_i: [2 1 3]
 t_hd:
- [700. 700. 600. 600. 500. 600. 500.]
+[[700. 700. 600. 600. 500. 600. 500.]
  [500. 500. 600. 500. 700. 600. 500.]
- [500. 700. 500. 500. 500. 500. 600.]
+ [500. 700. 500. 500. 500. 500. 600.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 7
 =================================
 q_ic:
- [1 0 1 0 0 0 0 1 0 0]
+[[1 0 1 0 0 0 0 1 0 0]
  [0 0 1 1 1 0 0 1 1 1]
- [0 0 1 0 1 0 0 0 1 1]
+ [0 0 1 0 1 0 0 0 1 1]]
 rp_c: [44 65 45 65 45 45 44 45 45 65]
 b: 7
 k: 3
@@ -620,17 +691,19 @@ l_c: [3 2 2 2 2 3 3 2 2 2]
 m_i: [3 3 3]
 n_i: [1 1 2]
 t_hd:
- [500. 500. 500. 600. 700. 500. 600.]
+[[500. 500. 500. 600. 700. 500. 600.]
  [700. 600. 700. 500. 600. 700. 500.]
- [500. 500. 600. 500. 600. 600. 500.]
+ [500. 500. 600. 500. 600. 600. 500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 8
 =================================
 q_ic:
- [1 0 1 1 0 0 1 1 1 1]
+[[1 0 1 1 0 0 1 1 1 1]
  [0 1 1 1 1 1 1 0 1 1]
- [1 1 0 1 0 0 0 1 0 0]
+ [1 1 0 1 0 0 0 1 0 0]]
 rp_c: [66 66 66 66 66 66 66 66 66 21]
 b: 7
 k: 3
@@ -638,17 +711,19 @@ l_c: [4 2 2 4 2 4 4 4 4 4]
 m_i: [3 4 4]
 n_i: [1 1 2]
 t_hd:
- [1000. 1400. 1400. 1200. 1000. 1400. 1000.]
+[[1000. 1400. 1400. 1200. 1000. 1400. 1000.]
  [1000. 1200. 1000. 1200. 1400. 1200. 1200.]
- [1400. 1400. 1200. 1000. 1200. 1200. 1400.]
+ [1400. 1400. 1200. 1000. 1200. 1200. 1400.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 9
 =================================
 q_ic:
- [1 0 1 0 0 1 1 0 1 1]
+[[1 0 1 0 0 1 1 0 1 1]
  [0 1 0 0 0 1 1 1 1 0]
- [0 1 0 1 0 0 0 1 1 1]
+ [0 1 0 1 0 0 0 1 1 1]]
 rp_c: [98 42 98 98 42  8  8 98 42 42]
 b: 7
 k: 3
@@ -656,17 +731,19 @@ l_c: [4 3 3 3 4 3 2 3 4 4]
 m_i: [4 5 4]
 n_i: [1 2 3]
 t_hd:
- [2100. 2100. 2100. 2100. 2100. 2100. 1500.]
+[[2100. 2100. 2100. 2100. 2100. 2100. 1500.]
  [1500. 1800. 1500. 1500. 2100. 1500. 1800.]
- [1500. 2100. 1800. 1800. 2100. 1500. 1500.]
+ [1500. 2100. 1800. 1800. 2100. 1500. 1500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 10
 =================================
 q_ic:
- [0 1 1 1 1 0 1 0 0 1]
+[[0 1 1 1 1 0 1 0 0 1]
  [1 1 0 1 1 0 1 1 1 1]
- [0 0 1 1 0 1 1 1 1 0]
+ [0 0 1 1 0 1 1 1 1 0]]
 rp_c: [97 18 18  6 97 18 97  6 97 18]
 b: 7
 k: 3
@@ -674,17 +751,19 @@ l_c: [4 2 4 3 2 3 2 3 2 3]
 m_i: [4 3 3]
 n_i: [2 2 1]
 t_hd:
- [2000. 2000. 2400. 2000. 2800. 2400. 2400.]
+[[2000. 2000. 2400. 2000. 2800. 2400. 2400.]
  [2400. 2800. 2800. 2000. 2000. 2400. 2000.]
- [2800. 2400. 2000. 2400. 2800. 2800. 2000.]
+ [2800. 2400. 2000. 2400. 2800. 2800. 2000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 11
 =================================
 q_ic:
- [0 1 0 0 0 0 1 1 1 1]
+[[0 1 0 0 0 0 1 1 1 1]
  [0 1 1 1 1 1 0 1 0 0]
- [1 1 0 1 1 0 0 1 0 0]
+ [1 1 0 1 1 0 0 1 0 0]]
 rp_c: [69 20 49 49 49 69 69 69 69 20]
 b: 7
 k: 3
@@ -692,17 +771,19 @@ l_c: [2 2 2 3 3 2 3 2 2 4]
 m_i: [5 4 3]
 n_i: [1 2 1]
 t_hd:
- [2500. 2500. 3000. 3500. 2500. 3500. 2500.]
+[[2500. 2500. 3000. 3500. 2500. 3500. 2500.]
  [2500. 3000. 3500. 3500. 3000. 3500. 3000.]
- [2500. 3000. 3500. 3500. 3000. 3500. 3500.]
+ [2500. 3000. 3500. 3500. 3000. 3500. 3500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 12
 =================================
 q_ic:
- [1 1 0 0 0 1 1 0 0 0]
+[[1 1 0 0 0 1 1 0 0 0]
  [0 1 1 1 1 1 1 1 0 0]
- [0 0 1 0 0 1 1 1 0 1]
+ [0 0 1 0 0 1 1 1 0 1]]
 rp_c: [68 62 62 62 68 37 62 62 68 62]
 b: 7
 k: 3
@@ -710,17 +791,19 @@ l_c: [4 2 4 4 2 4 3 3 4 2]
 m_i: [5 4 4]
 n_i: [2 3 1]
 t_hd:
- [5000. 7000. 7000. 5000. 5000. 6000. 5000.]
+[[5000. 7000. 7000. 5000. 5000. 6000. 5000.]
  [7000. 6000. 5000. 6000. 5000. 5000. 6000.]
- [7000. 5000. 6000. 5000. 6000. 7000. 5000.]
+ [7000. 5000. 6000. 5000. 6000. 7000. 5000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 13
 =================================
 q_ic:
- [1 0 0 0 1 1 1 0 1 0]
+[[1 0 0 0 1 1 1 0 1 0]
  [0 0 0 1 0 0 1 0 1 0]
- [0 0 1 0 0 0 1 1 1 1]
+ [0 0 1 0 0 0 1 1 1 1]]
 rp_c: [64 64 38 38 38 80 64 64 64 64]
 b: 7
 k: 3
@@ -728,17 +811,19 @@ l_c: [3 4 2 4 4 3 4 2 4 2]
 m_i: [3 5 5]
 n_i: [3 1 3]
 t_hd:
- [10500. 10500.  7500. 10500.  7500.  9000.  7500.]
+[[10500. 10500.  7500. 10500.  7500.  9000.  7500.]
  [ 9000.  7500. 10500.  7500.  7500.  9000.  7500.]
- [ 7500. 10500.  7500.  7500.  9000. 10500.  7500.]
+ [ 7500. 10500.  7500.  7500.  9000. 10500.  7500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 14
 =================================
 q_ic:
- [0 1 0 1 1 1 0 1 1 1]
+[[0 1 0 1 1 1 0 1 1 1]
  [0 1 1 1 1 1 1 1 1 1]
- [0 0 0 1 0 0 1 1 0 1]
+ [0 0 0 1 0 0 1 1 0 1]]
 rp_c: [17 29 29 17 56 29 56 56 29 56]
 b: 7
 k: 3
@@ -746,17 +831,19 @@ l_c: [2 2 4 4 4 3 3 2 4 4]
 m_i: [5 4 4]
 n_i: [3 3 1]
 t_hd:
- [14000. 10000. 14000. 10000. 12000. 12000. 12000.]
+[[14000. 10000. 14000. 10000. 12000. 12000. 12000.]
  [10000. 12000. 14000. 12000. 10000. 10000. 10000.]
- [14000. 10000. 14000. 14000. 10000. 12000. 14000.]
+ [14000. 10000. 14000. 14000. 10000. 12000. 14000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 15
 =================================
 q_ic:
- [1 0 0 1 0 0 1 1 1 0]
+[[1 0 0 1 0 0 1 1 1 0]
  [1 1 1 0 0 0 1 0 0 1]
- [1 1 0 0 1 1 0 1 1 0]
+ [1 1 0 0 1 1 0 1 1 0]]
 rp_c: [25 25 25 94 97 97 97 97 94 97]
 b: 7
 k: 3
@@ -764,17 +851,19 @@ l_c: [2 4 2 2 4 2 2 4 4 3]
 m_i: [5 4 4]
 n_i: [1 1 1]
 t_hd:
- [17500. 15000. 12500. 17500. 17500. 15000. 12500.]
+[[17500. 15000. 12500. 17500. 17500. 15000. 12500.]
  [15000. 15000. 17500. 15000. 12500. 15000. 17500.]
- [17500. 15000. 15000. 12500. 15000. 15000. 15000.]
+ [17500. 15000. 15000. 12500. 15000. 15000. 15000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 16
 =================================
 q_ic:
- [1 1 1 1 0 1 1 0 0 0]
+[[1 1 1 1 0 1 1 0 0 0]
  [0 0 1 0 1 0 0 0 1 1]
- [1 1 1 0 0 1 1 0 1 0]
+ [1 1 1 0 0 1 1 0 1 0]]
 rp_c: [17 17 66 66 17 46 66 46 66 66]
 b: 7
 k: 3
@@ -782,17 +871,19 @@ l_c: [2 2 4 2 3 2 3 3 4 3]
 m_i: [4 5 3]
 n_i: [1 2 1]
 t_hd:
- [15000. 21000. 21000. 18000. 21000. 21000. 18000.]
+[[15000. 21000. 21000. 18000. 21000. 21000. 18000.]
  [18000. 15000. 15000. 18000. 18000. 21000. 18000.]
- [18000. 18000. 18000. 21000. 18000. 15000. 21000.]
+ [18000. 18000. 18000. 21000. 18000. 15000. 21000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 17
 =================================
 q_ic:
- [0 1 0 0 1 1 0 0 1 1]
+[[0 1 0 0 1 1 0 0 1 1]
  [0 1 1 0 1 0 1 1 0 1]
- [0 1 1 1 1 0 1 0 1 0]
+ [0 1 1 1 1 0 1 0 1 0]]
 rp_c: [67 48 63 67 67 63 63 63 63 67]
 b: 7
 k: 3
@@ -800,17 +891,19 @@ l_c: [2 4 2 2 2 4 4 2 4 3]
 m_i: [5 4 3]
 n_i: [2 3 2]
 t_hd:
- [21000. 24500. 24500. 24500. 17500. 24500. 24500.]
+[[21000. 24500. 24500. 24500. 17500. 24500. 24500.]
  [24500. 17500. 21000. 21000. 21000. 17500. 24500.]
- [21000. 17500. 17500. 24500. 21000. 17500. 17500.]
+ [21000. 17500. 17500. 24500. 21000. 17500. 17500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 18
 =================================
 q_ic:
- [1 0 1 1 0 1 1 0 0 1]
+[[1 0 1 1 0 1 1 0 0 1]
  [0 0 1 0 0 1 1 1 0 0]
- [1 0 1 1 1 0 1 0 1 0]
+ [1 0 1 1 1 0 1 0 1 0]]
 rp_c: [73 73 73 73 26 58 58 73 73 58]
 b: 7
 k: 3
@@ -818,17 +911,19 @@ l_c: [3 2 3 3 4 3 4 3 3 4]
 m_i: [4 5 4]
 n_i: [2 2 2]
 t_hd:
- [20000. 28000. 28000. 28000. 28000. 24000. 28000.]
+[[20000. 28000. 28000. 28000. 28000. 24000. 28000.]
  [24000. 20000. 20000. 20000. 28000. 24000. 28000.]
- [28000. 24000. 28000. 20000. 24000. 28000. 24000.]
+ [28000. 24000. 28000. 20000. 24000. 28000. 24000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 19
 =================================
 q_ic:
- [1 1 0 1 0 0 0 0 0 1]
+[[1 1 0 1 0 0 0 0 0 1]
  [0 1 0 1 1 0 0 1 1 0]
- [0 0 0 1 0 1 1 1 0 0]
+ [0 0 0 1 0 1 1 1 0 0]]
 rp_c: [40 77 77 40 40 77 40 77 40 16]
 b: 7
 k: 3
@@ -836,17 +931,19 @@ l_c: [2 2 2 4 3 3 4 4 4 3]
 m_i: [3 4 3]
 n_i: [1 3 2]
 t_hd:
- [22500. 22500. 31500. 31500. 27000. 27000. 22500.]
+[[22500. 22500. 31500. 31500. 27000. 27000. 22500.]
  [27000. 22500. 22500. 31500. 27000. 27000. 22500.]
- [22500. 27000. 22500. 27000. 22500. 27000. 27000.]
+ [22500. 27000. 22500. 27000. 22500. 27000. 27000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 20
 =================================
 q_ic:
- [0 1 0 1 0 1 1 1 1 0]
+[[0 1 0 1 0 1 1 1 1 0]
  [1 0 0 0 0 1 1 1 0 1]
- [0 1 0 0 1 0 1 1 0 1]
+ [0 1 0 0 1 0 1 1 0 1]]
 rp_c: [22 22 22 10 52 22 22 22 10 52]
 b: 7
 k: 3
@@ -854,17 +951,19 @@ l_c: [4 2 4 3 3 2 2 4 2 4]
 m_i: [5 5 3]
 n_i: [3 2 1]
 t_hd:
- [30000. 35000. 35000. 30000. 30000. 30000. 30000.]
+[[30000. 35000. 35000. 30000. 30000. 30000. 30000.]
  [30000. 25000. 25000. 35000. 25000. 35000. 25000.]
- [30000. 25000. 25000. 25000. 35000. 30000. 30000.]
+ [30000. 25000. 25000. 25000. 35000. 30000. 30000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 21
 =================================
 q_ic:
- [1 0 1 0 0 1 1 1 0 0]
+[[1 0 1 0 0 1 1 1 0 0]
  [1 0 1 1 1 0 0 1 0 0]
- [0 0 0 1 0 0 1 0 0 1]
+ [0 0 0 1 0 0 1 0 0 1]]
 rp_c: [22 41 21 41 41 41 41 21 21 21]
 b: 7
 k: 3
@@ -872,17 +971,19 @@ l_c: [4 2 3 3 3 2 2 3 3 3]
 m_i: [3 5 5]
 n_i: [2 2 1]
 t_hd:
- [27500. 27500. 27500. 33000. 33000. 27500. 38500.]
+[[27500. 27500. 27500. 33000. 33000. 27500. 38500.]
  [27500. 33000. 33000. 33000. 38500. 38500. 33000.]
- [38500. 27500. 38500. 33000. 38500. 38500. 38500.]
+ [38500. 27500. 38500. 33000. 38500. 38500. 38500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 22
 =================================
 q_ic:
- [0 0 1 1 1 1 1 0 1 1]
+[[0 0 1 1 1 1 1 0 1 1]
  [1 1 1 0 0 1 1 1 0 1]
- [0 1 0 1 1 0 1 0 0 1]
+ [0 1 0 1 1 0 1 0 0 1]]
 rp_c: [49 49 18 18 18 18 36 49 18 18]
 b: 7
 k: 3
@@ -890,17 +991,19 @@ l_c: [4 2 2 4 2 4 2 4 2 2]
 m_i: [3 3 4]
 n_i: [2 3 3]
 t_hd:
- [42000. 42000. 36000. 30000. 30000. 36000. 36000.]
+[[42000. 42000. 36000. 30000. 30000. 36000. 36000.]
  [36000. 36000. 30000. 30000. 36000. 30000. 30000.]
- [36000. 36000. 42000. 30000. 36000. 42000. 42000.]
+ [36000. 36000. 42000. 30000. 36000. 42000. 42000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 23
 =================================
 q_ic:
- [0 0 1 1 1 0 0 0 0 1]
+[[0 0 1 1 1 0 0 0 0 1]
  [0 0 0 1 1 0 0 1 0 1]
- [1 1 1 1 1 0 1 1 0 1]
+ [1 1 1 1 1 0 1 1 0 1]]
 rp_c: [46 20 13 13 20 46 20 20 13 20]
 b: 7
 k: 3
@@ -908,17 +1011,19 @@ l_c: [4 2 2 2 2 4 3 2 4 3]
 m_i: [3 5 5]
 n_i: [2 2 1]
 t_hd:
- [45500. 39000. 45500. 32500. 45500. 32500. 45500.]
+[[45500. 39000. 45500. 32500. 45500. 32500. 45500.]
  [39000. 45500. 45500. 32500. 45500. 39000. 45500.]
- [32500. 45500. 39000. 45500. 39000. 39000. 32500.]
+ [32500. 45500. 39000. 45500. 39000. 39000. 32500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 24
 =================================
 q_ic:
- [0 1 0 0 1 0 1 0 0 0]
+[[0 1 0 0 1 0 1 0 0 0]
  [1 1 1 0 1 0 1 0 1 0]
- [1 1 1 0 1 0 1 0 1 0]
+ [1 1 1 0 1 0 1 0 1 0]]
 rp_c: [78 35 80 78 35 78 35 80 78 80]
 b: 7
 k: 3
@@ -926,17 +1031,19 @@ l_c: [2 3 3 2 4 3 4 4 2 2]
 m_i: [3 5 3]
 n_i: [3 3 3]
 t_hd:
- [49000. 49000. 49000. 49000. 35000. 42000. 42000.]
+[[49000. 49000. 49000. 49000. 35000. 42000. 42000.]
  [42000. 49000. 35000. 35000. 42000. 35000. 35000.]
- [42000. 42000. 42000. 35000. 42000. 35000. 49000.]
+ [42000. 42000. 42000. 35000. 42000. 35000. 49000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 25
 =================================
 q_ic:
- [1 0 1 0 0 1 0 1 0 1]
+[[1 0 1 0 0 1 0 1 0 1]
  [0 1 1 1 0 1 0 0 1 1]
- [0 0 0 1 1 1 0 1 0 0]
+ [0 0 0 1 1 1 0 1 0 0]]
 rp_c: [66 67  1 67  1 67 67  1  1  1]
 b: 7
 k: 3
@@ -944,17 +1051,19 @@ l_c: [4 2 4 2 2 2 2 3 4 3]
 m_i: [3 5 3]
 n_i: [1 2 3]
 t_hd:
- [37500. 37500. 45000. 52500. 37500. 52500. 52500.]
+[[37500. 37500. 45000. 52500. 37500. 52500. 52500.]
  [37500. 52500. 45000. 52500. 37500. 37500. 52500.]
- [37500. 52500. 37500. 45000. 37500. 45000. 52500.]
+ [37500. 52500. 37500. 45000. 37500. 45000. 52500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 26
 =================================
 q_ic:
- [0 0 1 0 1 0 0 0 0 0]
+[[0 0 1 0 1 0 0 0 0 0]
  [0 0 1 0 0 1 0 0 1 1]
- [0 1 1 0 1 1 1 0 0 1]
+ [0 1 1 0 1 1 1 0 0 1]]
 rp_c: [92  0 92  0 92 92 92 92  0 92]
 b: 7
 k: 3
@@ -962,17 +1071,19 @@ l_c: [3 2 2 2 2 4 4 3 3 2]
 m_i: [5 5 5]
 n_i: [3 3 3]
 t_hd:
- [56000. 40000. 48000. 40000. 40000. 48000. 56000.]
+[[56000. 40000. 48000. 40000. 40000. 48000. 56000.]
  [40000. 56000. 48000. 56000. 56000. 48000. 48000.]
- [40000. 48000. 40000. 48000. 48000. 56000. 48000.]
+ [40000. 48000. 40000. 48000. 48000. 56000. 48000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 27
 =================================
 q_ic:
- [1 1 1 0 0 0 1 1 0 1]
+[[1 1 1 0 0 0 1 1 0 1]
  [0 0 0 0 1 0 1 1 0 1]
- [1 1 0 1 1 0 0 0 1 1]
+ [1 1 0 1 1 0 0 0 1 1]]
 rp_c: [23 92 23  4 23 92 92 23 23 23]
 b: 7
 k: 3
@@ -980,17 +1091,19 @@ l_c: [2 3 3 2 3 2 4 4 4 3]
 m_i: [4 4 5]
 n_i: [2 1 1]
 t_hd:
- [59500. 42500. 51000. 51000. 51000. 42500. 51000.]
+[[59500. 42500. 51000. 51000. 51000. 42500. 51000.]
  [59500. 42500. 51000. 59500. 51000. 51000. 59500.]
- [51000. 59500. 42500. 42500. 51000. 59500. 42500.]
+ [51000. 59500. 42500. 42500. 51000. 59500. 42500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 28
 =================================
 q_ic:
- [1 0 0 0 0 1 1 0 1 0]
+[[1 0 0 0 0 1 1 0 1 0]
  [1 0 0 0 1 1 1 1 0 1]
- [0 0 0 1 1 0 1 1 1 0]
+ [0 0 0 1 1 0 1 1 1 0]]
 rp_c: [71 17 71 45 17 45 17 71 17 17]
 b: 7
 k: 3
@@ -998,17 +1111,19 @@ l_c: [4 4 2 2 3 2 4 2 4 4]
 m_i: [3 3 5]
 n_i: [3 1 1]
 t_hd:
- [63000. 45000. 63000. 45000. 54000. 54000. 63000.]
+[[63000. 45000. 63000. 45000. 54000. 54000. 63000.]
  [63000. 45000. 63000. 63000. 54000. 54000. 54000.]
- [45000. 63000. 54000. 63000. 63000. 54000. 45000.]
+ [45000. 63000. 54000. 63000. 63000. 54000. 45000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 29
 =================================
 q_ic:
- [0 1 0 1 0 0 1 0 1 1]
+[[0 1 0 1 0 0 1 0 1 1]
  [1 1 0 1 1 1 1 0 1 1]
- [1 0 0 0 0 0 1 0 0 1]
+ [1 0 0 0 0 0 1 0 0 1]]
 rp_c: [56 14 14 49 56 14 14 14 56 56]
 b: 7
 k: 3
@@ -1016,17 +1131,19 @@ l_c: [4 3 3 2 3 4 2 4 2 3]
 m_i: [4 3 5]
 n_i: [2 2 3]
 t_hd:
- [66500. 47500. 66500. 57000. 66500. 66500. 47500.]
+[[66500. 47500. 66500. 57000. 66500. 66500. 47500.]
  [47500. 57000. 57000. 66500. 66500. 57000. 57000.]
- [66500. 47500. 66500. 66500. 47500. 66500. 66500.]
+ [66500. 47500. 66500. 66500. 47500. 66500. 66500.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 30
 =================================
 q_ic:
- [1 1 0 1 0 1 1 1 1 1]
+[[1 1 0 1 0 1 1 1 1 1]
  [0 1 1 0 1 1 0 0 1 1]
- [1 1 0 0 0 1 1 1 1 0]
+ [1 1 0 0 0 1 1 1 1 0]]
 rp_c: [76 76 33 76 33 33 18 33 18 76]
 b: 7
 k: 3
@@ -1034,17 +1151,19 @@ l_c: [4 3 2 4 2 2 2 3 2 2]
 m_i: [5 5 3]
 n_i: [3 2 2]
 t_hd:
- [50000. 60000. 60000. 70000. 50000. 60000. 50000.]
+[[50000. 60000. 60000. 70000. 50000. 60000. 50000.]
  [60000. 70000. 70000. 50000. 50000. 60000. 50000.]
- [50000. 60000. 60000. 70000. 50000. 50000. 60000.]
+ [50000. 60000. 60000. 70000. 50000. 50000. 60000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 31
 =================================
 q_ic:
- [1 1 0 1 0 1 1 1 1 1]
+[[1 1 0 1 0 1 1 1 1 1]
  [0 1 1 0 1 1 0 0 1 1]
- [1 1 0 0 0 1 1 1 1 0]
+ [1 1 0 0 0 1 1 1 1 0]]
 rp_c: [76 76 33 76 33 33 18 33 18 76]
 b: 7
 k: 3
@@ -1052,17 +1171,19 @@ l_c: [4 3 2 4 2 2 2 3 2 2]
 m_i: [5 5 3]
 n_i: [3 2 2]
 t_hd:
- [50000. 60000. 60000. 70000. 50000. 60000. 50000.]
+[[50000. 60000. 60000. 70000. 50000. 60000. 50000.]
  [60000. 70000. 70000. 50000. 50000. 60000. 50000.]
- [50000. 60000. 60000. 70000. 50000. 50000. 60000.]
+ [50000. 60000. 60000. 70000. 50000. 50000. 60000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 32
 =================================
 q_ic:
- [1 1 0 1 0 0 0 1 0 0]
+[[1 1 0 1 0 0 0 1 0 0]
  [0 0 1 0 0 0 0 0 1 0]
- [1 0 1 0 1 1 1 0 0 1]
+ [1 0 1 0 1 1 1 0 0 1]]
 rp_c: [12 24  0 12 12 24 24 24 12  0]
 b: 7
 k: 3
@@ -1070,17 +1191,19 @@ l_c: [2 3 3 4 2 2 3 2 3 2]
 m_i: [3 4 5]
 n_i: [2 3 3]
 t_hd:
- [ 75000.  75000.  75000.  90000. 105000.  75000.  90000.]
+[[ 75000.  75000.  75000.  90000. 105000.  75000.  90000.]
  [ 75000.  90000. 105000.  90000. 105000.  75000.  90000.]
- [ 90000.  90000. 105000.  90000.  75000. 105000. 105000.]
+ [ 90000.  90000. 105000.  90000.  75000. 105000. 105000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 33
 =================================
 q_ic:
- [1 1 1 0 0 1 1 0 1 1]
+[[1 1 1 0 0 1 1 0 1 1]
  [1 1 1 0 0 0 1 0 1 0]
- [1 1 0 0 1 0 1 0 0 1]
+ [1 1 0 0 1 0 1 0 0 1]]
 rp_c: [ 2 83  2  2 42 42 42 83 83  2]
 b: 7
 k: 3
@@ -1088,17 +1211,19 @@ l_c: [2 4 3 3 2 2 3 3 2 2]
 m_i: [4 3 4]
 n_i: [1 3 2]
 t_hd:
- [100000. 140000. 140000. 120000. 100000. 120000. 100000.]
+[[100000. 140000. 140000. 120000. 100000. 120000. 100000.]
  [120000. 140000. 120000. 120000. 120000. 120000. 100000.]
- [120000. 140000. 100000. 140000. 120000. 140000. 120000.]
+ [120000. 140000. 100000. 140000. 120000. 140000. 120000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 34
 =================================
 q_ic:
- [1 1 0 1 0 0 1 1 1 0]
+[[1 1 0 1 0 0 1 1 1 0]
  [1 0 1 0 0 0 1 1 1 1]
- [0 1 0 1 0 1 0 1 1 0]
+ [0 1 0 1 0 1 0 1 1 0]]
 rp_c: [30 15 15 15 15 15 15 30 83 15]
 b: 7
 k: 3
@@ -1106,17 +1231,19 @@ l_c: [2 4 4 2 4 3 2 3 4 2]
 m_i: [4 3 5]
 n_i: [1 1 1]
 t_hd:
- [125000. 150000. 150000. 125000. 175000. 125000. 125000.]
+[[125000. 150000. 150000. 125000. 175000. 125000. 125000.]
  [150000. 175000. 175000. 125000. 150000. 150000. 175000.]
- [175000. 150000. 150000. 175000. 125000. 175000. 150000.]
+ [175000. 150000. 150000. 175000. 125000. 175000. 150000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 35
 =================================
 q_ic:
- [1 0 1 0 1 0 1 0 0 1]
+[[1 0 1 0 1 0 1 0 0 1]
  [1 1 1 1 0 0 0 0 0 1]
- [0 0 1 1 1 0 0 0 0 0]
+ [0 0 1 1 1 0 0 0 0 0]]
 rp_c: [43 66 66 43 99 43 43 43 99 66]
 b: 7
 k: 3
@@ -1124,17 +1251,19 @@ l_c: [4 4 4 2 4 4 2 3 2 4]
 m_i: [3 4 5]
 n_i: [2 3 2]
 t_hd:
- [150000. 210000. 210000. 150000. 180000. 150000. 150000.]
+[[150000. 210000. 210000. 150000. 180000. 150000. 150000.]
  [210000. 210000. 150000. 180000. 180000. 180000. 210000.]
- [150000. 150000. 180000. 180000. 150000. 210000. 180000.]
+ [150000. 150000. 180000. 180000. 150000. 210000. 180000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 36
 =================================
 q_ic:
- [0 1 0 1 0 1 0 0 1 0]
+[[0 1 0 1 0 1 0 0 1 0]
  [1 0 0 0 1 0 1 1 1 1]
- [1 0 0 0 0 1 0 0 0 1]
+ [1 0 0 0 0 1 0 0 0 1]]
 rp_c: [37 37 58 35 35 37 37 58 37 58]
 b: 7
 k: 3
@@ -1142,17 +1271,19 @@ l_c: [4 4 4 2 2 3 4 2 3 4]
 m_i: [5 5 5]
 n_i: [3 1 3]
 t_hd:
- [245000. 210000. 210000. 210000. 175000. 210000. 245000.]
+[[245000. 210000. 210000. 210000. 175000. 210000. 245000.]
  [210000. 175000. 175000. 210000. 210000. 245000. 210000.]
- [175000. 245000. 245000. 210000. 175000. 245000. 245000.]
+ [175000. 245000. 245000. 210000. 175000. 245000. 245000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 37
 =================================
 q_ic:
- [1 1 0 0 0 1 0 0 1 0]
+[[1 1 0 0 0 1 0 0 1 0]
  [1 0 1 1 1 1 1 1 1 1]
- [1 0 1 0 1 0 1 1 1 0]
+ [1 0 1 0 1 0 1 1 1 0]]
 rp_c: [ 4  4 45  4  4 45 45 63 63 45]
 b: 7
 k: 3
@@ -1160,17 +1291,19 @@ l_c: [3 3 3 4 2 2 4 4 4 2]
 m_i: [4 5 5]
 n_i: [1 1 2]
 t_hd:
- [280000. 280000. 200000. 240000. 200000. 240000. 240000.]
+[[280000. 280000. 200000. 240000. 200000. 240000. 240000.]
  [240000. 280000. 280000. 280000. 280000. 280000. 240000.]
- [200000. 240000. 240000. 240000. 280000. 200000. 280000.]
+ [200000. 240000. 240000. 240000. 280000. 200000. 280000.]]
+
 \end{lstlisting}
+
 \begin{lstlisting}[language=Python]
 Instance - 38
 =================================
 q_ic:
- [1 0 1 0 0 0 1 1 1 1]
+[[1 0 1 0 0 0 1 1 1 1]
  [1 0 1 0 0 1 0 1 1 1]
- [0 1 0 1 1 1 0 1 0 1]
+ [0 1 0 1 1 1 0 1 0 1]]
 rp_c: [77 43  2  2 43 43  2 43  2 43]
 b: 7
 k: 3
@@ -1178,12 +1311,1053 @@ l_c: [2 4 3 2 3 3 3 3 2 3]
 m_i: [5 5 5]
 n_i: [2 3 1]
 t_hd:
- [270000. 315000. 270000. 315000. 225000. 270000. 270000.]
+[[270000. 315000. 270000. 315000. 225000. 270000. 270000.]
  [225000. 315000. 225000. 225000. 315000. 270000. 225000.]
- [225000. 315000. 270000. 270000. 225000. 270000. 225000.]
+ [225000. 315000. 270000. 270000. 225000. 270000. 225000.]]
+
 \end{lstlisting}
 
+\begin{lstlisting}[language=Python]
+Instance - 39
+=================================
+q_ic:
+[[1 1 1 0 0 0 1 0 1 0]
+ [0 0 0 1 0 1 1 1 0 0]
+ [0 0 1 0 0 1 0 0 1 1]]
+rp_c: [21 19 77 77 19 21 19 77 19 77]
+b: 7
+k: 3
+l_c: [3 2 2 4 3 2 3 2 3 2]
+m_i: [5 4 3]
+n_i: [2 2 2]
+t_hd:
+[[350000. 250000. 350000. 250000. 300000. 350000. 300000.]
+ [250000. 250000. 250000. 350000. 300000. 350000. 350000.]
+ [350000. 250000. 350000. 350000. 350000. 300000. 300000.]]
 
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 40
+=================================
+q_ic:
+[[1 1 0 1 0 1 0 1 0 1]
+ [1 0 1 0 0 1 0 1 0 1]
+ [0 1 0 0 1 1 1 0 0 1]]
+rp_c: [37 60 37 37 60 67 60 67 67 60]
+b: 7
+k: 3
+l_c: [2 2 3 4 3 3 3 2 2 3]
+m_i: [3 4 4]
+n_i: [2 3 2]
+t_hd:
+[[330000. 330000. 330000. 275000. 385000. 385000. 330000.]
+ [275000. 330000. 330000. 385000. 275000. 385000. 330000.]
+ [330000. 385000. 330000. 330000. 385000. 330000. 275000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 41
+=================================
+q_ic:
+[[0 1 1 0 0 0 0 0 0 1]
+ [1 1 1 1 1 1 0 1 1 0]
+ [0 1 1 1 1 1 0 1 0 1]]
+rp_c: [38 38 38 54 54 54 54 54 92 54]
+b: 7
+k: 3
+l_c: [3 3 4 3 4 3 3 3 3 4]
+m_i: [4 5 5]
+n_i: [3 2 2]
+t_hd:
+[[360000. 360000. 360000. 300000. 360000. 420000. 300000.]
+ [360000. 420000. 300000. 420000. 420000. 420000. 300000.]
+ [360000. 360000. 300000. 420000. 420000. 360000. 420000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 42
+=================================
+q_ic:
+[[0 0 0 1 0 0 1 0 1 1]
+ [1 0 0 0 1 1 0 1 0 1]
+ [1 0 0 0 0 1 0 0 1 1]]
+rp_c: [42 42 42 76 42 42 71 71 42 71]
+b: 7
+k: 3
+l_c: [2 3 3 3 2 3 4 4 4 3]
+m_i: [3 3 4]
+n_i: [3 1 3]
+t_hd:
+[[325000. 325000. 325000. 390000. 455000. 455000. 325000.]
+ [325000. 390000. 390000. 390000. 455000. 325000. 390000.]
+ [455000. 390000. 455000. 455000. 390000. 390000. 455000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 43
+=================================
+q_ic:
+[[1 0 0 0 0 1 0 1 0 0]
+ [0 1 1 1 0 1 0 1 0 1]
+ [0 0 0 0 0 1 1 1 0 0]]
+rp_c: [53 53 57 57 53 57 20 20 57 53]
+b: 7
+k: 3
+l_c: [4 2 2 4 2 2 4 4 4 3]
+m_i: [4 5 4]
+n_i: [1 3 2]
+t_hd:
+[[350000. 420000. 420000. 490000. 490000. 350000. 420000.]
+ [350000. 350000. 420000. 490000. 420000. 350000. 420000.]
+ [350000. 350000. 350000. 490000. 490000. 490000. 420000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 44
+=================================
+q_ic:
+[[0 1 0 1 1 0 1 1 0 0]
+ [1 1 0 0 0 1 1 0 0 0]
+ [0 1 1 0 1 0 1 1 1 1]]
+rp_c: [39 39  2  2 97  2 39 97  2 97]
+b: 7
+k: 3
+l_c: [2 4 2 2 4 2 3 4 3 3]
+m_i: [5 3 4]
+n_i: [3 1 3]
+t_hd:
+[[375000. 525000. 450000. 450000. 525000. 525000. 450000.]
+ [450000. 525000. 450000. 525000. 450000. 375000. 375000.]
+ [525000. 450000. 450000. 450000. 525000. 525000. 450000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 45
+=================================
+q_ic:
+[[1 0 0 0 1 0 1 1 0 1]
+ [0 1 0 1 0 0 1 1 1 1]
+ [1 1 0 1 0 0 1 0 1 0]]
+rp_c: [32 32 37 37 85 85 32 37 37 32]
+b: 7
+k: 3
+l_c: [3 2 2 3 4 4 4 3 3 3]
+m_i: [3 4 4]
+n_i: [1 3 3]
+t_hd:
+[[560000. 560000. 400000. 480000. 560000. 480000. 480000.]
+ [480000. 560000. 480000. 560000. 560000. 480000. 560000.]
+ [400000. 400000. 560000. 480000. 400000. 400000. 560000.]]
+
+\end{lstlisting}
+
+\subsection{Parameters and Values Used for Test Instances in case of Limited Channel Capacity}\label{s:apendix-parameters-strict-in-test-instances}
+
+\begin{lstlisting}[language=Python]
+Instance - 1
+=================================
+q_ic:
+[[0 1]
+ [1 1]
+ [0 0]]
+rp_c: [62 49]
+b: 7
+k: 3
+l_c: [3 3]
+m_i: [4 3 3]
+n_i: [3 2 1]
+t_hd:
+[[1. 1. 2. 3. 3. 1. 1.]
+ [1. 2. 1. 2. 3. 2. 1.]
+ [3. 2. 2. 3. 3. 2. 3.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 2
+=================================
+q_ic:
+[[0 1 0 1 1]
+ [1 0 1 1 0]
+ [1 1 1 1 1]]
+rp_c: [50 36 40 40 40]
+b: 7
+k: 3
+l_c: [2 4 3 4 2]
+m_i: [3 5 3]
+n_i: [2 2 3]
+t_hd:
+[[2. 2. 3. 1. 2. 2. 1.]
+ [3. 1. 3. 3. 3. 3. 2.]
+ [2. 2. 3. 1. 1. 3. 3.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 3
+=================================
+q_ic:
+[[0 0 0 1 0]
+ [0 0 0 0 1]
+ [0 0 1 0 1]]
+rp_c: [45 61 99 45 45]
+b: 7
+k: 3
+l_c: [3 2 2 2 4]
+m_i: [3 5 4]
+n_i: [1 1 1]
+t_hd:
+[[4. 4. 4. 2. 4. 4. 6.]
+ [2. 4. 2. 6. 6. 4. 4.]
+ [2. 2. 2. 2. 6. 4. 2.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 4
+=================================
+q_ic:
+[[0 0 1 0 1]
+ [1 1 1 0 1]
+ [1 0 0 0 1]]
+rp_c: [22 34 34 34 22]
+b: 7
+k: 3
+l_c: [3 3 3 2 4]
+m_i: [3 4 5]
+n_i: [2 2 2]
+t_hd:
+[[10. 15. 10. 15.  5. 15. 10.]
+ [15. 15.  5. 15. 10. 10. 15.]
+ [15. 15. 10. 10. 10. 10. 10.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 5
+=================================
+q_ic:
+[[1 1 0 0 1]
+ [1 1 1 1 0]
+ [1 1 1 0 1]]
+rp_c: [68 68 68 47 97]
+b: 7
+k: 3
+l_c: [3 2 2 2 3]
+m_i: [4 4 4]
+n_i: [2 2 2]
+t_hd:
+[[14. 21. 14. 14. 21.  7. 21.]
+ [21. 21. 21. 14. 21. 21. 21.]
+ [ 7. 14. 21. 14. 14. 14. 14.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 6
+=================================
+q_ic:
+[[0 1 1 1 1]
+ [1 1 0 1 0]
+ [0 1 0 1 0]]
+rp_c: [ 7 41  7  7  7]
+b: 7
+k: 3
+l_c: [3 3 4 4 4]
+m_i: [3 3 4]
+n_i: [2 1 3]
+t_hd:
+[[10. 10. 20. 20. 30. 20. 30.]
+ [30. 30. 20. 30. 10. 20. 30.]
+ [30. 10. 30. 30. 30. 30. 20.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 7
+=================================
+q_ic:
+[[1 0 1 0 0 0 0 1 0 0]
+ [0 0 1 1 1 0 0 1 1 1]
+ [0 0 1 0 1 0 0 0 1 1]]
+rp_c: [44 65 45 65 45 45 44 45 45 65]
+b: 7
+k: 3
+l_c: [3 2 2 2 2 3 3 2 2 2]
+m_i: [3 3 3]
+n_i: [1 1 2]
+t_hd:
+[[30. 30. 30. 20. 10. 30. 20.]
+ [10. 20. 10. 30. 20. 10. 30.]
+ [30. 30. 20. 30. 20. 20. 30.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 8
+=================================
+q_ic:
+[[1 0 1 1 0 0 1 1 1 1]
+ [0 1 1 1 1 1 1 0 1 1]
+ [1 1 0 1 0 0 0 1 0 0]]
+rp_c: [66 66 66 66 66 66 66 66 66 21]
+b: 7
+k: 3
+l_c: [4 2 2 4 2 4 4 4 4 4]
+m_i: [3 4 4]
+n_i: [1 1 2]
+t_hd:
+[[60. 20. 20. 40. 60. 20. 60.]
+ [60. 40. 60. 40. 20. 40. 40.]
+ [20. 20. 40. 60. 40. 40. 20.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 9
+=================================
+q_ic:
+[[1 0 1 0 0 1 1 0 1 1]
+ [0 1 0 0 0 1 1 1 1 0]
+ [0 1 0 1 0 0 0 1 1 1]]
+rp_c: [98 42 98 98 42  8  8 98 42 42]
+b: 7
+k: 3
+l_c: [4 3 3 3 4 3 2 3 4 4]
+m_i: [4 5 4]
+n_i: [1 2 3]
+t_hd:
+[[30. 30. 30. 30. 30. 30. 90.]
+ [90. 60. 90. 90. 30. 90. 60.]
+ [90. 30. 60. 60. 30. 90. 90.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 10
+=================================
+q_ic:
+[[0 1 1 1 1 0 1 0 0 1]
+ [1 1 0 1 1 0 1 1 1 1]
+ [0 0 1 1 0 1 1 1 1 0]]
+rp_c: [97 18 18  6 97 18 97  6 97 18]
+b: 7
+k: 3
+l_c: [4 2 4 3 2 3 2 3 2 3]
+m_i: [4 3 3]
+n_i: [2 2 1]
+t_hd:
+[[120. 120.  80. 120.  40.  80.  80.]
+ [ 80.  40.  40. 120. 120.  80. 120.]
+ [ 40.  80. 120.  80.  40.  40. 120.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 11
+=================================
+q_ic:
+[[0 1 0 0 0 0 1 1 1 1]
+ [0 1 1 1 1 1 0 1 0 0]
+ [1 1 0 1 1 0 0 1 0 0]]
+rp_c: [69 20 49 49 49 69 69 69 69 20]
+b: 7
+k: 3
+l_c: [2 2 2 3 3 2 3 2 2 4]
+m_i: [5 4 3]
+n_i: [1 2 1]
+t_hd:
+[[150. 150. 100.  50. 150.  50. 150.]
+ [150. 100.  50.  50. 100.  50. 100.]
+ [150. 100.  50.  50. 100.  50.  50.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 12
+=================================
+q_ic:
+[[1 1 0 0 0 1 1 0 0 0]
+ [0 1 1 1 1 1 1 1 0 0]
+ [0 0 1 0 0 1 1 1 0 1]]
+rp_c: [68 62 62 62 68 37 62 62 68 62]
+b: 7
+k: 3
+l_c: [4 2 4 4 2 4 3 3 4 2]
+m_i: [5 4 4]
+n_i: [2 3 1]
+t_hd:
+[[300. 100. 100. 300. 300. 200. 300.]
+ [100. 200. 300. 200. 300. 300. 200.]
+ [100. 300. 200. 300. 200. 100. 300.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 13
+=================================
+q_ic:
+[[1 0 0 0 1 1 1 0 1 0]
+ [0 0 0 1 0 0 1 0 1 0]
+ [0 0 1 0 0 0 1 1 1 1]]
+rp_c: [64 64 38 38 38 80 64 64 64 64]
+b: 7
+k: 3
+l_c: [3 4 2 4 4 3 4 2 4 2]
+m_i: [3 5 5]
+n_i: [3 1 3]
+t_hd:
+[[150. 150. 450. 150. 450. 300. 450.]
+ [300. 450. 150. 450. 450. 300. 450.]
+ [450. 150. 450. 450. 300. 150. 450.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 14
+=================================
+q_ic:
+[[0 1 0 1 1 1 0 1 1 1]
+ [0 1 1 1 1 1 1 1 1 1]
+ [0 0 0 1 0 0 1 1 0 1]]
+rp_c: [17 29 29 17 56 29 56 56 29 56]
+b: 7
+k: 3
+l_c: [2 2 4 4 4 3 3 2 4 4]
+m_i: [5 4 4]
+n_i: [3 3 1]
+t_hd:
+[[200. 600. 200. 600. 400. 400. 400.]
+ [600. 400. 200. 400. 600. 600. 600.]
+ [200. 600. 200. 200. 600. 400. 200.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 15
+=================================
+q_ic:
+[[1 0 0 1 0 0 1 1 1 0]
+ [1 1 1 0 0 0 1 0 0 1]
+ [1 1 0 0 1 1 0 1 1 0]]
+rp_c: [25 25 25 94 97 97 97 97 94 97]
+b: 7
+k: 3
+l_c: [2 4 2 2 4 2 2 4 4 3]
+m_i: [5 4 4]
+n_i: [1 1 1]
+t_hd:
+[[250. 500. 750. 250. 250. 500. 750.]
+ [500. 500. 250. 500. 750. 500. 250.]
+ [250. 500. 500. 750. 500. 500. 500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 16
+=================================
+q_ic:
+[[1 1 1 1 0 1 1 0 0 0]
+ [0 0 1 0 1 0 0 0 1 1]
+ [1 1 1 0 0 1 1 0 1 0]]
+rp_c: [17 17 66 66 17 46 66 46 66 66]
+b: 7
+k: 3
+l_c: [2 2 4 2 3 2 3 3 4 3]
+m_i: [4 5 3]
+n_i: [1 2 1]
+t_hd:
+[[900. 300. 300. 600. 300. 300. 600.]
+ [600. 900. 900. 600. 600. 300. 600.]
+ [600. 600. 600. 300. 600. 900. 300.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 17
+=================================
+q_ic:
+[[0 1 0 0 1 1 0 0 1 1]
+ [0 1 1 0 1 0 1 1 0 1]
+ [0 1 1 1 1 0 1 0 1 0]]
+rp_c: [67 48 63 67 67 63 63 63 63 67]
+b: 7
+k: 3
+l_c: [2 4 2 2 2 4 4 2 4 3]
+m_i: [5 4 3]
+n_i: [2 3 2]
+t_hd:
+[[ 700.  350.  350.  350. 1050.  350.  350.]
+ [ 350. 1050.  700.  700.  700. 1050.  350.]
+ [ 700. 1050. 1050.  350.  700. 1050. 1050.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 18
+=================================
+q_ic:
+[[1 0 1 1 0 1 1 0 0 1]
+ [0 0 1 0 0 1 1 1 0 0]
+ [1 0 1 1 1 0 1 0 1 0]]
+rp_c: [73 73 73 73 26 58 58 73 73 58]
+b: 7
+k: 3
+l_c: [3 2 3 3 4 3 4 3 3 4]
+m_i: [4 5 4]
+n_i: [2 2 2]
+t_hd:
+[[1200.  400.  400.  400.  400.  800.  400.]
+ [ 800. 1200. 1200. 1200.  400.  800.  400.]
+ [ 400.  800.  400. 1200.  800.  400.  800.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 19
+=================================
+q_ic:
+[[1 1 0 1 0 0 0 0 0 1]
+ [0 1 0 1 1 0 0 1 1 0]
+ [0 0 0 1 0 1 1 1 0 0]]
+rp_c: [40 77 77 40 40 77 40 77 40 16]
+b: 7
+k: 3
+l_c: [2 2 2 4 3 3 4 4 4 3]
+m_i: [3 4 3]
+n_i: [1 3 2]
+t_hd:
+[[1350. 1350.  450.  450.  900.  900. 1350.]
+ [ 900. 1350. 1350.  450.  900.  900. 1350.]
+ [1350.  900. 1350.  900. 1350.  900.  900.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 20
+=================================
+q_ic:
+[[0 1 0 1 0 1 1 1 1 0]
+ [1 0 0 0 0 1 1 1 0 1]
+ [0 1 0 0 1 0 1 1 0 1]]
+rp_c: [22 22 22 10 52 22 22 22 10 52]
+b: 7
+k: 3
+l_c: [4 2 4 3 3 2 2 4 2 4]
+m_i: [5 5 3]
+n_i: [3 2 1]
+t_hd:
+[[1000.  500.  500. 1000. 1000. 1000. 1000.]
+ [1000. 1500. 1500.  500. 1500.  500. 1500.]
+ [1000. 1500. 1500. 1500.  500. 1000. 1000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 21
+=================================
+q_ic:
+[[1 0 1 0 0 1 1 1 0 0]
+ [1 0 1 1 1 0 0 1 0 0]
+ [0 0 0 1 0 0 1 0 0 1]]
+rp_c: [22 41 21 41 41 41 41 21 21 21]
+b: 7
+k: 3
+l_c: [4 2 3 3 3 2 2 3 3 3]
+m_i: [3 5 5]
+n_i: [2 2 1]
+t_hd:
+[[1650. 1650. 1650. 1100. 1100. 1650.  550.]
+ [1650. 1100. 1100. 1100.  550.  550. 1100.]
+ [ 550. 1650.  550. 1100.  550.  550.  550.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 22
+=================================
+q_ic:
+[[0 0 1 1 1 1 1 0 1 1]
+ [1 1 1 0 0 1 1 1 0 1]
+ [0 1 0 1 1 0 1 0 0 1]]
+rp_c: [49 49 18 18 18 18 36 49 18 18]
+b: 7
+k: 3
+l_c: [4 2 2 4 2 4 2 4 2 2]
+m_i: [3 3 4]
+n_i: [2 3 3]
+t_hd:
+[[ 600.  600. 1200. 1800. 1800. 1200. 1200.]
+ [1200. 1200. 1800. 1800. 1200. 1800. 1800.]
+ [1200. 1200.  600. 1800. 1200.  600.  600.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 23
+=================================
+q_ic:
+[[0 0 1 1 1 0 0 0 0 1]
+ [0 0 0 1 1 0 0 1 0 1]
+ [1 1 1 1 1 0 1 1 0 1]]
+rp_c: [46 20 13 13 20 46 20 20 13 20]
+b: 7
+k: 3
+l_c: [4 2 2 2 2 4 3 2 4 3]
+m_i: [3 5 5]
+n_i: [2 2 1]
+t_hd:
+[[ 650. 1300.  650. 1950.  650. 1950.  650.]
+ [1300.  650.  650. 1950.  650. 1300.  650.]
+ [1950.  650. 1300.  650. 1300. 1300. 1950.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 24
+=================================
+q_ic:
+[[0 1 0 0 1 0 1 0 0 0]
+ [1 1 1 0 1 0 1 0 1 0]
+ [1 1 1 0 1 0 1 0 1 0]]
+rp_c: [78 35 80 78 35 78 35 80 78 80]
+b: 7
+k: 3
+l_c: [2 3 3 2 4 3 4 4 2 2]
+m_i: [3 5 3]
+n_i: [3 3 3]
+t_hd:
+[[ 700.  700.  700.  700. 2100. 1400. 1400.]
+ [1400.  700. 2100. 2100. 1400. 2100. 2100.]
+ [1400. 1400. 1400. 2100. 1400. 2100.  700.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 25
+=================================
+q_ic:
+[[1 0 1 0 0 1 0 1 0 1]
+ [0 1 1 1 0 1 0 0 1 1]
+ [0 0 0 1 1 1 0 1 0 0]]
+rp_c: [66 67  1 67  1 67 67  1  1  1]
+b: 7
+k: 3
+l_c: [4 2 4 2 2 2 2 3 4 3]
+m_i: [3 5 3]
+n_i: [1 2 3]
+t_hd:
+[[2250. 2250. 1500.  750. 2250.  750.  750.]
+ [2250.  750. 1500.  750. 2250. 2250.  750.]
+ [2250.  750. 2250. 1500. 2250. 1500.  750.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 26
+=================================
+q_ic:
+[[0 0 1 0 1 0 0 0 0 0]
+ [0 0 1 0 0 1 0 0 1 1]
+ [0 1 1 0 1 1 1 0 0 1]]
+rp_c: [92  0 92  0 92 92 92 92  0 92]
+b: 7
+k: 3
+l_c: [3 2 2 2 2 4 4 3 3 2]
+m_i: [5 5 5]
+n_i: [3 3 3]
+t_hd:
+[[ 800. 2400. 1600. 2400. 2400. 1600.  800.]
+ [2400.  800. 1600.  800.  800. 1600. 1600.]
+ [2400. 1600. 2400. 1600. 1600.  800. 1600.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 27
+=================================
+q_ic:
+[[1 1 1 0 0 0 1 1 0 1]
+ [0 0 0 0 1 0 1 1 0 1]
+ [1 1 0 1 1 0 0 0 1 1]]
+rp_c: [23 92 23  4 23 92 92 23 23 23]
+b: 7
+k: 3
+l_c: [2 3 3 2 3 2 4 4 4 3]
+m_i: [4 4 5]
+n_i: [2 1 1]
+t_hd:
+[[ 850. 2550. 1700. 1700. 1700. 2550. 1700.]
+ [ 850. 2550. 1700.  850. 1700. 1700.  850.]
+ [1700.  850. 2550. 2550. 1700.  850. 2550.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 28
+=================================
+q_ic:
+[[1 0 0 0 0 1 1 0 1 0]
+ [1 0 0 0 1 1 1 1 0 1]
+ [0 0 0 1 1 0 1 1 1 0]]
+rp_c: [71 17 71 45 17 45 17 71 17 17]
+b: 7
+k: 3
+l_c: [4 4 2 2 3 2 4 2 4 4]
+m_i: [3 3 5]
+n_i: [3 1 1]
+t_hd:
+[[ 900. 2700.  900. 2700. 1800. 1800.  900.]
+ [ 900. 2700.  900.  900. 1800. 1800. 1800.]
+ [2700.  900. 1800.  900.  900. 1800. 2700.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 29
+=================================
+q_ic:
+[[0 1 0 1 0 0 1 0 1 1]
+ [1 1 0 1 1 1 1 0 1 1]
+ [1 0 0 0 0 0 1 0 0 1]]
+rp_c: [56 14 14 49 56 14 14 14 56 56]
+b: 7
+k: 3
+l_c: [4 3 3 2 3 4 2 4 2 3]
+m_i: [4 3 5]
+n_i: [2 2 3]
+t_hd:
+[[ 950. 2850.  950. 1900.  950.  950. 2850.]
+ [2850. 1900. 1900.  950.  950. 1900. 1900.]
+ [ 950. 2850.  950.  950. 2850.  950.  950.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 30
+=================================
+q_ic:
+[[1 1 0 1 0 1 1 1 1 1]
+ [0 1 1 0 1 1 0 0 1 1]
+ [1 1 0 0 0 1 1 1 1 0]]
+rp_c: [76 76 33 76 33 33 18 33 18 76]
+b: 7
+k: 3
+l_c: [4 3 2 4 2 2 2 3 2 2]
+m_i: [5 5 3]
+n_i: [3 2 2]
+t_hd:
+[[3000. 2000. 2000. 1000. 3000. 2000. 3000.]
+ [2000. 1000. 1000. 3000. 3000. 2000. 3000.]
+ [3000. 2000. 2000. 1000. 3000. 3000. 2000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 31
+=================================
+q_ic:
+[[1 1 0 1 0 1 1 1 1 1]
+ [0 1 1 0 1 1 0 0 1 1]
+ [1 1 0 0 0 1 1 1 1 0]]
+rp_c: [76 76 33 76 33 33 18 33 18 76]
+b: 7
+k: 3
+l_c: [4 3 2 4 2 2 2 3 2 2]
+m_i: [5 5 3]
+n_i: [3 2 2]
+t_hd:
+[[3000. 2000. 2000. 1000. 3000. 2000. 3000.]
+ [2000. 1000. 1000. 3000. 3000. 2000. 3000.]
+ [3000. 2000. 2000. 1000. 3000. 3000. 2000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 32
+=================================
+q_ic:
+[[1 1 0 1 0 0 0 1 0 0]
+ [0 0 1 0 0 0 0 0 1 0]
+ [1 0 1 0 1 1 1 0 0 1]]
+rp_c: [12 24  0 12 12 24 24 24 12  0]
+b: 7
+k: 3
+l_c: [2 3 3 4 2 2 3 2 3 2]
+m_i: [3 4 5]
+n_i: [2 3 3]
+t_hd:
+[[4500. 4500. 4500. 3000. 1500. 4500. 3000.]
+ [4500. 3000. 1500. 3000. 1500. 4500. 3000.]
+ [3000. 3000. 1500. 3000. 4500. 1500. 1500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 33
+=================================
+q_ic:
+[[1 1 1 0 0 1 1 0 1 1]
+ [1 1 1 0 0 0 1 0 1 0]
+ [1 1 0 0 1 0 1 0 0 1]]
+rp_c: [ 2 83  2  2 42 42 42 83 83  2]
+b: 7
+k: 3
+l_c: [2 4 3 3 2 2 3 3 2 2]
+m_i: [4 3 4]
+n_i: [1 3 2]
+t_hd:
+[[6000. 2000. 2000. 4000. 6000. 4000. 6000.]
+ [4000. 2000. 4000. 4000. 4000. 4000. 6000.]
+ [4000. 2000. 6000. 2000. 4000. 2000. 4000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 34
+=================================
+q_ic:
+[[1 1 0 1 0 0 1 1 1 0]
+ [1 0 1 0 0 0 1 1 1 1]
+ [0 1 0 1 0 1 0 1 1 0]]
+rp_c: [30 15 15 15 15 15 15 30 83 15]
+b: 7
+k: 3
+l_c: [2 4 4 2 4 3 2 3 4 2]
+m_i: [4 3 5]
+n_i: [1 1 1]
+t_hd:
+[[7500. 5000. 5000. 7500. 2500. 7500. 7500.]
+ [5000. 2500. 2500. 7500. 5000. 5000. 2500.]
+ [2500. 5000. 5000. 2500. 7500. 2500. 5000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 35
+=================================
+q_ic:
+[[1 0 1 0 1 0 1 0 0 1]
+ [1 1 1 1 0 0 0 0 0 1]
+ [0 0 1 1 1 0 0 0 0 0]]
+rp_c: [43 66 66 43 99 43 43 43 99 66]
+b: 7
+k: 3
+l_c: [4 4 4 2 4 4 2 3 2 4]
+m_i: [3 4 5]
+n_i: [2 3 2]
+t_hd:
+[[9000. 3000. 3000. 9000. 6000. 9000. 9000.]
+ [3000. 3000. 9000. 6000. 6000. 6000. 3000.]
+ [9000. 9000. 6000. 6000. 9000. 3000. 6000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 36
+=================================
+q_ic:
+[[0 1 0 1 0 1 0 0 1 0]
+ [1 0 0 0 1 0 1 1 1 1]
+ [1 0 0 0 0 1 0 0 0 1]]
+rp_c: [37 37 58 35 35 37 37 58 37 58]
+b: 7
+k: 3
+l_c: [4 4 4 2 2 3 4 2 3 4]
+m_i: [5 5 5]
+n_i: [3 1 3]
+t_hd:
+[[ 3500.  7000.  7000.  7000. 10500.  7000.  3500.]
+ [ 7000. 10500. 10500.  7000.  7000.  3500.  7000.]
+ [10500.  3500.  3500.  7000. 10500.  3500.  3500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 37
+=================================
+q_ic:
+[[1 1 0 0 0 1 0 0 1 0]
+ [1 0 1 1 1 1 1 1 1 1]
+ [1 0 1 0 1 0 1 1 1 0]]
+rp_c: [ 4  4 45  4  4 45 45 63 63 45]
+b: 7
+k: 3
+l_c: [3 3 3 4 2 2 4 4 4 2]
+m_i: [4 5 5]
+n_i: [1 1 2]
+t_hd:
+[[ 4000.  4000. 12000.  8000. 12000.  8000.  8000.]
+ [ 8000.  4000.  4000.  4000.  4000.  4000.  8000.]
+ [12000.  8000.  8000.  8000.  4000. 12000.  4000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 38
+=================================
+q_ic:
+[[1 0 1 0 0 0 1 1 1 1]
+ [1 0 1 0 0 1 0 1 1 1]
+ [0 1 0 1 1 1 0 1 0 1]]
+rp_c: [77 43  2  2 43 43  2 43  2 43]
+b: 7
+k: 3
+l_c: [2 4 3 2 3 3 3 3 2 3]
+m_i: [5 5 5]
+n_i: [2 3 1]
+t_hd:
+[[ 9000.  4500.  9000.  4500. 13500.  9000.  9000.]
+ [13500.  4500. 13500. 13500.  4500.  9000. 13500.]
+ [13500.  4500.  9000.  9000. 13500.  9000. 13500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 39
+=================================
+q_ic:
+[[1 1 1 0 0 0 1 0 1 0]
+ [0 0 0 1 0 1 1 1 0 0]
+ [0 0 1 0 0 1 0 0 1 1]]
+rp_c: [21 19 77 77 19 21 19 77 19 77]
+b: 7
+k: 3
+l_c: [3 2 2 4 3 2 3 2 3 2]
+m_i: [5 4 3]
+n_i: [2 2 2]
+t_hd:
+[[ 5000. 15000.  5000. 15000. 10000.  5000. 10000.]
+ [15000. 15000. 15000.  5000. 10000.  5000.  5000.]
+ [ 5000. 15000.  5000.  5000.  5000. 10000. 10000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 40
+=================================
+q_ic:
+[[1 1 0 1 0 1 0 1 0 1]
+ [1 0 1 0 0 1 0 1 0 1]
+ [0 1 0 0 1 1 1 0 0 1]]
+rp_c: [37 60 37 37 60 67 60 67 67 60]
+b: 7
+k: 3
+l_c: [2 2 3 4 3 3 3 2 2 3]
+m_i: [3 4 4]
+n_i: [2 3 2]
+t_hd:
+[[11000. 11000. 11000. 16500.  5500.  5500. 11000.]
+ [16500. 11000. 11000.  5500. 16500.  5500. 11000.]
+ [11000.  5500. 11000. 11000.  5500. 11000. 16500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 41
+=================================
+q_ic:
+[[0 1 1 0 0 0 0 0 0 1]
+ [1 1 1 1 1 1 0 1 1 0]
+ [0 1 1 1 1 1 0 1 0 1]]
+rp_c: [38 38 38 54 54 54 54 54 92 54]
+b: 7
+k: 3
+l_c: [3 3 4 3 4 3 3 3 3 4]
+m_i: [4 5 5]
+n_i: [3 2 2]
+t_hd:
+[[12000. 12000. 12000. 18000. 12000.  6000. 18000.]
+ [12000.  6000. 18000.  6000.  6000.  6000. 18000.]
+ [12000. 12000. 18000.  6000.  6000. 12000.  6000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 42
+=================================
+q_ic:
+[[0 0 0 1 0 0 1 0 1 1]
+ [1 0 0 0 1 1 0 1 0 1]
+ [1 0 0 0 0 1 0 0 1 1]]
+rp_c: [42 42 42 76 42 42 71 71 42 71]
+b: 7
+k: 3
+l_c: [2 3 3 3 2 3 4 4 4 3]
+m_i: [3 3 4]
+n_i: [3 1 3]
+t_hd:
+[[19500. 19500. 19500. 13000.  6500.  6500. 19500.]
+ [19500. 13000. 13000. 13000.  6500. 19500. 13000.]
+ [ 6500. 13000.  6500.  6500. 13000. 13000.  6500.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 43
+=================================
+q_ic:
+[[1 0 0 0 0 1 0 1 0 0]
+ [0 1 1 1 0 1 0 1 0 1]
+ [0 0 0 0 0 1 1 1 0 0]]
+rp_c: [53 53 57 57 53 57 20 20 57 53]
+b: 7
+k: 3
+l_c: [4 2 2 4 2 2 4 4 4 3]
+m_i: [4 5 4]
+n_i: [1 3 2]
+t_hd:
+[[21000. 14000. 14000.  7000.  7000. 21000. 14000.]
+ [21000. 21000. 14000.  7000. 14000. 21000. 14000.]
+ [21000. 21000. 21000.  7000.  7000.  7000. 14000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 44
+=================================
+q_ic:
+[[0 1 0 1 1 0 1 1 0 0]
+ [1 1 0 0 0 1 1 0 0 0]
+ [0 1 1 0 1 0 1 1 1 1]]
+rp_c: [39 39  2  2 97  2 39 97  2 97]
+b: 7
+k: 3
+l_c: [2 4 2 2 4 2 3 4 3 3]
+m_i: [5 3 4]
+n_i: [3 1 3]
+t_hd:
+[[22500.  7500. 15000. 15000.  7500.  7500. 15000.]
+ [15000.  7500. 15000.  7500. 15000. 22500. 22500.]
+ [ 7500. 15000. 15000. 15000.  7500.  7500. 15000.]]
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python]
+Instance - 45
+=================================
+q_ic:
+[[1 0 0 0 1 0 1 1 0 1]
+ [0 1 0 1 0 0 1 1 1 1]
+ [1 1 0 1 0 0 1 0 1 0]]
+rp_c: [32 32 37 37 85 85 32 37 37 32]
+b: 7
+k: 3
+l_c: [3 2 2 3 4 4 4 3 3 3]
+m_i: [3 4 4]
+n_i: [1 3 3]
+t_hd:
+[[ 8000.  8000. 24000. 16000.  8000. 16000. 16000.]
+ [16000.  8000. 16000.  8000.  8000. 16000.  8000.]
+ [24000. 24000.  8000. 16000. 24000. 24000.  8000.]]
+
+\end{lstlisting}
 \bibliographystyle{chicago}
 
 \bibliography{references}

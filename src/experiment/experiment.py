@@ -14,6 +14,9 @@ class Case:
     def __str__(self):
         return str(self.arguments)
     
+    def id(self):
+        return self.arguments.get("id", -1)
+    
     def size(self):
         return reduce(mul, self.arguments.values())
 
@@ -39,22 +42,14 @@ class Parameters:
         return f"""
         q_ic: 
 {self.q_ic}
-        -------------------------------------
         rp_c: {self.rp_c}
-        -------------------------------------
         b: {self.b}
-        -------------------------------------
         k: {self.k}
-        -------------------------------------
         l_c: {self.l_c}
-        -------------------------------------
         m_i: {self.m_i}
-        -------------------------------------
         n_i: {self.n_i}
-        -------------------------------------
         t_hd:
 {self.t_hd}
-        -------------------------------------
         """
 
 
@@ -166,9 +161,8 @@ class Solution:
         m_i = np.random.choice([4,3,5],I)#m_i = np.ones((I), dtype='int8')*10
         n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
         ##capacity for channel
-#        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
-        t_hd = np.random.choice([U*.01, U*.02, U*.03], (H, D))
-#        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
+        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
+#        t_hd = np.random.choice([U*.01, U*.02, U*.03], (H, D))
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)

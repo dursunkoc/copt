@@ -16,9 +16,13 @@ class MipSolutionDNC(Solution, MipCore):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
-        print("=================================")
+        print("""
+\\begin{lstlisting}[language=Python]
+Instance - """ +str(case.id())+ """
+=================================
+""")
         print(PMS)
-        print("=================================")
+        print("\end{lstlisting}")
         total_resp = SolutionResult(case, 0, 0)
         return (0, total_resp)
 
