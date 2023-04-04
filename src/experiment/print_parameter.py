@@ -16,13 +16,9 @@ class MipSolutionDNC(Solution, MipCore):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
-        print("""
-\\begin{lstlisting}[language=Python]
-Instance - """ +str(case.id())+ """
-=================================
-""")
-        print(PMS)
-        print("\end{lstlisting}")
+        
+        print(f"{case.id()} & {PMS}")
+
         total_resp = SolutionResult(case, 0, 0)
         return (0, total_resp)
 
@@ -30,7 +26,7 @@ Instance - """ +str(case.id())+ """
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(MipSolutionDNC(), False)
+    solutions = expr.run_cases_with(MipSolutionDNC(), False, tq=False)
     for solution in solutions:
         print(solution)
 #    print("values:")

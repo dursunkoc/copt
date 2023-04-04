@@ -6,6 +6,7 @@ from functools import reduce
 from operator import mul
 from network_generator import gen_network
 import co_constraints as cstr
+import array_to_latex as a2l
 
 class Case:
     def __init__(self, arguments:Dict[str, int]):
@@ -40,18 +41,16 @@ class Parameters:
         self.a_uv = a_uv
     def __str__(self) -> str:
         return f"""
-        q_ic: 
-{self.q_ic}
-        rp_c: {self.rp_c}
-        b: {self.b}
-        k: {self.k}
-        l_c: {self.l_c}
-        m_i: {self.m_i}
-        n_i: {self.n_i}
-        t_hd:
-{self.t_hd}
+${a2l.to_ltx(self.q_ic, frmt = '{:d}', arraytype = 'bmatrix', print_out=False)}$ &
+${a2l.to_ltx(self.rp_c, frmt = '{:d}', arraytype = 'bmatrix', print_out=False)}$ &
+{self.b} &
+{self.k} &
+${a2l.to_ltx(self.l_c, frmt = '{:d}', arraytype = 'bmatrix', print_out=False)}$ &
+${a2l.to_ltx(self.m_i, frmt = '{:d}', arraytype = 'bmatrix', print_out=False)}$ &
+${a2l.to_ltx(self.n_i, frmt = '{:d}', arraytype = 'bmatrix', print_out=False)}$ &
+${a2l.to_ltx(self.t_hd, frmt = '{:.0f}', arraytype = 'bmatrix', print_out=False)}$ \\\\
+\\hline
         """
-
 
 class TrivialParameters:
     def __init__(self, e_cu, rp_c, t_hd, cuhd, a_uv):
@@ -86,8 +85,11 @@ class Experiment:
     def __init__(self, cases: List[Case]):
         self.cases = cases
 
-    def run_cases_with(self, solution, ph=True) -> List[Tuple[Case, SolutionResult]]:
-        return [solution.run(case, ph) for case in tqdm(self.cases, f"Case ->")]
+    def run_cases_with(self, solution, ph=True, tq=True) -> List[Tuple[Case, SolutionResult]]:
+        if tq:
+            return [solution.run(case, ph) for case in tqdm(self.cases, f"Case ->")]
+        else:
+            return [solution.run(case, ph) for case in self.cases]
 
 
 class Solution:
