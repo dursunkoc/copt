@@ -276,7 +276,7 @@ In this section, we describe three heuristics to solve this problem. The first t
 
 We use the following greedy algorithm (Algorithm 1) to solve the campaign optimization problem described in \ref{s:problem-model}. We assign  the most important campaign (the one with the highest priority) first. We do not apply any specific ranking for days, channels and customers. For feasibility check, we consider only the constraints in which $X_{{c}{u}{h}{d}}$ variables are contained.
 
-More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of the IP model. If a violation occurs, then its value is changed to 0.  
+More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of the IP model. If a violation occurs, then its value is changed to 0. The determining dimension for this problem is the campaign so the most outer loop starts with the campaign, other dimensions do not have any importance over others, so their order will not change the result. We are trying to place the most important campaign first without giving any importance to a specific customer, channel or day.
 %using the $CheckFeasibility$ function, which takes the indices of the variable $X_{cuhd}$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_{cuhd}$ variable, and checks their value per modification.
 
 \begin{singlespace}
@@ -300,7 +300,7 @@ Sort campaigns $(c \in C)$ such that ($r_{c_{1}p} \geq r_{c_{2}p}$)\\
         \For{$h \gets 1$ \textbf{to} $H$}{
             \For{$u \gets 1$ \textbf{to} $U$}{
                  $X_{cuhd}$ = 1\;
-                 \If {any one of the constraints (2) to (13) are violated} {
+                 \If {any one of the constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are violated} {
                     $X_{cuhd}$ = 0\;
                  }
             }
@@ -313,6 +313,63 @@ Sort campaigns $(c \in C)$ such that ($r_{c_{1}p} \geq r_{c_{2}p}$)\\
 \end{algorithm}
 \end{singlespace}
 
+\subsection{LP-relaxation with a Greedy Approach} \label{s:lp_relaxation_heuristic}
+In this section, we relax the IP model described at \S \ref{s:problem-model} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with a Greedy Approach}) to find a solution.\\ 
+
+As the LP solution of the problem may result in some variables to be an floating point number, we use a greedy approach to set these floating point numbers to be either 0 or 1. Algorithm \ref{algo:lprelax} sets all the non-integral variables to be 0, and make a set of non-integral variables($NonIntegralSet$). Hereby we move LP relaxation solution from infeasible region into a feasible region. Moreover setting all non-integral variables to 0 makes room for some non-integral variable to be 1. Later we sort campaigns by their importance, and try to improve the objective value by setting the $X_{{c}{u}{h}{d}}$ variables in the $NonIntegralSet$ starting from the most important campaign, we first set it to be 1, if any of the constraints from \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are violated then we set it back to 0. \\
+
+The greedy step of Algorithm \ref{algo:lprelax} moves solution of the LP-relaxation from an infeasible region to into a feasible region for IP problem, with least possible loss in the objective value.\\
+
+\begin{singlespace}
+\begin{algorithm}[H]
+\DontPrintSemicolon
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of IP}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ feasible for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity}}
+  \SetKwFunction{FSortCampaigns}{SortCampaigns}
+  \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
+
+%   \SetKwProg{Fn}{Function}{:}{}
+%   \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+%         FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+%         satisfied = FunctionsToCheck(X)\;
+%         \KwRet satisfied\;
+%   }\;
+Solve constraints \eqref{mathmodel_obj} as an LP to obtain $X_{{c}{u}{h}{d}}$,  $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ to\eqref{mathmodel_integrity}
+
+$NonIntegralSet \gets \{\}$
+
+\For{$c \gets 1$ \textbf{to} $C$}{
+    \For{$d \gets 1$ \textbf{to} $D$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 \If{$X_{cuhd}>0$ and $X_{cuhd}<1$}{
+                 $X_{cuhd}$ = 0\;
+                 {$NonIntegralSet\gets NonIntegralSet\, ||\, X_{cuhd}$}
+                 }
+            }
+        }
+    }
+}
+Sort campaigns $(c \in C)$ such that ($r_{c_{1}p} \geq r_{c_{2}p}$)\\
+\For{$c \gets 1$ \textbf{to} $C$}{
+    \For{$d \gets 1$ \textbf{to} $D$}{
+        \For{$h \gets 1$ \textbf{to} $H$}{
+            \For{$u \gets 1$ \textbf{to} $U$}{
+                 \If{$X_{cuhd} \in NonIntegralSet$}{
+                 $X_{cuhd}$ = 1\;
+                 \If {any one of the constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are violated} {
+                    $X_{cuhd}$ = 0\;
+                 }
+                 }
+            }
+        }
+    }
+}
+\Return{$X$}\;
+\caption{LP-Relaxation with a Greedy Approach}
+\label{algo:lprelax}
+\end{algorithm}
+\end{singlespace}\\
 
 \subsection{Improved Greedy Heuristic} \label{s:greedy_heuristic_improved}
 In this section, we improve the basic greedy heuristic using a new linear programming (LP) model and we create a new method to prioritize the campaigns. Since campaigns with higher priority can have smaller eligible audience or campaigns with lower priority can have greater audience, we decide to take into account the number of eligible people that can be reached through each campaign, avoiding any other restrictions.
@@ -386,46 +443,6 @@ SortCampaigns (C) so that($Y_{{c_{i}}{d}}  r_{c_{i}p} \geq Y_{{c_{i+1}}{d}}  r_{
 \Return{$X$}
 \caption{Improved Greedy Heuristic}
 \label{algo:greedy2}
-\end{algorithm}
-\end{singlespace}
-
-\subsection{LP-relaxation with a Greedy Approach} \label{s:lp_relaxation_heuristic}
-In this section, we relax the IP model described at \S \ref{s:problem-model} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with a Greedy Approach}) to find a solution.\\
-
-\begin{singlespace}
-\begin{algorithm}[H]
-\DontPrintSemicolon
-\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of IP}
-\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ feasible for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity}}
-  \SetKwFunction{FSortCampaigns}{SortCampaigns}
-  \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
-
-%   \SetKwProg{Fn}{Function}{:}{}
-%   \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
-%         FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
-%         satisfied = FunctionsToCheck(X)\;
-%         \KwRet satisfied\;
-%   }\;
-Solve constraints \eqref{mathmodel_obj} as an LP to obtain $X_{{c}{u}{h}{d}}$,  $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ to\eqref{mathmodel_integrity}
-
-\For{$d \gets 1$ \textbf{to} $D$}{
-SortCampaigns(C) {so that $r_{c_{i}p} \geq r_{c_{i+1}p}$}
-    \For{$c \gets 1$ \textbf{to} $C$}{
-        \For{$h \gets 1$ \textbf{to} $H$}{
-            \For{$u \gets 1$ \textbf{to} $U$}{
-                 \If{$X_{cuhd}>0$ and $X_{cuhd}<1$}{
-                 $X_{cuhd}$ = 1\;
-                 \If {any one of the constraints (2) to (13) are violated} {
-                    $X_{cuhd}$ = 0\;
-                 }
-                 }
-            }
-        }
-    }
-}
-\Return{$X$}\;
-\caption{LP-Relaxation with a Greedy Approach}
-\label{algo:lprelax}
 \end{algorithm}
 \end{singlespace}
 
