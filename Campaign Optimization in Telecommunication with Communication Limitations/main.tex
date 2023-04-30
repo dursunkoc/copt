@@ -99,11 +99,11 @@
   \textbf{\textit{Keywords---}} #1
 }
 
-\title{Campaign Optimization in Telecommunication with Communication Limitations\\}
+\title{Campaign Optimization in Telecommunication with Communication Limitations}
 \author{Dursun Koc $^{a}$ \\ 
-	dursun.koc@turkcell.com.tr, \\\\
+	dursun.koc@turkcell.com.tr, \\
 	Dilek Gunnec $^{a}$ $^{\ast}$\\ 
-	dilek.gunnec@ozyegin.edu.tr, ORCID ID: 0000-0002-0749-2584 \\\\
+	dilek.gunnec@ozyegin.edu.tr, ORCID ID: 0000-0002-0749-2584 \\
 $^{a}$ Ozyegin University, Department of Industrial Engineering, Istanbul, Turkey \\ 
 $^{\ast}$ Corresponding author \\ }
 	
@@ -185,12 +185,19 @@ We use a mathematical model to solve this problem where decisions are given week
 % General Math Model
 \noindent \textbf{Sets}\\
 
-\noindent ${\mathcal{C}}$: Set of campaigns \\
-\noindent ${\mathcal{U}}$: Set of customers \\
-\noindent ${\mathcal{H}}$: Set of communication channels \\
-\noindent ${\mathcal{D}}$: Set of days (7 days of a week) \\
-\noindent ${\mathcal{I}}$: Set of quota categories \\
-\noindent ${\mathcal{P}}$: Set of priority categories \\
+% \noindent ${\mathcal{C}}$: Set of campaigns \\
+% \noindent ${\mathcal{U}}$: Set of customers \\
+% \noindent ${\mathcal{H}}$: Set of communication channels \\
+% \noindent ${\mathcal{D}}$: Set of days (7 days of a week) \\
+% \noindent ${\mathcal{I}}$: Set of quota categories \\
+% \noindent ${\mathcal{P}}$: Set of priority categories \\
+\noindent ${C}$: Set of campaigns \\
+\noindent ${U}$: Set of customers \\
+\noindent ${H}$: Set of communication channels \\
+\noindent ${D}$: Set of days (7 days of a week) \\
+\noindent ${I}$: Set of quota categories \\
+\noindent ${P}$: Set of priority categories \\
+
 
 
 \noindent \textbf{Decision Variables}\\
@@ -225,7 +232,7 @@ We use a mathematical model to solve this problem where decisions are given week
 \end{singlespace}
 \vspace{-0.5cm}
 \begin{align}
-\text{IP: }\text{Maximize} & \displaystyle
+\text{\textbf{IP}: \;\;\;\;\;\; }\text{Maximize} & \displaystyle
 \sum\limits_{p\in \mathcal{P}}
 \sum\limits_{c\in \mathcal{C}}
 \sum\limits_{u\in \mathcal{U}}
@@ -248,7 +255,8 @@ X_{{c}{u}{h}{d}}  r_{{c}{p}} \label{mathmodel_obj}&
 &X_{{c}{u}{h}{d}} \in \{0,1\}&\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}, \label{mathmodel_integrity}
 \end{align}\\
 
-The objective function \eqref{mathmodel_obj} maximizes the prioritized campaign communication. Constraints \eqref{mathmodel_eligibility} ensure that only eligible customers are contacted for each campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels a day. Constraints \eqref{mathmodel_percustomercommlimit} limit the total number of times a customer can be contacted in a week, and constraints \eqref{mathmodel_percustomercommlimit_rh} consider the previous week and make sure it is taken into account when calculating the limits, i.e., uses a rolling horizon. Constraints \eqref{mathmodel_percustomercommlimit_day} define an upper-bound for the total number of contacts made to each customer in a single day. Constraints \eqref{mathmodel_percustomercamplimit} define an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints \eqref{mathmodel_percustomercamplimit_rh} extend the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are grouped by their marketing purpose, and for each of these groups we have combined limitations. Constraints \eqref{mathmodel_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ equals to 1 if the campaign $c$ is in category  $i$. Likewise, constraints \eqref{mathmodel_weeklyquotalimit_rh} limit the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensure that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that the variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.\\
+The objective function \eqref{mathmodel_obj} maximizes the prioritized campaign communication. Constraints \eqref{mathmodel_eligibility} ensure that only eligible customers are contacted for each campaign. Constraints \eqref{mathmodel_singlechannel} say that a customer should not be targeted for the same campaign from different channels a day. Constraints \eqref{mathmodel_percustomercommlimit} limit the total number of times a customer can be contacted in a week, constraints \eqref{mathmodel_percustomercommlimit_day} define an upper-bound for the total number of contacts made to each customer in a single day. Constraints \eqref{mathmodel_percustomercamplimit} define an upper-bound for total number of communication to each customer per campaign for the whole period; and constraints \eqref{mathmodel_percustomercamplimit_rh} extend the upper-bound for total number of communication to each customer per campaign regarding the previous period. Campaigns are grouped by their marketing purpose, and for each of these groups we have combined limitations. Constraints \eqref{mathmodel_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups. $q_{{i}{c}}$ equals to 1 if the campaign $c$ is in category  $i$. Likewise, constraints \eqref{mathmodel_weeklyquotalimit_rh} limit the number of communications for campaign quota categories regarding previous period. Constraints \eqref{mathmodel_dailyquotalimit} ensure that the number of communications for campaign quota categories for each day is not exceeded. Constraint \eqref{mathmodel_channellimit} ensures that each communication channels' capacity are not exceeded; and finally constraint \eqref{mathmodel_integrity} ensures that the variable $X_{{c}{u}{h}{d}}$ is either 0 or 1.
+Constraints \eqref{mathmodel_percustomercommlimit_rh} consider the previous week and make sure it is taken into account when calculating the limits, i.e., uses a rolling horizon.\\
 
 Due to its complexity, large instances of this problem may not be solved by using exact methods as quickly as required in practice. Thus, we develop a heuristic approach that can attain high-quality solutions within reasonable time.
 
@@ -257,18 +265,20 @@ Due to its complexity, large instances of this problem may not be solved by usin
 
 \section{Solution Methods}  \label{s:solution-method}
 
-In this section, we describe three heuristics. The first two are based on a greedy approach, and the last one is based on a linear programming relaxation. In \S \ref{s:greedy_heuristic_basic} we implement a basic greedy heuristic which considers only the campaign priorities, and in \S \ref{s:greedy_heuristic_improved} we improve it to consider the number of eligible people in addition to campaign priorities, and finally in \S \ref{s:lp_relaxation_heuristic} we solve the mathematical model by LP-Relaxation by defining the  $X_{{c}{u}{h}{d}}$ variables as real numbers between 0 and 1.
+In this section, we describe three heuristics to solve this problem. The first two are based on a greedy approach, and the last one is based on a linear programming relaxation. In \S \ref{s:greedy_heuristic_basic} we implement a basic greedy heuristic which considers only the campaign priorities, and in \S \ref{s:greedy_heuristic_improved} we improve it to consider the number of eligible people in addition to campaign priorities, and finally in \S \ref{s:lp_relaxation_heuristic} we solve the mathematical model by LP-Relaxation by re-defining the  $X_{{c}{u}{h}{d}}$ variables as real numbers between 0 and 1.
 
 \subsection{Basic Greedy Heuristic} \label{s:greedy_heuristic_basic}
 
 We use the following greedy algorithm (Algorithm 1) to solve the campaign optimization problem described in \ref{s:problem-model}. We assign  the most important campaign (the one with the highest priority) first. We do not apply any specific ranking for days, channels and customers. For feasibility check, we consider only the constraints in which $X_{{c}{u}{h}{d}}$ variables are contained.
 
-More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} using the $CheckFeasibility$ function, which takes the indices of the variable $X_{cuhd}$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_{cuhd}$ variable, and checks their value per modification.
-\\
+More specifically, Algorithm 1 starts by sorting campaigns with respect to their $r_{cp}$ values, and starting from the campaign with the highest value, sets the corresponding campaign value for $X_{cuhd}$ to 1. Then, checks the feasibility for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of the IP model. If a violation occurs, then its value is changed to 0.  
+%using the $CheckFeasibility$ function, which takes the indices of the variable $X_{cuhd}$ being modified and $X$ variable set, and it finds out the constraint functions which contains the $X_{cuhd}$ variable, and checks their value per modification.
+
+\begin{singlespace}
 
 \begin{algorithm}[H]
 \DontPrintSemicolon
-\KwIn{Constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity}}
+\KwIn{Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of IP}
 \KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ }
   \SetKwFunction{FSortCampaigns}{SortCampaigns}
 %  \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
@@ -296,32 +306,30 @@ Sort campaigns (c \in C) \; $such that$ \; ($r_{c_{1}p} \geq r_{c_{2}p}$)\\
 \caption{Basic Greedy Heuristic}
 \label{algo:greedy_impl1}
 \end{algorithm}
+\end{singlespace}
+
 
 \subsection{Improved Greedy Heuristic} \label{s:greedy_heuristic_improved}
-In this section, we improve the basic greedy heuristic using a new linear programming model. In this model, we take into account the possible number of eligible people that can be reached for each campaign. This way, we create a new method to prioritize the campaigns. 
+In this section, we improve the basic greedy heuristic using a new linear programming (LP) model and we create a new method to prioritize the campaigns. Since campaigns with higher priority can have smaller eligible audience or campaigns with lower priority can have greater audience, we decide to take into account the number of eligible people that can be reached through each campaign, avoiding any other restrictions.
 % In order to find better solution, we improved our understanding of prior campaigns by implementing a linear programming model of the problem. 
 % \subsubsection{The New LP model} \label{s:problem-math-lp}
 %Prioritizing campaigns with respect to In this model, instead of assigning specific customers to specific campaigns, we . 
 %BURDA KALDIM
-Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and can be sent to 1 customer, and campaign-2 has a priority of 50 and can be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
+%Depending on the constraints campaigns with higher priority can have smaller audience, likewise campaigns with lesser priority can have much greater audience. As our objective function \eqref{mathmodel_obj} is product of both campaign priority and total number of messages sent, our greedy algorithm should start with the campaign which has higher priority and higher total number of messages to be sent. Let say if campaign-1 has a priority of 100 and can be sent to 1 customer, and campaign-2 has a priority of 50 and can be sent to 5 customers, then starting from campaign-2 instead of campaign-1 will result in a better solution.
 \\
-We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not consider the individual limitations introduced in the problem definition described at section \s\ref{s:problem-model}, unlikely the model below is finding the maximum number of messages that can be sent by not caring how many messages an individual receives.\\
+We first introduce the notation and then present the mathematical model for the LP. Note that the following model does not consider the individual limitations introduced in the original problem definition described at Section \s\ref{s:problem-model}. Unlikely, the model below is finding the maximum number of messages that can be sent without considering the communication limits, i.e., how many messages an individual receives, or how often they do so.\\
 
+\noindent The new decision variable, the additional parameter and the new LP are given below, respectively. \\
 
-\noindent \textbf{New Decision Variable}\\
-
-\noindent $Y_{{c}{d}}$, total number of messages sent about campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
-($\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ )\\
-\\
-
-\noindent \textbf{New Parameter}\\
-
-\noindent $e_{c}$, number of customers eligible, can be calculated as $\sum\limits_{u\in\mathcal{U}}e_{{c}{u}}$ for campaign $c \in \mathcal{C}$\\
-
-\noindent The formulation for the campaign optimization is presented next.
+\noindent $Y_{{c}{d}}$, total number of messages sent on campaign $c \in \mathcal{C}$ at day $d \in \mathcal{D}$.
+, $\forall c \in \mathcal{C}$, $\forall d \in \mathcal{D}$ \\
+\noindent $e_{c}$, number of eligible customers ($\sum\limits_{u\in\mathcal{U}}e_{{c}{u}}$) for campaign $c \in \mathcal{C}$
+%\noindent \textbf{New Decision Variable}\\
+%\noindent \textbf{New Parameter}\\
+%\noindent The formulation for the campaign optimization is presented next.
 
 \begin{align}
-\text{LP: }\text{Maximize} & \displaystyle
+\text{\textbf{LP}: \;\;\;\;\;}\text{Maximize} & \displaystyle
 \sum\limits_{c\in \mathcal{C}}
 \sum\limits_{d\in \mathcal{D}}
 Y_{{c}{d}} \label{mathmodel2_obj}&
@@ -333,36 +341,37 @@ Y_{{c}{d}} \label{mathmodel2_obj}&
 &\sum\limits_{c\in\mathcal{C}}\sum\limits_{d\in\mathcal{D}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c}  b, \label{mathmodel2_weeklylimit}&\\
 &\sum\limits_{c\in\mathcal{C}}Y_{{c}{d}} \leq \sum\limits_{c\in\mathcal{C}}e_{c} k &&&\forall d \in \mathcal{D},\label{mathmodel2_dailylimit}&\\
 &Y_{{c}{d}} \geq 0&&&\forall c \in \mathcal{C}, \forall d \in \mathcal{D}, \label{mathmodel2_positive}
-\end{align}\\
+\end{align}
 
-The objective function \eqref{mathmodel2_obj} maximizes the total number of people reached over total time. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit, just like the constraints \eqref{mathmodel_percustomercamplimit} in the IP model. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period, like the constraints \eqref{mathmodel_weeklyquotalimit} in the IP model. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day which maps to \eqref{mathmodel_dailyquotalimit}. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total are not exceeded weekly and daily limits both of which are shadows of the constraints \eqref{mathmodel_percustomercommlimit}, and \eqref{mathmodel_percustomercommlimit_day} respectively in the IP model; and finally constraint \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.\\
+The objective function \eqref{mathmodel2_obj} maximizes the total number of people reached over total time. Constraints \eqref{mathmodel2_campaignlimit} ensure that the number of communication for each campaign can not exceed the number of eligible customers for the campaign regarding the campaign limit, just like the constraints \eqref{mathmodel_percustomercamplimit} in the IP model. Constraints \eqref{mathmodel2_weeklyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for the whole period, like the constraints \eqref{mathmodel_weeklyquotalimit} in the IP model. Likewise constraints \eqref{mathmodel2_dailyquotalimit} draw a limitation on the number of communications about campaigns that fell in specific groups for a specific day which maps to \eqref{mathmodel_dailyquotalimit}. Constraints \eqref{mathmodel2_weeklylimit} and \eqref{mathmodel2_dailylimit} ensure that the number of communications in total do not exceed weekly and daily limits similar to the constraints \eqref{mathmodel_percustomercommlimit}, and \eqref{mathmodel_percustomercommlimit_day} respectively in the IP model. Finally, constraints \eqref{mathmodel2_positive} ensure that the variable $Y_{{c}{d}}$ is a positive number.
 
-The preceding mathematical model is used for finding a rough estimation for the expected number of communication for each campaign. In Algorithm \ref{algo:greedy2} (\textit{Improved Greedy Heuristic}) expected number of communication for each campaign $Y_{{c}{d}}$ is used to sort campaigns in addition to campaign priority $r_{{c}{p}}$.
-\\
-\\
+This mathematical model is used for finding an estimate number of the possible number of communication for each campaign. Then, in Algorithm \ref{algo:greedy2} we use $Y_{{c}{d}}$ as an input (in addition to campaign priority $r_{{c}{p}}$) to sort campaigns .
+
+\begin{singlespace}
 \begin{algorithm}[H]
 \DontPrintSemicolon
-\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $IPFeasibilityFunctions$ (constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity})}
-\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ such that constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of IP}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ feasible for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity}}
 \SetKwFunction{FSortCampaigns}{SortCampaigns}
-\SetKwFunction{FCheckFeasibility}{CheckFeasibility}
-  \SetKwProg{Fn}{Funtion}{:}{}
-  \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
-        FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
-        satisfied = FunctionsToCheck(X)\;
-        \KwRet satisfied\;
-  }\;
+% \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
+%   \SetKwProg{Fn}{Function}{:}{}
+%   \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+%         FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+%         satisfied = FunctionsToCheck(X)\;
+%         \KwRet satisfied\;
+%   }\;
 
-$Y_{{c}{d}}$ = Solve LP Model \eqref{mathmodel2_obj} to \eqref{mathmodel2_positive}
+Solve LP Model to obtain $Y_{{c}{d}}$ $c\in\mathcal{C}$ $d\in\mathcal{D}$
+\eqref{mathmodel2_obj} to \eqref{mathmodel2_positive}
 
 \For{$d \gets 1$ \textbf{to} $D$}{
-SortCampaigns(C) \tcp*{such that($Y_{{c_{1}}{d}}  r_{c_{1}p} \geq Y_{{c_{2}}{d}}  r_{c_{2}p}$)}
+SortCampaigns (C) so that($Y_{{c_{i}}{d}}  r_{c_{i}p} \geq Y_{{c_{i+1}}{d}}  r_{c_{i+1}p}$)
     \For{$c \gets 1$ \textbf{to} $C$}{
         \For{$h \gets 1$ \textbf{to} $H$}{
 %        Order and reindex customers $u\in\mathcal{U}$ so that $\sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{1}}{h}{d}} \leq \sum\limits_{c\in\mathcal{C}}\sum\limits_{h\in\mathcal{H}}\sum\limits_{d\in\mathcal{D}}X_{{c}{u_{2}}{h}{d}}$
             \For{$u \gets 1$ \textbf{to} $U$}{
                  $X_{cuhd}$ = 1\;
-                 \If {\textbf{not} CheckFeasibility(X,c,u,h,d)} {
+                 \If {any one of the constraints (2) to (13) are violated} {
                     $X_{cuhd}$ = 0\;
                  }
             }
@@ -370,35 +379,38 @@ SortCampaigns(C) \tcp*{such that($Y_{{c_{1}}{d}}  r_{c_{1}p} \geq Y_{{c_{2}}{d}}
     }
 }
 \Return{$X$}
-\caption{Greedy Heuristic improved by LP}
+\caption{Improved Greedy Heuristic}
 \label{algo:greedy2}
 \end{algorithm}
+\end{singlespace}
 
-\subsection{LP-relaxation} \label{s:lp_relaxation_heuristic}
-In this section, we relax the model described at \S \ref{s:problem-model} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with Greedy Approach}) to find a solution.\\
+\subsection{LP-relaxation with a Greedy Approach} \label{s:lp_relaxation_heuristic}
+In this section, we relax the IP model described at \S \ref{s:problem-model} to a linear programming model by setting \eqref{mathmodel_integrity} to $X_{{c}{u}{h}{d}} \in [0,1],\forall c \in \mathcal{C}, \forall u \in \mathcal{U}, \forall h \in \mathcal{H}, \forall d \in \mathcal{D}$. After that we apply Algorithm \ref{algo:lprelax} (\textit{LP-Relaxation with a Greedy Approach}) to find a solution.\\
+
+\begin{singlespace}
 \begin{algorithm}[H]
 \DontPrintSemicolon
-\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, $IPFeasibilityFunctions$ (constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity})}
-\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ such that constraints\eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} are satisfied}
+\KwIn{X, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$, Constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity} of IP}
+\KwOut{$X_{{c}{u}{h}{d}}$, $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ feasible for constraints \eqref{mathmodel_eligibility} to \eqref{mathmodel_integrity}}
   \SetKwFunction{FSortCampaigns}{SortCampaigns}
   \SetKwFunction{FCheckFeasibility}{CheckFeasibility}
 
-  \SetKwProg{Fn}{Funtion}{:}{}
-  \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
-        FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
-        satisfied = FunctionsToCheck(X)\;
-        \KwRet satisfied\;
-  }\;
-$X_{{c}{u}{h}{d}}$ = Solve LP Model \eqref{mathmodel_obj} to\eqref{mathmodel_integrity}
+%   \SetKwProg{Fn}{Function}{:}{}
+%   \Fn{\FCheckFeasibility{$X$, $c$, $u$, $h$, $d$}}{
+%         FunctionsToCheck = $IPFeasibilityFunctions$ containig $X_{{c}{u}{h}{d}}$\;
+%         satisfied = FunctionsToCheck(X)\;
+%         \KwRet satisfied\;
+%   }\;
+Solve constraints \eqref{mathmodel_obj} as an LP to obtain $X_{{c}{u}{h}{d}}$,  $c\in\mathcal{C}$, $u\in\mathcal{U}$, $h\in\mathcal{H}$, $d\in\mathcal{D}$ to\eqref{mathmodel_integrity}
 
 \For{$d \gets 1$ \textbf{to} $D$}{
-SortCampaigns(C) \tcp*{such that $r_{c_{1}p} \geq r_{c_{2}p}$}
+SortCampaigns(C) {so that $r_{c_{i}p} \geq r_{c_{i+1}p}$}
     \For{$c \gets 1$ \textbf{to} $C$}{
         \For{$h \gets 1$ \textbf{to} $H$}{
             \For{$u \gets 1$ \textbf{to} $U$}{
                  \If{$X_{cuhd}>0$ and $X_{cuhd}<1$}{
                  $X_{cuhd}$ = 1\;
-                 \If {\textbf{not} CheckFeasibility(X,c,u,h,d)} {
+                 \If {any one of the constraints (2) to (13) are violated} {
                     $X_{cuhd}$ = 0\;
                  }
                  }
@@ -407,9 +419,10 @@ SortCampaigns(C) \tcp*{such that $r_{c_{1}p} \geq r_{c_{2}p}$}
     }
 }
 \Return{$X$}\;
-\caption{LP-Relaxation With Greedy Approach for Campaign Optimization}
+\caption{LP-Relaxation with a Greedy Approach}
 \label{algo:lprelax}
 \end{algorithm}
+\end{singlespace}
 
 \newpage
 \section{Computational Study} \label{s:num-analysis}
@@ -444,7 +457,7 @@ The differences are calculated using the formulation described at \equationautor
         \caption{Objective Value Gap\% and Execution Time in seconds for Rich Channel Capacity.}\label{table:tbl_exact_rich_results}
         \begin{adjustbox}{max width=1\textwidth}
         \csvautobooktabular[table head={\toprule  
-           &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Execution Time in seconds} \\
+           &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Time (sec)} \\
         \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_all_exact_rich.csv}
         \end{adjustbox}
         \label{tab:test}
@@ -471,7 +484,7 @@ The differences are calculated using the formulation described at \equationautor
         \begin{adjustbox}{max width=1\textwidth}
         \csvautobooktabular[table head={\toprule  
            &\multicolumn{3}{c|}{Objective Value Gap} & \multicolumn{4}{c}{Execution Time in seconds} \\
-        \cmidrule{2-4} \cmidrule{5-8} \csvlinetotablerow\\\midrule}]{n_test_results_17_exact_limited.csv}
+        \cmidrule(r){2-4} \cmidrule(r){5-8} \csvlinetotablerow \\ \midrule}]{n_test_results_17_exact_limited.csv}
         \end{adjustbox}
         \label{tab:test}
         \end{table}
@@ -498,10 +511,11 @@ The differences are calculated using the formulation described at \equationautor
         \begin{adjustbox}{max width=1\textwidth}
         \csvautobooktabular[table head={\toprule  
            &\multicolumn{2}{c|}{Objective Value Gap} & \multicolumn{2}{c}{Execution Time in seconds} \\
-        \cmidrule{2-3} \cmidrule{4-5} \csvlinetotablerow\\\midrule}]{n_test_results_upper_bound_limited.csv}
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5} \csvlinetotablerow\\ \midrule}]{n_test_results_upper_bound_limited.csv}
         \end{adjustbox}
         \label{tab:test}
         \end{table}
+
 
         \begin{figure}[htb!]
         \centering
