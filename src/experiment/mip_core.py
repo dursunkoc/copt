@@ -3,7 +3,7 @@ from math import ceil
 import multiprocessing
 from tqdm import tqdm
 
-BATCH_SIZE = 100
+BATCH_SIZE = 5000
 class MipCore:
     def mip_eligibility(self, mdl, X_cuhd, PMS, C, U, H, D):
         return mdl.add_constraints(
