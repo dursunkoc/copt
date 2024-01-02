@@ -115,6 +115,23 @@ def do_greedy_loop(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic,
                 with objmode():
                     print(f"<--C:{c_i}, D:{d}, H:{h}  @{time.time()}")
 
+@njit(parallel=True)
+def do_greedy_loop_rnd(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd):
+    for c_i in prange(sorted_camps.size):
+        c = sorted_camps[c_i]
+        for d in prange(D):
+            Ur = X.sum(0).sum(1).sum(1).argsort()
+            for h in prange(H):
+                with objmode():
+                    print(f"-->C:{c_i}, D:{d}, H:{h}  @{time.time()}")
+                for u_i in prange(Ur.size):
+                    u = Ur[-u_i-1]
+                    X[c,u,h,d]=1
+                    if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
+                        X[c,u,h,d]=0
+                with objmode():
+                    print(f"<--C:{c_i}, D:{d}, H:{h}  @{time.time()}")
+
 
 def do_greedy_loop_in_parallel(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, sem_count):
     semaphore = multiprocessing.Semaphore(sem_count)

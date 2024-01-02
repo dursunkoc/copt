@@ -1,1 +1,0 @@
-{'case': {'C': 2, 'U': 100, 'H': 3, 'D': 7, 'I': 3, 'P': 3}, 'value': 0, 'duration': 2.1032, 'info': None}

@@ -55,7 +55,7 @@ class GreedySolution(Solution):
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(GreedySolution(False, 1), False)
+    solutions = expr.run_cases_with(solution=GreedySolution(use_campaign_expectation=True,semp_count=1), ph=False)
     for solution in solutions:
         print(solution)    
 #    print("values:")
