@@ -66,13 +66,13 @@ class GreedySolutionWithNet(Solution):
         I = case.arguments["I"]  # number of planning days.
         a_uv, grph = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
 #        U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
-#        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
+        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
 #        U_range = self.sort_nodes_to_inc_span(grph, X_u)
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
-        print("Solving U ranges")
+#        print("Solving U ranges")
         typed_U_ranges = List()
-        U_ranges = [ self.solve_and_sort(U, PMS, c) for c in range(C)]
-        [typed_U_ranges.append(ur) for ur in U_ranges]
+#        U_ranges = [ self.solve_and_sort(U, PMS, c) for c in range(C)]
+        [typed_U_ranges.append(U_range) for c in range(C)]
         #variables
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
 #        mdl, Y = camps_order_model(C, D, I, PMS)
@@ -107,7 +107,7 @@ class GreedySolutionWithNet(Solution):
         direct_msg = X_cuhd.sum()
         total_edges = a_uv.sum()
         result = (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
-        with open(f'result_gsn_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
+        with open(f'result_gsn_A_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
             f.write(repr(result[1]))
         return result
 

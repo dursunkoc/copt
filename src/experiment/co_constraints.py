@@ -60,19 +60,19 @@ def check_indicies(X, b,cuhd,e_cu,k,l_c,m_i,n_i,q_ic,s_cuhd,t_hd, indicies):
     d_i = 3
     if not eligibility(e_cu, X, indicies[c_i],indicies[u_i],indicies[h_i],indicies[d_i]):
         return False
-    for f_d in range(1, cuhd[d_i]+1):
-        if not weekly_limitation_rh(b, X, s_cuhd, indicies[u_i], f_d):
-            return False
-    if not daily_limitation(k, X, indicies[u_i],indicies[d_i]):
-        return False
-    for f_d in range(1, cuhd[d_i]+1):
-        if not campaign_limitation_rh(l_c, X, s_cuhd, indicies[c_i],indicies[u_i], f_d):
-            return False
-    for f_d in range(1, cuhd[d_i]+1):
-        if not weekly_quota_rh(m_i, q_ic, X, s_cuhd, indicies[u_i], f_d):
-            return False
-    if not daily_quota(n_i, q_ic, X, indicies[u_i],indicies[d_i]):
-        return False
+#    for f_d in range(1, cuhd[d_i]+1):
+#        if not weekly_limitation_rh(b, X, s_cuhd, indicies[u_i], f_d):
+#            return False
+#    if not daily_limitation(k, X, indicies[u_i],indicies[d_i]):
+#        return False
+#    for f_d in range(1, cuhd[d_i]+1):
+#        if not campaign_limitation_rh(l_c, X, s_cuhd, indicies[c_i],indicies[u_i], f_d):
+#            return False
+#    for f_d in range(1, cuhd[d_i]+1):
+#        if not weekly_quota_rh(m_i, q_ic, X, s_cuhd, indicies[u_i], f_d):
+#            return False
+#    if not daily_quota(n_i, q_ic, X, indicies[u_i],indicies[d_i]):
+#        return False
     if not channel_capacity(t_hd, X, indicies[h_i],indicies[d_i]):
         return False
     return True
@@ -114,6 +114,17 @@ def do_greedy_loop(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic,
                         X[c,u,h,d]=0
                 with objmode():
                     print(f"<--C:{c_i}, D:{d}, H:{h}  @{time.time()}")
+
+@njit(parallel=True)
+def do_greedy_loop_for_net(X, ee_cu, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, U_ranges):
+    for c in np.argsort(-ee_cu.sum(1)):
+        for u in U_ranges[c]:
+            for d in range(D):
+                for h in range(H):
+                    if(ee_cu[c][u]>0):
+                        X[c,u,h,d]=1
+                        if not check_indicies(X, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd, (c,u,h,d)):
+                            X[c,u,h,d]=0
 
 @njit(parallel=True)
 def do_greedy_loop_rnd(X, sorted_camps, D, H, b, cuhd, e_cu, k, l_c, m_i, n_i, q_ic, s_cuhd, t_hd):

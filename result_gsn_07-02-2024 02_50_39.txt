@@ -1,0 +1,1 @@
+{'case': {'C': 5, 'U': 1000, 'H': 3, 'D': 7, 'I': 3, 'P': 3, 'id': 6}, 'value': 22657, 'duration': 1.2652, 'info': {'direct_msg': 11900, 'total_edges': 138}}

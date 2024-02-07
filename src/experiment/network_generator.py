@@ -14,11 +14,21 @@ def gen_network(p, n, m, net_type, drop_prob=None, seed=34) :
         for e in g.edges:
             if np.random.random(size=1)<=drop_prob:
                 g.remove_edge(e[0],e[1])
-    N_i_j = nx.to_numpy_matrix(g, dtype=np.int0)
+    N_i_j = nx.to_numpy_array(g, dtype=int)
 
     return N_i_j, g
 
 if __name__ == '__main__':
-    net = gen_network(0.000, 1000)
-    print(net.shape)
-    print(net)
+    #seed=142, net_type='erdos', m=None, p=.03, drop_prob=.95), False
+    U = 1000
+    a_uv,_ = gen_network(seed=142, p=0.003, drop_prob=.99, n=U, m=None, net_type='erdos')
+    print(a_uv.sum())
+    
+    j=0
+    links = np.where(a_uv==1)
+    for i in range(links[0].shape[0]):
+        print(i, links[0][i], links[1][i])
+        j+=1
+    print(j)
+    
+    

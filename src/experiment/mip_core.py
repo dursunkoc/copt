@@ -2,6 +2,7 @@ from docplex.mp.model import Model
 from math import ceil
 import multiprocessing
 from tqdm import tqdm
+import numpy as np
 
 BATCH_SIZE = 5000
 class MipCore:
@@ -172,9 +173,10 @@ class MipCore:
             for d in range(0,D)))
 
     def mip_network_coverage(self, mdl, Y_cuhd, X_cuhd, a_uv, C, U, H, D):
+        links = np.where(a_uv==1)
         return mdl.add_constraints(
             Y_cuhd[(c,u)] <= mdl.sum((X_cuhd[(c,u,h,d)]) + 
-            (mdl.sum(X_cuhd[(c,v,h,d)] * a_uv[u,v] for v in range(0,U)))
+            (mdl.sum(X_cuhd[(c,links[1][_u],h,d)] * a_uv[u,links[1][_u]] for _u in range(links[0].shape[0]) if links[0][_u]==u))
                 for h in range(0,H)
                 for d in range(0,D))
             for c in range(0,C)
@@ -182,9 +184,10 @@ class MipCore:
         )
     
     def mip_network_coverage_sub(self, mdl, Y_cuhd, X_cuhd, a_uv, C, sub_U, H, D):
+        links = np.where(a_uv==1)
         return mdl.add_constraints(
             Y_cuhd[(c,u)] <= mdl.sum((X_cuhd[(c,u,h,d)]) + 
-            (mdl.sum(X_cuhd[(c,v,h,d)] * a_uv[u,v] for v in sub_U))
+            (mdl.sum(X_cuhd[(c,v,h,d)] * a_uv[u,v] for v in sub_U if v!=u and a_uv[u,v]==1))
                 for h in range(0,H)
                 for d in range(0,D))
             for c in range(0,C)
@@ -260,7 +263,6 @@ class MipCore:
                 Y = {(c,u): mdl.continuous_var(lb=0, ub=1, name=f"Y_c:{c}_u:{u}")
                 for c in range(0,C)
                 for u in range(0,U)}
-        print("Variables Done!")
         #objectivefunction
         if PMS.a_uv is None:
             maximize = mdl.maximize(mdl.sum([X[(c,u,h,d)] * PMS.rp_c[c]
@@ -272,23 +274,22 @@ class MipCore:
             maximize = mdl.maximize(mdl.sum([Y[(c,u)] * PMS.rp_c[c]
                     for c in range(0,C)
                     for u in range(0,U)]))
-        print("Objective Done!")
         #constraints
         eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
         print("eligibilitiy Done!")
-        if PMS.s_cuhd is not None:
-            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-            campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
-            weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
-        else:
-            weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
-            campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
-            weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
+#        if PMS.s_cuhd is not None:
+#            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+#            campaign_communication = [self.mip_campaign_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]
+#            weekly_quota = [self.mip_weekly_quota_rh(mdl, X, PMS, C, U, H, D, I, f_d) for f_d in range(1, D+1)]
+#        else:
+#            weekly_communication = self.mip_weekly_communication(mdl, X, PMS, C, U, H, D)
+#            campaign_communication = self.mip_campaign_communication(mdl, X, PMS, C, U, H, D)
+#            weekly_quota = self.mip_weekly_quota(mdl, X, PMS, C, U, H, D, I)
         print("weekly_quota, campaign_communication, weekly_communication  Done!")
 
-        daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
+#        daily_communication = self.mip_daily_communication(mdl, X, PMS, C, U, H, D)
         print("daily_communication  Done!")
-        daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
+#        daily_quota = self.mip_daily_quota(mdl, X, PMS, C, U, H, D, I)
         print("daily_quota  Done!")
         channel_capacity = self.mip_channel_capacity(mdl, X, PMS, C, U, H, D)
         print("channel_capacity  Done!")
