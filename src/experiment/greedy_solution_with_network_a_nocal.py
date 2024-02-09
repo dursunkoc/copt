@@ -64,17 +64,17 @@ class GreedySolutionWithNet(Solution):
         H = case.arguments["H"]  # number of channels.
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of planning days.
-        a_uv, grph = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
+        a_uv, _ = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
 #        U_range = list(map(lambda x: x[0], sorted(grph.degree, key=lambda x: x[1], reverse=True)))
 #        U_range = [self.max_degree(grph) for i in range(len(grph.nodes()))]
-        U_range = self.sort_nodes_to_inc_span(grph, np.ones(U, dtype='int'))
-        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
-
-        typed_U_ranges = List()
+#        U_range = self.sort_nodes_to_inc_span(grph, X_u)
+#        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
+#        print("Solving U ranges")
+#        typed_U_ranges = List()
 #        U_ranges = [ self.solve_and_sort(U, PMS, c) for c in range(C)]
-        [typed_U_ranges.append(U_range) for c in range(C)]
+ #       [typed_U_ranges.append(U_range) for c in range(C)]
         #variables
-        X_cuhd = np.zeros((C,U,H,D), dtype='int')
+#        X_cuhd = np.zeros((C,U,H,D), dtype='int')
 #        mdl, Y = camps_order_model(C, D, I, PMS)
 #        camps_order_result = mdl.solve()
 
@@ -84,11 +84,11 @@ class GreedySolutionWithNet(Solution):
 #            for d in range(D)]
 #            , dtype='int')
 #        camp_prio = (camp_order) * PMS.rp_c
-        threshold = 0.10
-        ee_cu = (PMS.e_cu.T * PMS.rp_c).T
+#        threshold = 0.10
+#        ee_cu = (PMS.e_cu.T * PMS.rp_c).T
 #        for c in tqdm(np.lexsort((-camp_prio.sum(axis=0),-PMS.l_c,-PMS.rp_c))):#tqdm(np.argsort(-(PMS.rp_c)), desc="Campaigns Loop"):
         print("LOOPING:...")
-        cstr.do_greedy_loop_for_net(X_cuhd, ee_cu, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd, typed_U_ranges)
+#        cstr.do_greedy_loop_for_net(X_cuhd, ee_cu, D, H, PMS.b, PMS.cuhd, PMS.e_cu, PMS.k, PMS.l_c, PMS.m_i, PMS.n_i, PMS.q_ic, PMS.s_cuhd, PMS.t_hd, typed_U_ranges)
 #        for c in np.argsort(-ee_cu.sum(1)): #tqdm(np.argsort(-PMS.rp_c), desc="Campaigns Loop"):
 #            for u in U_ranges[c]:
 ##        for ee in np.argsort(-ee_cu, axis=None):
@@ -102,12 +102,12 @@ class GreedySolutionWithNet(Solution):
 #                                X_cuhd[c,u,h,d]=0
         end_time = time()
         duration = end_time - start_time
-        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
+#        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
 #        Y_cu = self.interaction_matrix(X_cuhd, a_uv)
-        direct_msg = X_cuhd.sum()
+        direct_msg = 0
         total_edges = a_uv.sum()
-        result = (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
-        with open(f'result_gsn_B_less.txt','a') as f:
+        result = (None, SolutionResult(case, 0, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
+        with open(f'result_gsn_A_less_995_nocal.txt','a') as f:
             f.write(repr(result[1]))
         return result
 

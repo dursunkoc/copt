@@ -1,0 +1,14 @@
+{'case': {'C': 1, 'U': 10, 'H': 1, 'D': 3, 'I': 1, 'P': 1, 'id': 0}, 'value': 450.0, 'duration': 0.0183, 'info': {'direct_msg': 15, 'total_edges': 0}}
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390.0, 'duration': 0.0252, 'info': {'direct_msg': 97, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 7290.0, 'duration': 0.0724, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 24472.0, 'duration': 0.1027, 'info': {'direct_msg': 360, 'total_edges': 6}}
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 29348.0, 'duration': 0.2706, 'info': {'direct_msg': 850, 'total_edges': 34}}
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 99280.0, 'duration': 0.4165, 'info': {'direct_msg': 1190, 'total_edges': 72}}
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 33031.0, 'duration': 0.6376, 'info': {'direct_msg': 2000, 'total_edges': 138}}
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 115483.0, 'duration': 1.2995, 'info': {'direct_msg': 1500, 'total_edges': 138}}
+{'case': {'C': 10, 'U': 2000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 8}, 'value': 370512.0, 'duration': 4.2689, 'info': {'direct_msg': 3800, 'total_edges': 558}}
+{'case': {'C': 10, 'U': 3000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 9}, 'value': 799008.0, 'duration': 11.3043, 'info': {'direct_msg': 6300, 'total_edges': 1326}}
+{'case': {'C': 10, 'U': 4000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 10}, 'value': 923919.0, 'duration': 24.0368, 'info': {'direct_msg': 6400, 'total_edges': 2398}}
+{'case': {'C': 10, 'U': 5000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 11}, 'value': 1079619.0, 'duration': 43.9318, 'info': {'direct_msg': 8000, 'total_edges': 3762}}
+{'case': {'C': 10, 'U': 10000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 12}, 'value': 3531509.0, 'duration': 309.9663, 'info': {'direct_msg': 19000, 'total_edges': 14972}}
+{'case': {'C': 10, 'U': 15000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 13}, 'value': 5931296.0, 'duration': 1050.3235, 'info': {'direct_msg': 28500, 'total_edges': 33712}}

@@ -107,14 +107,14 @@ class GreedySolutionWithNet(Solution):
         direct_msg = X_cuhd.sum()
         total_edges = a_uv.sum()
         result = (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
-        with open(f'result_gsn_A_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt','w') as f:
+        with open(f'result_gsn_A_less_995.txt','a') as f:
             f.write(repr(result[1]))
         return result
 
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='erdos', m=None, p=.003, drop_prob=.95), False)
+    solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='erdos', m=None, p=.003, drop_prob=.995), False)
     #solutions = expr.run_cases_with(GreedySolutionWithNet(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
     print(solutions)
     print("values:")
