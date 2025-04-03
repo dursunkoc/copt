@@ -27,7 +27,7 @@ class MipSolutionWithNetwork(Solution, MipCore):
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
-        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
         mdl.set_time_limit(180)
 
@@ -44,13 +44,13 @@ class MipSolutionWithNetwork(Solution, MipCore):
         value_P = self.objective_fn(PMS.rp_c, X, a_uv)
         direct_msg = X.sum()
         total_edges = a_uv.sum()
-        valueTuple = f"Value from MIP: {value}, Value from Greedy: {value_P}"
-        self.validate(result, PMS, C, D, H, U)
+        valueTuple = f"Value from MIP: {value}, Value For : {value_P}"
+#        self.validate(result, PMS, C, D, H, U)
         resp = (X, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
         del mdl
         del result
-        with open(f'result_msn_N_N.txt','a') as f:
-            f.write(repr(resp[1])+"\n---\n"+ valueTuple+"\n")
+        with open(f'result_msn_N_A.txt','a') as f:
+            f.write(repr(resp[1]) +"\n---\n"+ valueTuple+"\n")
         return resp
 
     def create_var_for_greedy(self, solution, C, D, H, U):

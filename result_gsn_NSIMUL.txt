@@ -1,0 +1,44 @@
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 2.2943, 'info': {'direct_msg': 200, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 5266, 'duration': 13.0421, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 17428, 'duration': 29.5642, 'info': {'direct_msg': 360, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 15700, 'duration': 3502.9833, 'info': {'direct_msg': 850, 'total_edges': 2}}
+-----
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 2.3103, 'info': {'direct_msg': 200, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 5266, 'duration': 13.0513, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 17428, 'duration': 29.7843, 'info': {'direct_msg': 360, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 15700, 'duration': 110.3265, 'info': {'direct_msg': 850, 'total_edges': 2}}
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 49630, 'duration': 185.4027, 'info': {'direct_msg': 1190, 'total_edges': 4}}
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 20412, 'duration': 328.4767, 'info': {'direct_msg': 2000, 'total_edges': 12}}
+-----
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 2.4928, 'info': {'direct_msg': 200, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 5266, 'duration': 14.4187, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 17428, 'duration': 32.3126, 'info': {'direct_msg': 360, 'total_edges': 0}}
+-----
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 2.3144, 'info': {'direct_msg': 200, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 5266, 'duration': 13.1471, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 17428, 'duration': 30.1532, 'info': {'direct_msg': 360, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 15700, 'duration': 110.8553, 'info': {'direct_msg': 850, 'total_edges': 2}}
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 49630, 'duration': 186.5324, 'info': {'direct_msg': 1190, 'total_edges': 4}}
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 20412, 'duration': 333.9849, 'info': {'direct_msg': 2000, 'total_edges': 12}}
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 34406, 'duration': 2395.9444, 'info': {'direct_msg': 1500, 'total_edges': 12}}
+-----
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 2.2571, 'info': {'direct_msg': 163, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 6990.0, 'duration': 4.0597, 'info': {'direct_msg': 170, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 22928.0, 'duration': 5.1061, 'info': {'direct_msg': 360, 'total_edges': 0}}
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 26582.0, 'duration': 8.3047, 'info': {'direct_msg': 850, 'total_edges': 2}}
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 90318.0, 'duration': 10.3784, 'info': {'direct_msg': 1190, 'total_edges': 4}}
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 29067.0, 'duration': 15.5608, 'info': {'direct_msg': 2000, 'total_edges': 12}}
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 98028.0, 'duration': 21.1405, 'info': {'direct_msg': 1500, 'total_edges': 12}}
+{'case': {'C': 10, 'U': 2000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 8}, 'value': 261388.0, 'duration': 42.3867, 'info': {'direct_msg': 3800, 'total_edges': 56}}
+{'case': {'C': 10, 'U': 3000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 9}, 'value': 619990.0, 'duration': 53.9989, 'info': {'direct_msg': 6300, 'total_edges': 122}}
+{'case': {'C': 10, 'U': 4000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 10}, 'value': 654600.0, 'duration': 66.256, 'info': {'direct_msg': 6400, 'total_edges': 244}}
+{'case': {'C': 10, 'U': 5000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 11}, 'value': 612136.0, 'duration': 99.8795, 'info': {'direct_msg': 8000, 'total_edges': 392}}
+{'case': {'C': 10, 'U': 10000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 12}, 'value': 1596240.0, 'duration': 144.8033, 'info': {'direct_msg': 19000, 'total_edges': 1606}}
+{'case': {'C': 10, 'U': 15000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 13}, 'value': 2579746.0, 'duration': 225.5129, 'info': {'direct_msg': 28500, 'total_edges': 3548}}
+{'case': {'C': 10, 'U': 20000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 14}, 'value': 2654580.0, 'duration': 271.3621, 'info': {'direct_msg': 38000, 'total_edges': 6100}}
+{'case': {'C': 10, 'U': 25000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 15}, 'value': 6536342.0, 'duration': 317.2012, 'info': {'direct_msg': 45000, 'total_edges': 9472}}
+{'case': {'C': 10, 'U': 30000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 16}, 'value': 5559190.0, 'duration': 475.7603, 'info': {'direct_msg': 57000, 'total_edges': 13646}}
+{'case': {'C': 10, 'U': 35000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 17}, 'value': 8344490.0, 'duration': 665.744, 'info': {'direct_msg': 70000, 'total_edges': 18388}}
+{'case': {'C': 10, 'U': 40000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 18}, 'value': 10064440.0, 'duration': 823.9229, 'info': {'direct_msg': 76000, 'total_edges': 23990}}
+--------
+

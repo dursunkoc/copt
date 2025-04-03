@@ -23,8 +23,8 @@ cases = [
          Case(200),
          Case(500),
          Case(1000),
-#         Case(5000),
-#         Case(10000),
+         Case(5000),
+         Case(10000),
         ]
 if __name__ =='__main__':
     for case in cases:
