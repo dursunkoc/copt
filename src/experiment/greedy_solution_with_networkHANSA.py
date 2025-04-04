@@ -1,4 +1,4 @@
-from numpy import random
+import random
 from experiment import Solution, SolutionResult, Case, Experiment, Parameters
 from camps_order_model import start_model as camps_order_model
 from tqdm import trange
@@ -142,7 +142,7 @@ class GreedySolutionWithNet(Solution):
         S = X_cuhd.copy()
         S_best = S.copy()
         T = initial_temp
-        NS_perf = {1: 1.0, 2: 1.0, 3: 1.0}
+        NS_perf = {1: 1.0, 2: 1.0}
         TL = []
         SC = 0
         eta_stag = 50
@@ -168,20 +168,20 @@ class GreedySolutionWithNet(Solution):
                 else:
                     S_prime = self.generate_neighbor_n3(S.copy(), PMS)
 
-                if tuple(map(tuple, S_prime.flatten())) in TL:
+                if tuple(S_prime.flatten()) in TL:
                     continue
 
                 S_prime, f_prime = self.solve_network_influence_subproblem(S_prime, PMS, a_uv)
                 f_S, _ = self.solve_network_influence_subproblem(S, PMS, a_uv)
-                delta_f = f_prime - f_S
+                delta_f = max(f_prime - f_S)
 
                 alpha_i = 1.0
                 p = np.exp(-delta_f / (T * alpha_i))
                 r = random.random()
 
-                if delta_f >= 0 or r < p:
+                if (delta_f >= 0) or (r < p):
                     S = S_prime.copy()
-                    TL.append(tuple(map(tuple, S.flatten())))
+                    TL.append(tuple(S_prime.flatten()))
                     tenure = base_tenure + SC // 10
                     if len(TL) > tenure:
                         TL.pop(0)
@@ -194,7 +194,7 @@ class GreedySolutionWithNet(Solution):
                         SC += 1
                         recent_improvements = 0
 
-                    NS_perf[neighborhood_choice] = (alpha_perf * (1 if delta_f >= 0 else 0) + beta_perf * abs(delta_f)) / 1
+                    NS_perf[neighborhood_choice] = (alpha_perf * (1 if (delta_f >= 0).any() else 0) + beta_perf * abs(delta_f)) / 1
                 else:
                     SC += 1
                     recent_improvements = 0
@@ -234,7 +234,7 @@ class GreedySolutionWithNet(Solution):
         C, U, H, D = solution.shape
         new_solution = copy.deepcopy(solution)
         c, u = random.choice([(c, u) for c in range(C) for u in range(U)])
-        h1, d1 = random.choice([(h, d) for h in range(H) for d in range(D) if solution[c, u, h, d] == 1])
+        h1, d1 = random.choice([(h, d) for h in range(H) for d in range(D)])
         h2, d2 = random.choice([(h, d) for h in range(H) for d in range(D) if (h, d) != (h1, d1)])
         new_solution[c, u, h1, d1] = 0
         new_solution[c, u, h2, d2] = 1

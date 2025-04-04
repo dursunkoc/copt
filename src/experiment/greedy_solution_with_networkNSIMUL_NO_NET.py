@@ -188,7 +188,7 @@ class GreedySolutionWithNet(Solution):
                             raise RuntimeError(f'{(c, u, h, d)} does not consistent with previous values!')
         print("Solution is consistent with greedy from mip respect")
 
-    def simulated_annealing(self, X_cuhd, PMS, a_uv, prev_value, initial_temp=100, cooling_rate=0.95, max_iterations=1000, early_stopping_iters=5, cost_threshold=0.001):
+    def simulated_annealing(self, X_cuhd, PMS, prev_value, initial_temp=100, cooling_rate=0.95, max_iterations=1000, early_stopping_iters=5, cost_threshold=0.001):
         """
         Simulated annealing algorithm for campaign optimization.
         """
@@ -202,7 +202,7 @@ class GreedySolutionWithNet(Solution):
         for _ in range(max_iterations):
             neighboring_solution = self.generate_neighborhood(current_solution, PMS)
             for neighbor in neighboring_solution:
-                neighbor_cost= self.objective_fn(PMS.rp_c, neighbor, a_uv)
+                neighbor_cost= self.objective_fn_no_net(PMS.rp_c, neighbor)
                 cost_difference = neighbor_cost - current_cost
                 if cost_difference >= 0:  # Accepting improvement
                     current_solution = neighbor.copy()
@@ -239,26 +239,27 @@ class GreedySolutionWithNet(Solution):
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
-        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         X_cuhd = np.zeros((C,U,H,D), dtype='int')
         PMS.U = U
         PMS.H = H
         PMS.C = C
         PMS.D = D
         self.improve_solution(X_cuhd, PMS)
-        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
+        value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
 
-        X_cuhd = self.simulated_annealing(X_cuhd, PMS, a_uv, value)
-        value=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
+        X_cuhd = self.simulated_annealing(X_cuhd, PMS, value)
+        value=self.objective_fn_no_net(PMS.rp_c, X_cuhd)
+        value_P=self.objective_fn(PMS.rp_c, X_cuhd, a_uv)
 
         end_time = time()
         duration = end_time - start_time
 
         direct_msg = X_cuhd.sum()
         total_edges = a_uv.sum()
-        valueTuple = f"Value from SA: {value}, Value from : {value}"
+        valueTuple = f"Value from SA: {value}, Value from WITH NET : {value_P}"
         result = (X_cuhd, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
-        with open(f'result_gsn_NSIMUL_N_N.txt','a') as f:
+        with open(f'result_gsn_NSIMUL_N_A.txt','a') as f:
             f.write(repr(result[1])+"\n---\n"+ valueTuple+"\n")
         return result
         

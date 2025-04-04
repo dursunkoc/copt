@@ -1,0 +1,32 @@
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390, 'duration': 7.1154, 'info': {'direct_msg': 158, 'total_edges': 0}}
+
+---
+Value from SA: 5390, Value from : 5390
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 4556, 'duration': 17.7644, 'info': {'direct_msg': 154, 'total_edges': 0}}
+
+---
+Value from SA: 4556, Value from : 4556
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 13518, 'duration': 40.4553, 'info': {'direct_msg': 296, 'total_edges': 0}}
+
+---
+Value from SA: 13518, Value from : 13518
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 14882, 'duration': 148.7764, 'info': {'direct_msg': 654, 'total_edges': 2}}
+
+---
+Value from SA: 14882, Value from : 14882
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 50977, 'duration': 251.5445, 'info': {'direct_msg': 975, 'total_edges': 4}}
+
+---
+Value from SA: 50977, Value from : 50977
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 20724, 'duration': 454.1696, 'info': {'direct_msg': 1401, 'total_edges': 12}}
+
+---
+Value from SA: 20724, Value from : 20724
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 47545, 'duration': 1522.8075, 'info': {'direct_msg': 1200, 'total_edges': 12}}
+
+---
+Value from SA: 47545, Value from : 47545
+{'case': {'C': 10, 'U': 2000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 8}, 'value': 125790, 'duration': 5443.5694, 'info': {'direct_msg': 2771, 'total_edges': 56}}
+
+---
+Value from SA: 125790, Value from : 125790
