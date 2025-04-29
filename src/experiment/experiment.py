@@ -149,7 +149,8 @@ class Solution:
         ##quota categories
         q_ic = np.random.choice(2, (I,C)) #q_ic = np.zeros((I,C), dtype='int8')
         ##priority categories
-        r_p = np.random.choice(100, P) #r_p = np.ones(P, dtype='int8')
+        #r_p = np.random.choice(100, P) 
+        r_p = np.ones(P, dtype='int8')
         rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
         ##blokage
         b = 7

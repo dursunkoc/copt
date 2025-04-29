@@ -100,7 +100,7 @@ class MipSolutionWithNetwork(Solution, MipCore):
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='erdos', m=None, p=.003, drop_prob=.995), False)
+    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='erdos', m=None, p=.8, drop_prob=.00), False)
 #    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
     print(solutions)
     print("values:")

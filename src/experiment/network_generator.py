@@ -20,15 +20,11 @@ def gen_network(p, n, m, net_type, drop_prob=None, seed=34) :
 
 if __name__ == '__main__':
     #seed=142, net_type='erdos', m=None, p=.03, drop_prob=.95), False
-    U = 1000
-    a_uv,_ = gen_network(seed=142, p=0.003, drop_prob=.99, n=U, m=None, net_type='erdos')
-    print(a_uv.sum())
-    
-    j=0
-    links = np.where(a_uv==1)
-    for i in range(links[0].shape[0]):
-        print(i, links[0][i], links[1][i])
-        j+=1
-    print(j)
+    Us = [100,100,200,500,700,1000,1000,2000,3000,4000,5000,10000,15000,20000,25000,30000,35000,40000,45000,50000,55000,60000]
+    for U in Us:
+        #seed=142, net_type='erdos', m=None, p=.003, drop_prob=.995
+        a_uv,_ = gen_network(seed=142, p=0.003, drop_prob=.60, n=U, m=None, net_type='erdos')
+        print(f"{U} -> {a_uv.sum()}")
+
     
     
