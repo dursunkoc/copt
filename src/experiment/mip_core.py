@@ -275,7 +275,7 @@ class MipCore:
                     for c in range(0,C)
                     for u in range(0,U)]))
         #constraints
-        eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
+#        eligibilitiy = self.mip_eligibility(mdl, X, PMS, C, U, H, D)
         print("eligibilitiy Done!")
 #        if PMS.s_cuhd is not None:
 #            weekly_communication = [self.mip_weekly_communication_rh(mdl, X, PMS, C, U, H, D, f_d) for f_d in range(1, D+1)]

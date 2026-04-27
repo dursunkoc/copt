@@ -1,0 +1,53 @@
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0211, 'info': {'direct_msg': 11, 'total_edges': 2}}
+
+---
+Value from MIP: 11.0, Value For : 12
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0209, 'info': {'direct_msg': 11, 'total_edges': 6}}
+
+---
+Value from MIP: 11.0, Value For : 13
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0193, 'info': {'direct_msg': 11, 'total_edges': 14}}
+
+---
+Value from MIP: 11.0, Value For : 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0203, 'info': {'direct_msg': 11, 'total_edges': 20}}
+
+---
+Value from MIP: 11.0, Value For : 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0212, 'info': {'direct_msg': 11, 'total_edges': 26}}
+
+---
+Value from MIP: 11.0, Value For : 17
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0372, 'info': {'direct_msg': 11, 'total_edges': 30}}
+
+---
+Value from MIP: 11.0, Value For : 17
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0212, 'info': {'direct_msg': 11, 'total_edges': 40}}
+
+---
+Value from MIP: 11.0, Value For : 18
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0208, 'info': {'direct_msg': 11, 'total_edges': 44}}
+
+---
+Value from MIP: 11.0, Value For : 18
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0194, 'info': {'direct_msg': 11, 'total_edges': 56}}
+
+---
+Value from MIP: 11.0, Value For : 18
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0204, 'info': {'direct_msg': 11, 'total_edges': 72}}
+
+---
+Value from MIP: 11.0, Value For : 19
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0197, 'info': {'direct_msg': 11, 'total_edges': 204}}
+
+---
+Value from MIP: 11.0, Value For : 20
+
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0207, 'info': {'direct_msg': 11, 'total_edges': 308}}
+
+---
+Value from MIP: 11.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0203, 'info': {'direct_msg': 4, 'total_edges': 308}}
+
+---
+Value from MIP: 4.0, Value For : 20

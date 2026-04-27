@@ -4,6 +4,7 @@ import numpy as np
 from time import time
 from network_generator import gen_network
 from datetime import datetime
+import networkx as nx
 
 class MipSolutionWithNetwork(Solution, MipCore):
     def __init__(self, seed, net_type, m=1, p=.04, drop_prob=.10):
@@ -23,13 +24,12 @@ class MipSolutionWithNetwork(Solution, MipCore):
         D = case.arguments["D"]  # number of planning days.
         I = case.arguments["I"]  # number of quota categories.
         nw_start_time = time()
-        a_uv, _ = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
+        a_uv, G = gen_network(seed=self.seed, p=self.p, n=U, m=self.m, drop_prob=self.drop_prob, net_type=self.net_type)
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
         PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
         mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
-        mdl.set_time_limit(180)
 
         result = mdl.solve(log_output=False)
 
@@ -43,8 +43,14 @@ class MipSolutionWithNetwork(Solution, MipCore):
         X = self.create_var_for_greedy(result, C, D, H, U)
         value_P = self.objective_fn(PMS.rp_c, X, a_uv)
         direct_msg = X.sum()
-        total_edges = a_uv.sum()
-        valueTuple = f"Value from MIP: {value}, Value For : {value_P}"
+        total_edges = a_uv.sum()/2
+        #Find the maximum degree of the network
+        max_degree = max([d for n, d in G.degree()])
+        #Find the average degree of the network
+        avg_degree = sum(dict(G.degree()).values()) / G.number_of_nodes()
+        #Find the number of connected components in the network
+        num_connected_components = nx.number_connected_components(G)
+        valueTuple = f"Value from MIP: {value}, Value for Net: {value_P}, Max Degree: {max_degree}, Avg Degree: {avg_degree}, Num Connected Components: {num_connected_components}"
 #        self.validate(result, PMS, C, D, H, U)
         resp = (X, SolutionResult(case, value, round(duration,4), {'direct_msg': direct_msg, 'total_edges':total_edges}))
         del mdl
@@ -100,7 +106,9 @@ class MipSolutionWithNetwork(Solution, MipCore):
 if __name__ == '__main__':
     from cases import cases
     expr = Experiment(cases)
-    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='erdos', m=None, p=.8, drop_prob=.00), False)
+#    for p in [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]:
+    p=0.01
+    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='erdos', m=None, p=p, drop_prob=.00), False)
 #    solutions = expr.run_cases_with(MipSolutionWithNetwork(seed=142, net_type='barabasi', m=3, p=None, drop_prob=.8), False)
     print(solutions)
     print("values:")

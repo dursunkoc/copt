@@ -150,7 +150,9 @@ class Solution:
         q_ic = np.random.choice(2, (I,C)) #q_ic = np.zeros((I,C), dtype='int8')
         ##priority categories
         #r_p = np.random.choice(100, P) 
-        r_p = np.ones(P, dtype='int8')
+        r_p = np.ones(P-1, dtype='int8')
+        #append a 9 to the end of the array
+        r_p = np.append(r_p, 9)
         rp_c = np.array([r_p[r] for r in np.random.choice(P, C)])
         ##blokage
         b = 7
@@ -162,8 +164,9 @@ class Solution:
         m_i = np.random.choice([4,3,5],I)#m_i = np.ones((I), dtype='int8')*10
         n_i = np.random.choice([1,3,2],I)#n_i = np.ones((I), dtype='int8')*10
         ##capacity for channel
-        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
-#        t_hd = np.random.choice([U*.01, U*.02, U*.03], (H, D))
+#        t_hd = np.random.choice([U*.7, U*.6, U*.5], (H, D))
+        t_hd = np.random.choice([U*.01, U*.02, U*.03], (H, D))
+#        t_hd = np.random.choice(5, (H, D))
         e_cu_X = np.stack([np.stack([e_cu for _ in range(H)], axis=2) for _ in range(D)], axis=3)
         m_i_X = np.stack([m_i for _ in range(U)], axis=1)
         n_i_X = np.stack([n_i for _ in range(U)], axis=1)
@@ -263,16 +266,16 @@ class Solution:
     def X_check(self, PMS, X):
         if not self.X_eligibility(PMS.e_cu_X, X):
             return False
-#        if not self.X_weekly_limitation(PMS.b, X):
-#            return False
-#        if not self.X_daily_limitation(PMS.k, X):
-#            return False
-#        if not self.X_campaign_limitation(PMS.l_c, X):
-#            return False
-#        if not self.X_weekly_quota(PMS.m_i, PMS.q_ic, X):
-#            return False
-#        if not self.X_daily_quota(PMS.n_i, PMS.q_ic, X):
-#            return False
+        if not self.X_weekly_limitation(PMS.b, X):
+            return False
+        if not self.X_daily_limitation(PMS.k, X):
+            return False
+        if not self.X_campaign_limitation(PMS.l_c, X):
+            return False
+        if not self.X_weekly_quota(PMS.m_i, PMS.q_ic, X):
+            return False
+        if not self.X_daily_quota(PMS.n_i, PMS.q_ic, X):
+            return False
         if not self.X_channel_capacity(PMS.t_hd, X):
             return False
         return True

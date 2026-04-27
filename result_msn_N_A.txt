@@ -1,49 +1,168 @@
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0211, 'info': {'direct_msg': 11, 'total_edges': 2}}
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0198, 'info': {'direct_msg': 4, 'total_edges': 6}}
 
 ---
-Value from MIP: 11.0, Value For : 12
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0209, 'info': {'direct_msg': 11, 'total_edges': 6}}
+Value from MIP: 4.0, Value For : 6
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0098, 'info': {'direct_msg': 4, 'total_edges': 8}}
 
 ---
-Value from MIP: 11.0, Value For : 13
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0193, 'info': {'direct_msg': 11, 'total_edges': 14}}
+Value from MIP: 4.0, Value For : 6
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0102, 'info': {'direct_msg': 4, 'total_edges': 14}}
 
 ---
-Value from MIP: 11.0, Value For : 16
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0203, 'info': {'direct_msg': 11, 'total_edges': 20}}
+Value from MIP: 4.0, Value For : 8
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.01, 'info': {'direct_msg': 4, 'total_edges': 20}}
 
 ---
-Value from MIP: 11.0, Value For : 16
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0212, 'info': {'direct_msg': 11, 'total_edges': 26}}
+Value from MIP: 4.0, Value For : 10
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0094, 'info': {'direct_msg': 4, 'total_edges': 26}}
 
 ---
-Value from MIP: 11.0, Value For : 17
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0372, 'info': {'direct_msg': 11, 'total_edges': 30}}
+Value from MIP: 4.0, Value For : 10
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0095, 'info': {'direct_msg': 4, 'total_edges': 30}}
 
 ---
-Value from MIP: 11.0, Value For : 17
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0212, 'info': {'direct_msg': 11, 'total_edges': 40}}
+Value from MIP: 4.0, Value For : 11
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0104, 'info': {'direct_msg': 4, 'total_edges': 30}}
 
 ---
-Value from MIP: 11.0, Value For : 18
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0208, 'info': {'direct_msg': 11, 'total_edges': 44}}
+Value from MIP: 4.0, Value For : 11
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0096, 'info': {'direct_msg': 4, 'total_edges': 36}}
 
 ---
-Value from MIP: 11.0, Value For : 18
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0194, 'info': {'direct_msg': 11, 'total_edges': 56}}
+Value from MIP: 4.0, Value For : 11
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0099, 'info': {'direct_msg': 4, 'total_edges': 40}}
 
 ---
-Value from MIP: 11.0, Value For : 18
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0204, 'info': {'direct_msg': 11, 'total_edges': 72}}
+Value from MIP: 4.0, Value For : 12
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0099, 'info': {'direct_msg': 4, 'total_edges': 44}}
 
 ---
-Value from MIP: 11.0, Value For : 19
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0197, 'info': {'direct_msg': 11, 'total_edges': 204}}
+Value from MIP: 4.0, Value For : 14
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0097, 'info': {'direct_msg': 4, 'total_edges': 72}}
 
 ---
-Value from MIP: 11.0, Value For : 20
-
-{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0207, 'info': {'direct_msg': 11, 'total_edges': 308}}
+Value from MIP: 4.0, Value For : 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0102, 'info': {'direct_msg': 4, 'total_edges': 120}}
 
 ---
-Value from MIP: 11.0, Value For : 20
+Value from MIP: 4.0, Value For : 19
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0093, 'info': {'direct_msg': 4, 'total_edges': 160}}
+
+---
+Value from MIP: 4.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0114, 'info': {'direct_msg': 4, 'total_edges': 204}}
+
+---
+Value from MIP: 4.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.029, 'info': {'direct_msg': 4, 'total_edges': 240}}
+
+---
+Value from MIP: 4.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0109, 'info': {'direct_msg': 4, 'total_edges': 260}}
+
+---
+Value from MIP: 4.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0104, 'info': {'direct_msg': 4, 'total_edges': 308}}
+
+---
+Value from MIP: 4.0, Value For : 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0206, 'info': {'direct_msg': 4, 'total_edges': 3.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 6, Max Degree: 2, Avg Degree: 0.3, Num Connected Components: 17
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.01, 'info': {'direct_msg': 4, 'total_edges': 4.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 6, Max Degree: 2, Avg Degree: 0.4, Num Connected Components: 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0101, 'info': {'direct_msg': 4, 'total_edges': 7.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 8, Max Degree: 2, Avg Degree: 0.7, Num Connected Components: 13
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0274, 'info': {'direct_msg': 4, 'total_edges': 10.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 10, Max Degree: 3, Avg Degree: 1.0, Num Connected Components: 10
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0122, 'info': {'direct_msg': 4, 'total_edges': 13.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 10, Max Degree: 3, Avg Degree: 1.3, Num Connected Components: 7
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0102, 'info': {'direct_msg': 4, 'total_edges': 15.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 11, Max Degree: 3, Avg Degree: 1.5, Num Connected Components: 5
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0116, 'info': {'direct_msg': 4, 'total_edges': 15.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 11, Max Degree: 3, Avg Degree: 1.5, Num Connected Components: 5
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0097, 'info': {'direct_msg': 4, 'total_edges': 18.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 11, Max Degree: 5, Avg Degree: 1.8, Num Connected Components: 4
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0097, 'info': {'direct_msg': 4, 'total_edges': 20.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 12, Max Degree: 5, Avg Degree: 2.0, Num Connected Components: 4
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0094, 'info': {'direct_msg': 4, 'total_edges': 22.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 14, Max Degree: 5, Avg Degree: 2.2, Num Connected Components: 3
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0096, 'info': {'direct_msg': 4, 'total_edges': 36.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 16, Max Degree: 6, Avg Degree: 3.6, Num Connected Components: 2
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0088, 'info': {'direct_msg': 4, 'total_edges': 60.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 19, Max Degree: 9, Avg Degree: 6.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0091, 'info': {'direct_msg': 4, 'total_edges': 80.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 20, Max Degree: 11, Avg Degree: 8.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0119, 'info': {'direct_msg': 4, 'total_edges': 102.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 20, Max Degree: 13, Avg Degree: 10.2, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0292, 'info': {'direct_msg': 4, 'total_edges': 120.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 20, Max Degree: 15, Avg Degree: 12.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0117, 'info': {'direct_msg': 4, 'total_edges': 130.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 20, Max Degree: 16, Avg Degree: 13.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 4.0, 'duration': 0.0089, 'info': {'direct_msg': 4, 'total_edges': 154.0}}
+
+---
+Value from MIP: 4.0, Value for Net: 20, Max Degree: 18, Avg Degree: 15.4, Num Connected Components: 1
+{'case': {'C': 3, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 18.0, 'duration': 0.0701, 'info': {'direct_msg': 2, 'total_edges': 3.0}}
+
+---
+Value from MIP: 18.0, Value for Net: 27, Max Degree: 2, Avg Degree: 0.3, Num Connected Components: 17
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 72.0, 'duration': 0.0312, 'info': {'direct_msg': 8, 'total_edges': 49.0}}
+
+---
+Value from MIP: 72.0, Value for Net: 90, Max Degree: 4, Avg Degree: 0.98, Num Connected Components: 51
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 27.0, 'duration': 0.0427, 'info': {'direct_msg': 3, 'total_edges': 49.0}}
+
+---
+Value from MIP: 27.0, Value for Net: 27, Max Degree: 4, Avg Degree: 0.98, Num Connected Components: 51
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 63.0, 'duration': 0.0853, 'info': {'direct_msg': 7, 'total_edges': 185.0}}
+
+---
+Value from MIP: 63.0, Value for Net: 135, Max Degree: 5, Avg Degree: 1.85, Num Connected Components: 35
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 45.0, 'duration': 0.1128, 'info': {'direct_msg': 5, 'total_edges': 1264.0}}
+
+---
+Value from MIP: 45.0, Value for Net: 162, Max Degree: 11, Avg Degree: 5.056, Num Connected Components: 4
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 72.0, 'duration': 0.1715, 'info': {'direct_msg': 8, 'total_edges': 2498.0}}
+
+---
+Value from MIP: 72.0, Value for Net: 585, Max Degree: 17, Avg Degree: 7.137142857142857, Num Connected Components: 2
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 45.0, 'duration': 0.218, 'info': {'direct_msg': 5, 'total_edges': 5050.0}}
+
+---
+Value from MIP: 45.0, Value for Net: 441, Max Degree: 23, Avg Degree: 10.1, Num Connected Components: 1
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 90.0, 'duration': 0.4274, 'info': {'direct_msg': 10, 'total_edges': 5050.0}}
+
+---
+Value from MIP: 90.0, Value for Net: 567, Max Degree: 23, Avg Degree: 10.1, Num Connected Components: 1

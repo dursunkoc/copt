@@ -1,76 +1,176 @@
-{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 5390.0, 'duration': 0.0408, 'info': {'direct_msg': 97, 'total_edges': 0}}
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 7.0, 'duration': 0.0205, 'info': {'direct_msg': 4, 'total_edges': 6}}
 
 ---
-Value from MIP: 5390.0, Value from Greedy: 5390
-{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 7290.0, 'duration': 0.064, 'info': {'direct_msg': 170, 'total_edges': 0}}
+Value from MIP: 7.0, Value from Greedy: 7
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 8.0, 'duration': 0.0108, 'info': {'direct_msg': 4, 'total_edges': 8}}
 
 ---
-Value from MIP: 7290.0, Value from Greedy: 7290
-{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 23718.0, 'duration': 0.1095, 'info': {'direct_msg': 360, 'total_edges': 0}}
+Value from MIP: 8.0, Value from Greedy: 8
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 9.0, 'duration': 0.0104, 'info': {'direct_msg': 4, 'total_edges': 14}}
 
 ---
-Value from MIP: 23718.0, Value from Greedy: 23718
-{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 27752.0, 'duration': 0.3116, 'info': {'direct_msg': 850, 'total_edges': 2}}
+Value from MIP: 9.0, Value from Greedy: 9
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0101, 'info': {'direct_msg': 4, 'total_edges': 20}}
 
 ---
-Value from MIP: 27752.0, Value from Greedy: 27752
-{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 91704.0, 'duration': 0.414, 'info': {'direct_msg': 1190, 'total_edges': 4}}
+Value from MIP: 11.0, Value from Greedy: 11
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 13.0, 'duration': 0.0149, 'info': {'direct_msg': 4, 'total_edges': 26}}
 
 ---
-Value from MIP: 91704.0, Value from Greedy: 91704
-{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 31011.0, 'duration': 0.6106, 'info': {'direct_msg': 2000, 'total_edges': 12}}
+Value from MIP: 13.0, Value from Greedy: 13
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 14.0, 'duration': 0.0125, 'info': {'direct_msg': 4, 'total_edges': 30}}
 
 ---
-Value from MIP: 31011.0, Value from Greedy: 31011
-{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 99033.0, 'duration': 1.1443, 'info': {'direct_msg': 1500, 'total_edges': 12}}
+Value from MIP: 14.0, Value from Greedy: 14
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 14.0, 'duration': 0.0142, 'info': {'direct_msg': 4, 'total_edges': 30}}
 
 ---
-Value from MIP: 99033.0, Value from Greedy: 99033
-{'case': {'C': 10, 'U': 2000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 8}, 'value': 262416.0, 'duration': 2.4251, 'info': {'direct_msg': 3800, 'total_edges': 56}}
+Value from MIP: 14.0, Value from Greedy: 14
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0131, 'info': {'direct_msg': 4, 'total_edges': 36}}
 
 ---
-Value from MIP: 262416.0, Value from Greedy: 262416
-{'case': {'C': 10, 'U': 3000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 9}, 'value': 621796.0, 'duration': 4.1797, 'info': {'direct_msg': 6300, 'total_edges': 122}}
+Value from MIP: 16.0, Value from Greedy: 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0122, 'info': {'direct_msg': 4, 'total_edges': 40}}
 
 ---
-Value from MIP: 621796.0, Value from Greedy: 621796
-{'case': {'C': 10, 'U': 4000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 10}, 'value': 655623.0, 'duration': 6.4736, 'info': {'direct_msg': 6400, 'total_edges': 244}}
+Value from MIP: 16.0, Value from Greedy: 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0122, 'info': {'direct_msg': 4, 'total_edges': 44}}
 
 ---
-Value from MIP: 655623.0, Value from Greedy: 655623
-{'case': {'C': 10, 'U': 5000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 11}, 'value': 615136.0, 'duration': 10.1068, 'info': {'direct_msg': 8000, 'total_edges': 392}}
+Value from MIP: 16.0, Value from Greedy: 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 19.0, 'duration': 0.0128, 'info': {'direct_msg': 4, 'total_edges': 72}}
 
 ---
-Value from MIP: 615136.0, Value from Greedy: 615136
-{'case': {'C': 10, 'U': 10000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 12}, 'value': 1606690.0, 'duration': 45.902, 'info': {'direct_msg': 19000, 'total_edges': 1606}}
+Value from MIP: 19.0, Value from Greedy: 19
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0119, 'info': {'direct_msg': 4, 'total_edges': 120}}
 
 ---
-Value from MIP: 1606690.0, Value from Greedy: 1606690
-{'case': {'C': 10, 'U': 15000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 13}, 'value': 2580996.0, 'duration': 128.4283, 'info': {'direct_msg': 28500, 'total_edges': 3548}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0132, 'info': {'direct_msg': 3, 'total_edges': 160}}
 
 ---
-Value from MIP: 2580996.0, Value from Greedy: 2580996
-{'case': {'C': 10, 'U': 20000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 14}, 'value': 2663197.0, 'duration': 280.2514, 'info': {'direct_msg': 38000, 'total_edges': 6100}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0133, 'info': {'direct_msg': 3, 'total_edges': 204}}
 
 ---
-Value from MIP: 2663197.0, Value from Greedy: 2663197
-{'case': {'C': 10, 'U': 25000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 15}, 'value': 6537876.0, 'duration': 531.8314, 'info': {'direct_msg': 45000, 'total_edges': 9472}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.012, 'info': {'direct_msg': 3, 'total_edges': 240}}
 
 ---
-Value from MIP: 6537876.0, Value from Greedy: 6537876
-{'case': {'C': 10, 'U': 30000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 16}, 'value': 5563249.0, 'duration': 894.2813, 'info': {'direct_msg': 57000, 'total_edges': 13646}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0127, 'info': {'direct_msg': 3, 'total_edges': 260}}
 
 ---
-Value from MIP: 5563249.0, Value from Greedy: 5563249
-{'case': {'C': 10, 'U': 35000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 17}, 'value': 8346087.0, 'duration': 1361.1311, 'info': {'direct_msg': 70000, 'total_edges': 18388}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.013, 'info': {'direct_msg': 2, 'total_edges': 308}}
 
 ---
-Value from MIP: 8346087.0, Value from Greedy: 8346087
-{'case': {'C': 10, 'U': 40000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 18}, 'value': 10067208.0, 'duration': 1998.312, 'info': {'direct_msg': 76000, 'total_edges': 23990}}
+Value from MIP: 20.0, Value from Greedy: 20
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 7.0, 'duration': 0.0348, 'info': {'direct_msg': 4, 'total_edges': 3.0}}
 
 ---
-Value from MIP: 10067208.0, Value from Greedy: 10067208
-{'case': {'C': 10, 'U': 45000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 19}, 'value': 0.0, 'duration': 2855.1896, 'info': {'direct_msg': 0, 'total_edges': 30476}}
+Value from MIP: 7.0, Value for Net: 7, Max Degree: 2, Avg Degree: 0.3, Num Connected Components: 17
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 8.0, 'duration': 0.0117, 'info': {'direct_msg': 4, 'total_edges': 4.0}}
 
 ---
-Value from MIP: 0.0, Value from Greedy: 0
+Value from MIP: 8.0, Value for Net: 8, Max Degree: 2, Avg Degree: 0.4, Num Connected Components: 16
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 9.0, 'duration': 0.0104, 'info': {'direct_msg': 4, 'total_edges': 7.0}}
+
+---
+Value from MIP: 9.0, Value for Net: 9, Max Degree: 2, Avg Degree: 0.7, Num Connected Components: 13
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 11.0, 'duration': 0.0113, 'info': {'direct_msg': 4, 'total_edges': 10.0}}
+
+---
+Value from MIP: 11.0, Value for Net: 11, Max Degree: 3, Avg Degree: 1.0, Num Connected Components: 10
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 13.0, 'duration': 0.0146, 'info': {'direct_msg': 4, 'total_edges': 13.0}}
+
+---
+Value from MIP: 13.0, Value for Net: 13, Max Degree: 3, Avg Degree: 1.3, Num Connected Components: 7
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 14.0, 'duration': 0.0126, 'info': {'direct_msg': 4, 'total_edges': 15.0}}
+
+---
+Value from MIP: 14.0, Value for Net: 14, Max Degree: 3, Avg Degree: 1.5, Num Connected Components: 5
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 14.0, 'duration': 0.0133, 'info': {'direct_msg': 4, 'total_edges': 15.0}}
+
+---
+Value from MIP: 14.0, Value for Net: 14, Max Degree: 3, Avg Degree: 1.5, Num Connected Components: 5
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0136, 'info': {'direct_msg': 4, 'total_edges': 18.0}}
+
+---
+Value from MIP: 16.0, Value for Net: 16, Max Degree: 5, Avg Degree: 1.8, Num Connected Components: 4
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0119, 'info': {'direct_msg': 4, 'total_edges': 20.0}}
+
+---
+Value from MIP: 16.0, Value for Net: 16, Max Degree: 5, Avg Degree: 2.0, Num Connected Components: 4
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 16.0, 'duration': 0.0133, 'info': {'direct_msg': 4, 'total_edges': 22.0}}
+
+---
+Value from MIP: 16.0, Value for Net: 16, Max Degree: 5, Avg Degree: 2.2, Num Connected Components: 3
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 19.0, 'duration': 0.0141, 'info': {'direct_msg': 4, 'total_edges': 36.0}}
+
+---
+Value from MIP: 19.0, Value for Net: 19, Max Degree: 6, Avg Degree: 3.6, Num Connected Components: 2
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0121, 'info': {'direct_msg': 4, 'total_edges': 60.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 9, Avg Degree: 6.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0347, 'info': {'direct_msg': 3, 'total_edges': 80.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 11, Avg Degree: 8.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0139, 'info': {'direct_msg': 3, 'total_edges': 102.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 13, Avg Degree: 10.2, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0148, 'info': {'direct_msg': 3, 'total_edges': 120.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 15, Avg Degree: 12.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0131, 'info': {'direct_msg': 3, 'total_edges': 130.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 16, Avg Degree: 13.0, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 20.0, 'duration': 0.0129, 'info': {'direct_msg': 2, 'total_edges': 154.0}}
+
+---
+Value from MIP: 20.0, Value for Net: 20, Max Degree: 18, Avg Degree: 15.4, Num Connected Components: 1
+{'case': {'C': 1, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 7.0, 'duration': 0.0217, 'info': {'direct_msg': 4, 'total_edges': 3.0}}
+
+---
+Value from MIP: 7.0, Value for Net: 7, Max Degree: 2, Avg Degree: 0.3, Num Connected Components: 17
+{'case': {'C': 2, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 1}, 'value': 34.0, 'duration': 0.0472, 'info': {'direct_msg': 8, 'total_edges': 49.0}}
+
+---
+Value from MIP: 34.0, Value for Net: 34, Max Degree: 4, Avg Degree: 0.98, Num Connected Components: 51
+{'case': {'C': 5, 'U': 100, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 2}, 'value': 15.0, 'duration': 0.0762, 'info': {'direct_msg': 3, 'total_edges': 49.0}}
+
+---
+Value from MIP: 15.0, Value for Net: 15, Max Degree: 4, Avg Degree: 0.98, Num Connected Components: 51
+{'case': {'C': 5, 'U': 200, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 3}, 'value': 42.0, 'duration': 0.2087, 'info': {'direct_msg': 7, 'total_edges': 185.0}}
+
+---
+Value from MIP: 42.0, Value for Net: 42, Max Degree: 5, Avg Degree: 1.85, Num Connected Components: 35
+{'case': {'C': 5, 'U': 500, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 4}, 'value': 60.0, 'duration': 1.5584, 'info': {'direct_msg': 5, 'total_edges': 1264.0}}
+
+---
+Value from MIP: 60.0, Value for Net: 60, Max Degree: 11, Avg Degree: 5.056, Num Connected Components: 4
+{'case': {'C': 5, 'U': 700, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 5}, 'value': 138.0, 'duration': 3.9031, 'info': {'direct_msg': 8, 'total_edges': 2498.0}}
+
+---
+Value from MIP: 138.0, Value for Net: 138, Max Degree: 17, Avg Degree: 7.137142857142857, Num Connected Components: 2
+{'case': {'C': 5, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 6}, 'value': 120.0, 'duration': 10.5167, 'info': {'direct_msg': 5, 'total_edges': 5050.0}}
+
+---
+Value from MIP: 120.0, Value for Net: 120, Max Degree: 23, Avg Degree: 10.1, Num Connected Components: 1
+{'case': {'C': 10, 'U': 1000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 7}, 'value': 240.0, 'duration': 27.1697, 'info': {'direct_msg': 10, 'total_edges': 5050.0}}
+
+---
+Value from MIP: 240.0, Value for Net: 240, Max Degree: 23, Avg Degree: 10.1, Num Connected Components: 1
+{'case': {'C': 10, 'U': 2000, 'H': 1, 'D': 3, 'I': 3, 'P': 3, 'id': 8}, 'value': 350.0, 'duration': 158.8767, 'info': {'direct_msg': 10, 'total_edges': 20102.0}}
+
+---
+Value from MIP: 350.0, Value for Net: 350, Max Degree: 34, Avg Degree: 20.102, Num Connected Components: 1
+{'case': {'C': 3, 'U': 20, 'H': 1, 'D': 1, 'I': 1, 'P': 1, 'id': 0}, 'value': 54.0, 'duration': 0.0449, 'info': {'direct_msg': 2, 'total_edges': 3.0}}
+
+---
+Value from MIP: 54.0, Value for Net: 54, Max Degree: 2, Avg Degree: 0.3, Num Connected Components: 17
