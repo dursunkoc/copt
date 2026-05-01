@@ -1,0 +1,23 @@
+src/experiment/dw_lp_solution.py
+  9db96969226497a2 1-340
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "55c5740adc15f49c8db83c8fa8d926e398fd673e",
+  "prompts": {
+    "9db96969226497a2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "2f4cf2af-6e26-45b9-86b6-72b14f47a88d",
+        "model": "default"
+      },
+      "human_author": "DURSUN KOC",
+      "messages": [],
+      "total_additions": 454,
+      "total_deletions": 114,
+      "accepted_lines": 340,
+      "overriden_lines": 0
+    }
+  }
+}
