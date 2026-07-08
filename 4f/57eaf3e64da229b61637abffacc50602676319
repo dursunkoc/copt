@@ -1,0 +1,73 @@
+src/experiment/cases.py
+  h_26a5530a61b6f8 18
+src/experiment/dw_lp_solution.py
+  9db96969226497a2 7-8,10,12,17,23-24,72,75,81,123-128,133,135,139,161-171,175-176,179-180,186-204,313,324-327,333-335,341-346,376-377,381-399,404-405,409,413-417,419-420,422-441,452-453,455,458,461-468,472-480
+  bce8f57aac90b348 20-22,69,73-74,76-79,83,88,92,115-122,129-132,134,136-138,140-160,172-174,177-178,181-185,374-375,450-451
+  9db96969226497a2 25
+  9db96969226497a2 328
+  9db96969226497a2 336
+  9db96969226497a2 340
+  9db96969226497a2 347-348
+  9db96969226497a2 400-403
+  9db96969226497a2 406-408
+  9db96969226497a2 410-412
+src/experiment/mip_solution_with_network_applied.py
+  4aa704b3d1557eab 31
+src/experiment/pareto_analysis.py
+  4aa704b3d1557eab 1-160,162-181,183-191
+  4aa704b3d1557eab 161
+  4aa704b3d1557eab 182
+.cursor/plans/pareto_thesis_insert_DELIVERABLE.md
+  4aa704b3d1557eab 1-88
+src/experiment/mip_core.py
+  9db96969226497a2 159-165,173,180,391-392
+  h_26a5530a61b6f8 166-172,174-179
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "4f57eaf3e64da229b61637abffacc50602676319",
+  "prompts": {
+    "4aa704b3d1557eab": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e2332d9b-4aed-49dc-9b3c-9661234068e8",
+        "model": "default"
+      },
+      "human_author": "DURSUN KOC <dursunkoc@gmail.com>",
+      "total_additions": 286,
+      "total_deletions": 7,
+      "accepted_lines": 278,
+      "overriden_lines": 2
+    },
+    "9db96969226497a2": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "2f4cf2af-6e26-45b9-86b6-72b14f47a88d",
+        "model": "default"
+      },
+      "human_author": "DURSUN KOC <dursunkoc@gmail.com>",
+      "total_additions": 273,
+      "total_deletions": 182,
+      "accepted_lines": 138,
+      "overriden_lines": 25
+    },
+    "bce8f57aac90b348": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "b72bb319-edbe-455f-99cc-249750c81bfb",
+        "model": "default"
+      },
+      "human_author": "DURSUN KOC <dursunkoc@gmail.com>",
+      "total_additions": 64,
+      "total_deletions": 25,
+      "accepted_lines": 64,
+      "overriden_lines": 0
+    }
+  },
+  "humans": {
+    "h_26a5530a61b6f8": {
+      "author": "DURSUN KOC"
+    }
+  }
+}
