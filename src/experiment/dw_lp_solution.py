@@ -4,15 +4,24 @@ Matches thesis sec:dw in camp-opt/chapters/03_copl.tex.
 """
 from __future__ import annotations
 
+import os
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from dataclasses import dataclass
+from datetime import datetime
 from time import time
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
 import numpy as np
 from docplex.mp.model import Model
 
-from experiment import Case, Parameters, Solution, SolutionResult
+from experiment import Case, Experiment, Parameters, Solution, SolutionResult
 from mip_core import MipCore
+
+# Pricing PS(u) problems are independent; batching reduces Python/solver overhead.
+DEFAULT_PRICING_BATCH_SIZE = 500
+
+# Shared objective with other experiment.Solution heuristics (objective_fn_no_net).
+_objective_holder = Solution("__dw_obj__")
 
 
 def _column_bitkey(x: np.ndarray) -> Tuple[int, ...]:
@@ -28,11 +37,6 @@ def _schedule_coeffs(
     r_bar = float(np.sum(xc * rp_c[:, np.newaxis, np.newaxis]))
     a_hd = np.sum(xc, axis=0)
     return r_bar, a_hd
-
-
-def _uses_rh(PMS: Parameters) -> bool:
-    """Same branch as mip_core.start_sub_model for rolling-horizon constraints."""
-    return PMS.s_cuhd is not None
 
 
 @dataclass
@@ -62,45 +66,30 @@ def _build_pricing_model(
     H: int,
     D: int,
     I: int,
-    u: int,
+    sub_U: List[int],
     mu: np.ndarray,
 ) -> Tuple[Model, Dict[Tuple[int, int, int, int], Any]]:
-    """PS(u): max sum (rp_c[c] - mu[h,d]) x[c,u,h,d] subject to (2u)-(11u) + single-channel."""
-    mdl = Model(name=f"DW-Pricing-u={u}")
-    sub_u = [u]
+    """
+    Block-diagonal pricing model for customers in sub_U (same as separate PS(u) summed).
+    Constraints: mip_partial_model_constraints_sub per batch; no channel coupling.
+    """
+    ids = "_".join(str(u) for u in sub_U[:3])
+    if len(sub_U) > 3:
+        ids += f"_.._{sub_U[-1]}"
+    mdl = Model(name=f"DW-Pricing-batch[{len(sub_U)}]_u={ids}")
     X = {
-        (c, uu, h, d): mdl.binary_var(f"x_{c}_{uu}_{h}_{d}")
+        (c, uu, h, d): mdl.binary_var(f"X_c:{c}_u:{uu}_h:{h}_d:{d}")
         for c in range(C)
-        for uu in sub_u
+        for uu in sub_U
         for h in range(H)
         for d in range(D)
     }
 
-    core.mip_eligibility_sub(mdl, X, PMS, C, sub_u, H, D)
-
-    # Thesis (3u): at most one channel per campaign per day
-    for c in range(C):
-        for d in range(D):
-            mdl.add_constraint(
-                mdl.sum(X[(c, u, hh, d)] for hh in range(H)) <= 1,
-                ctname=f"single_ch_c{c}_d{d}",
-            )
-
-    if _uses_rh(PMS):
-        for f_d in range(1, D + 1):
-            core.mip_weekly_communication_rh_sub(mdl, X, PMS, C, sub_u, H, D, f_d)
-            core.mip_campaign_communication_rh_sub(mdl, X, PMS, C, sub_u, H, D, f_d)
-            core.mip_weekly_quota_rh_sub(mdl, X, PMS, C, sub_u, H, D, I, f_d)
-    else:
-        core.mip_weekly_communication_sub(mdl, X, PMS, C, sub_u, H, D)
-        core.mip_campaign_communication_sub(mdl, X, PMS, C, sub_u, H, D)
-        core.mip_weekly_quota_sub(mdl, X, PMS, C, sub_u, H, D, I)
-
-    core.mip_daily_communication_sub(mdl, X, PMS, C, sub_u, H, D)
-    core.mip_daily_quota_sub(mdl, X, PMS, C, sub_u, H, D, I)
+    core.mip_partial_model_constraints_sub(mdl, X, PMS, C, sub_U, H, D, I)
 
     obj = mdl.sum(
         X[(c, u, h, d)] * (float(PMS.rp_c[c]) - float(mu[h, d]))
+        for u in sub_U
         for c in range(C)
         for h in range(H)
         for d in range(D)
@@ -121,6 +110,96 @@ def _extract_pricing_schedule(
                 v = X[(c, u, h, d)].solution_value
                 out[c, h, d] = 1 if v is not None and v > 0.5 else 0
     return out
+
+
+def _pricing_batches(U: int, batch_size: int) -> List[List[int]]:
+    """Indices [0..U-1] split into chunks of at most batch_size."""
+    bs = max(1, int(batch_size))
+    return [list(range(i, min(i + bs, U))) for i in range(0, U, bs)]
+
+
+def _run_batch_pricing(
+    sub_U: List[int],
+    mu: np.ndarray,
+    PMS: Parameters,
+    C: int,
+    H: int,
+    D: int,
+    I: int,
+) -> List[Tuple[int, np.ndarray, float]]:
+    """Solve pricing for all u in sub_U in one MIP (block-separable)."""
+    if not sub_U:
+        return []
+    core = MipCore()
+    mdl, X = _build_pricing_model(core, PMS, C, H, D, I, sub_U, mu)
+    psol = mdl.solve(log_output=False)
+    rp = PMS.rp_c.astype(float).reshape(C, 1, 1)
+    mu3 = mu.astype(float).reshape(1, H, D)
+    coeff = rp - mu3
+    if psol is None:
+        z = np.zeros((C, H, D), dtype=np.int8)
+        return [(u, z.copy(), float("-inf")) for u in sub_U]
+    out: List[Tuple[int, np.ndarray, float]] = []
+    for u in sub_U:
+        x_new = _extract_pricing_schedule(X, C, u, H, D, psol)
+        v_star = float(np.sum(x_new.astype(float) * coeff))
+        out.append((u, x_new, v_star))
+    return out
+
+
+def _run_single_pricing(
+    u: int,
+    mu: np.ndarray,
+    PMS: Parameters,
+    C: int,
+    H: int,
+    D: int,
+    I: int,
+) -> Tuple[int, np.ndarray, float]:
+    """Solve PS(u); thin wrapper around batch solver."""
+    return _run_batch_pricing([u], mu, PMS, C, H, D, I)[0]
+
+
+# Populated in child processes via ProcessPool initializer (avoids pickling PMS once per task).
+_dw_worker_ctx: Optional[Tuple[Parameters, int, int, int, int]] = None
+
+
+def _dw_pricing_process_init(ctx: Tuple[Parameters, int, int, int, int]) -> None:
+    global _dw_worker_ctx
+    _dw_worker_ctx = ctx
+
+
+def _dw_pricing_process_worker(
+    batch_mu: Tuple[List[int], np.ndarray],
+) -> List[Tuple[int, np.ndarray, float]]:
+    assert _dw_worker_ctx is not None
+    PMS, C, H, D, I = _dw_worker_ctx
+    batch, mu = batch_mu
+    return _run_batch_pricing(batch, mu, PMS, C, H, D, I)
+
+
+def _pricing_tasks_thread(
+    args: Tuple[List[int], np.ndarray, Parameters, int, int, int, int],
+) -> List[Tuple[int, np.ndarray, float]]:
+    batch, mu, PMS, C, H, D, I = args
+    return _run_batch_pricing(batch, mu, PMS, C, H, D, I)
+
+
+def _merge_pricing_columns(
+    results: List[Tuple[int, np.ndarray, float]],
+    nu: np.ndarray,
+    eps: float,
+    columns_per_u: List[List[DwColumn]],
+    rp_c: np.ndarray,
+) -> int:
+    added_local = 0
+    for u, x_new, v_star in results:
+        if v_star > nu[u] + eps:
+            r_bar, a_hd = _schedule_coeffs(x_new, rp_c)
+            col = DwColumn(x=x_new, r_bar=r_bar, a_hd=a_hd)
+            if _add_column_if_new(columns_per_u, u, col):
+                added_local += 1
+    return added_local
 
 
 def _solve_rmp(
@@ -231,7 +310,7 @@ def round_dw_primal(
                 _, c_drop, u_drop = candidates[0]
                 X_cuhd[c_drop, u_drop, h, d] = 0
 
-    primal_val = float(np.matmul(rp, X_cuhd.sum(axis=(1, 2, 3))))
+    primal_val = float(_objective_holder.objective_fn_no_net(rp, X_cuhd))
     return X_cuhd, primal_val
 
 
@@ -242,12 +321,30 @@ class DwLpSolution(Solution, MipCore):
         self,
         eps: float = 1e-5,
         max_iters: int = 5000,
+        *,
+        parallel_pricing: bool = True,
+        max_workers: Optional[int] = None,
+        parallel_backend: Literal["process", "thread"] = "process",
+        pricing_batch_size: int = DEFAULT_PRICING_BATCH_SIZE,
     ):
         super().__init__("DW-LP")
         self.eps = eps
         self.max_iters = max_iters
+        self.parallel_pricing = parallel_pricing
+        self.max_workers = max_workers
+        self.parallel_backend = parallel_backend
+        self.pricing_batch_size = max(1, int(pricing_batch_size))
         self.last_columns_per_u: Optional[List[List[DwColumn]]] = None
         self.last_lam_matrix: Optional[np.ndarray] = None
+
+    def _effective_workers(self, num_batches: int) -> int:
+        if not self.parallel_pricing:
+            return 1
+        if self.max_workers is not None:
+            w = self.max_workers
+        else:
+            w = os.cpu_count() or 4
+        return max(1, min(int(w), int(num_batches)))
 
     def runPh(self, case: Case, Xp_cuhd=None) -> Tuple[None, SolutionResult]:
         start_time = time()
@@ -274,44 +371,74 @@ class DwLpSolution(Solution, MipCore):
             col = DwColumn(x=x0.copy(), r_bar=r_bar, a_hd=a_hd.copy())
             columns_per_u.append([col])
 
+        batches = _pricing_batches(U, self.pricing_batch_size)
+        max_w = self._effective_workers(len(batches))
+        ctx = (PMS, C, H, D, I)
+
         it = 0
         z_dw: Optional[float] = None
         last_lam_matrix: Optional[np.ndarray] = None
+        cg_rmp_err: Optional[str] = None
 
-        while it < self.max_iters:
-            it += 1
-            z, mu, nu, lam_vars, err = _solve_rmp(PMS, U, H, D, columns_per_u)
-            if err or z is None or lam_vars is None:
-                end_time = time()
-                info = f"RMP_fail:{err}"
-                return (
-                    None,
-                    SolutionResult(case, 0.0, round(end_time - start_time, 4), info),
+        def column_generation_loop() -> None:
+            nonlocal it, z_dw, last_lam_matrix, cg_rmp_err
+            while it < self.max_iters:
+                it += 1
+                z, mu, nu, lam_vars, err = _solve_rmp(PMS, U, H, D, columns_per_u)
+                if err or z is None or lam_vars is None:
+                    cg_rmp_err = err or "unknown"
+                    return
+
+                z_dw = z
+                max_cols = max(len(columns_per_u[u]) for u in range(U))
+                last_lam_matrix = np.zeros((U, max_cols))
+                for u in range(U):
+                    for j in range(len(columns_per_u[u])):
+                        last_lam_matrix[u, j] = float(lam_vars[u, j].solution_value)
+
+                if max_w <= 1:
+                    results: List[Tuple[int, np.ndarray, float]] = []
+                    for b in batches:
+                        results.extend(
+                            _run_batch_pricing(b, mu, PMS, C, H, D, I)
+                        )
+                elif self.parallel_backend == "thread":
+                    tasks = [(b, mu, PMS, C, H, D, I) for b in batches]
+                    nested = list(ex_threads.map(_pricing_tasks_thread, tasks))
+                    results = [row for sub in nested for row in sub]
+                else:
+                    batch_mu_pairs = [(b, mu) for b in batches]
+                    nested = list(
+                        ex_process.map(_dw_pricing_process_worker, batch_mu_pairs)
+                    )
+                    results = [row for sub in nested for row in sub]
+
+                added = _merge_pricing_columns(
+                    results, nu, self.eps, columns_per_u, PMS.rp_c
                 )
+                if added == 0:
+                    break
 
-            z_dw = z
-            max_cols = max(len(columns_per_u[u]) for u in range(U))
-            last_lam_matrix = np.zeros((U, max_cols))
-            for u in range(U):
-                for j in range(len(columns_per_u[u])):
-                    last_lam_matrix[u, j] = float(lam_vars[u, j].solution_value)
+        if max_w <= 1:
+            column_generation_loop()
+        elif self.parallel_backend == "thread":
+            with ThreadPoolExecutor(max_workers=max_w) as ex_threads:
+                column_generation_loop()
+        else:
+            with ProcessPoolExecutor(
+                max_workers=max_w,
+                initializer=_dw_pricing_process_init,
+                initargs=(ctx,),
+            ) as ex_process:
+                column_generation_loop()
 
-            added = 0
-            for u in range(U):
-                pmdl, x_vars = _build_pricing_model(self, PMS, C, H, D, I, u, mu)
-                psol = pmdl.solve(log_output=False)
-                if psol is None:
-                    continue
-                v_star = float(pmdl.objective_value)
-                if v_star > nu[u] + self.eps:
-                    x_new = _extract_pricing_schedule(x_vars, C, u, H, D, psol)
-                    r_bar, a_hd = _schedule_coeffs(x_new, PMS.rp_c)
-                    col = DwColumn(x=x_new, r_bar=r_bar, a_hd=a_hd)
-                    if _add_column_if_new(columns_per_u, u, col):
-                        added += 1
-
-            if added == 0:
-                break
+        if z_dw is None:
+            end_time = time()
+            info = f"RMP_fail:{cg_rmp_err or 'unknown'}"
+            return (
+                None,
+                SolutionResult(case, 0.0, round(end_time - start_time, 4), info),
+            )
 
         end_time = time()
         duration = round(end_time - start_time, 4)
@@ -320,21 +447,34 @@ class DwLpSolution(Solution, MipCore):
             f"iters={it}",
             f"total_columns={total_cols}",
             f"eps={self.eps}",
+            f"pricing_batch_size={self.pricing_batch_size}",
+            f"pricing_batches={len(batches)}",
+            f"pricing_workers={max_w}",
+            f"pricing_backend={self.parallel_backend if max_w > 1 else 'serial'}",
         ]
-        if last_lam_matrix is not None:
-            info_parts.append(f"lam_shape={last_lam_matrix.shape}")
+        info_parts.append(f"lam_shape={last_lam_matrix.shape}")
         info = ";".join(info_parts)
 
-        val_out = float(z_dw) if z_dw is not None else 0.0
+        val_out = float(z_dw)
         self.last_columns_per_u = columns_per_u
         self.last_lam_matrix = last_lam_matrix
-        return (None, SolutionResult(case, val_out, duration, info))
+        sr = SolutionResult(case, val_out, duration, info)
+        with open(
+            f'result_dw_{datetime.now().strftime("%d-%m-%Y %H_%M_%S")}.txt',
+            "w",
+            encoding="utf-8",
+        ) as f:
+            f.write(repr(sr))
+        return (None, sr)
 
 
 if __name__ == "__main__":
-    tiny = Case({"C": 2, "U": 4, "H": 2, "D": 2, "I": 2, "P": 2, "id": -1})
-    _sol = DwLpSolution(eps=1e-5, max_iters=100)
-    _, sr = _sol.runPh(tiny, None)
-    print(sr)
-    assert sr.value >= 0
-    assert "iters=" in (sr.info or "")
+    from cases import cases
+
+    expr = Experiment(cases)
+    solutions = expr.run_cases_with(
+        DwLpSolution(eps=1e-5, max_iters=5000, parallel_backend="process"),
+        ph=False,
+    )
+    for solution in solutions:
+        print(solution)

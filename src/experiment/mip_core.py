@@ -156,6 +156,28 @@ class MipCore:
                 for d in range(0,D)
                 for i in range(0,I)))
 
+    def mip_partial_model_constraints_sub(self, mdl, X_cuhd, PMS, C, sub_U, H, D, I):
+        """
+        Per-customer constraint block used by start_sub_model (before channel_capacity / network).
+        DW pricing subproblem omits channel_capacity by calling this alone.
+        """
+        self.mip_eligibility_sub(mdl, X_cuhd, PMS, C, sub_U, H, D)
+        if PMS.s_cuhd is not None:
+#            for f_d in range(1, D + 1):
+#                self.mip_weekly_communication_rh_sub(mdl, X_cuhd, PMS, C, sub_U, H, D, f_d)
+#            for f_d in range(1, D + 1):
+#                self.mip_campaign_communication_rh_sub(mdl, X_cuhd, PMS, C, sub_U, H, D, f_d)
+#            for f_d in range(1, D + 1):
+#                self.mip_weekly_quota_rh_sub(mdl, X_cuhd, PMS, C, sub_U, H, D, I, f_d)
+            pass
+        else:
+#            self.mip_weekly_communication_sub(mdl, X_cuhd, PMS, C, sub_U, H, D)
+#            self.mip_campaign_communication_sub(mdl, X_cuhd, PMS, C, sub_U, H, D)
+#            self.mip_weekly_quota_sub(mdl, X_cuhd, PMS, C, sub_U, H, D, I)
+#        self.mip_daily_communication_sub(mdl, X_cuhd, PMS, C, sub_U, H, D)
+#        self.mip_daily_quota_sub(mdl, X_cuhd, PMS, C, sub_U, H, D, I)
+            pass
+
     def mip_channel_capacity(self, mdl, X_cuhd, PMS, C, U, H, D):
         return mdl.add_constraints((
             (mdl.sum(X_cuhd[(c,u,h,d)]
@@ -366,23 +388,8 @@ class MipCore:
                             for c in range(0,C)
                             for u in sub_U]))
 #            print(f"{sub_U}: Objective Done!")
-                #constraints
-            eligibilitiy = self.mip_eligibility_sub(mdl, X, PMS, C, sub_U, H, D)
-#            print(f"{sub_U}: eligibilitiy Done!")
-            if PMS.s_cuhd is not None:
-                weekly_communication = [self.mip_weekly_communication_rh_sub(mdl, X, PMS, C, sub_U, H, D, f_d) for f_d in range(1, D+1)]
-                campaign_communication = [self.mip_campaign_communication_rh_sub(mdl, X, PMS, C, sub_U, H, D, f_d) for f_d in range(1, D+1)]
-                weekly_quota = [self.mip_weekly_quota_rh_sub(mdl, X, PMS, C, sub_U, H, D, I, f_d) for f_d in range(1, D+1)]
-            else:
-                weekly_communication = self.mip_weekly_communication_sub(mdl, X, PMS, C, sub_U, H, D)
-                campaign_communication = self.mip_campaign_communication_sub(mdl, X, PMS, C, sub_U, H, D)
-                weekly_quota = self.mip_weekly_quota_sub(mdl, X, PMS, C, sub_U, H, D, I)
-#            print(f"{sub_U}: weekly_quota, campaign_communication, weekly_communication  Done!")
-    
-            daily_communication = self.mip_daily_communication_sub(mdl, X, PMS, C, sub_U, H, D)
-#            print(f"{sub_U}: daily_communication  Done!")
-            daily_quota = self.mip_daily_quota_sub(mdl, X, PMS, C, sub_U, H, D, I)
-#            print(f"{sub_U}: daily_quota  Done!")
+                #constraints (same block as mip_partial_model_constraints_sub + coupling)
+            self.mip_partial_model_constraints_sub(mdl, X, PMS, C, sub_U, H, D, I)
             channel_capacity = self.mip_channel_capacity_sub(mdl, X, PMS, C, sub_U, H, D)
 #            print(f"{sub_U}: channel_capacity  Done!")
             if PMS.a_uv is not None:

@@ -28,7 +28,7 @@ class MipSolutionWithNetwork(Solution, MipCore):
         nw_end_time = time()
         nw_duration = nw_end_time - nw_start_time
         print("Built Network", nw_end_time, " duration:", nw_duration)
-        PMS:Parameters = super().generate_parameters(case, Xp_cuhd)
+        PMS:Parameters = super().generate_parameters(case, Xp_cuhd, a_uv=a_uv)
         mdl, _ = super().start_model(True, PMS, C, U, H, D, I)
 
         result = mdl.solve(log_output=False)

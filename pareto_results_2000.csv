@@ -1,0 +1,12 @@
+iterasyon,izin_verilen_butce_ust_sinir,gonderilen_gercek_mesaj_sayisi,amac_fonksiyonu,cozum_suresi_saniye,cozum_durumu,ag_kurulum_saniye
+taban_kisitsiz,,360,92039.0,62.370898,time limit exceeded,0.277002
+epsilon_<=324,324.0,324,90415.0,64.143819,time limit exceeded,0.277002
+epsilon_<=288,288.0,288,74649.0,63.340292,time limit exceeded,0.277002
+epsilon_<=251,251.0,251,72300.0,63.765509,time limit exceeded,0.277002
+epsilon_<=216,216.0,216,70885.0,63.818398,time limit exceeded,0.277002
+epsilon_<=180,180.0,180,58345.0,60.667359,time limit exceeded,0.277002
+epsilon_<=143,143.0,143,49770.0,61.817523,time limit exceeded,0.277002
+epsilon_<=107,107.0,107,34533.0,61.6286,time limit exceeded,0.277002
+epsilon_<=71,71.0,71,30906.0,63.374103,time limit exceeded,0.277002
+epsilon_<=35,35.0,35,15102.0,60.13584,time limit exceeded,0.277002
+epsilon_<=0,0.0,0,0.0,0.857248,integer optimal solution,0.277002

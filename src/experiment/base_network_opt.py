@@ -40,9 +40,9 @@ def solve_network_model(a_uv, U, e_u, with_obj=False):
         for _e in range(eligibles[0].shape[0])
     )
     print("CONS OK")
-#    mdl.add_constraints(
-#            (X[u] <= 0 for u in range(0,U) if e_u[u]==0)
-#    )
+    mdl.add_constraints(
+            (X[u] <= 0 for u in range(0,U) if e_u[u]==0)
+    )
     mdl.set_time_limit(60)
     result = mdl.solve(log_output=False)
     print("Solved Model")
